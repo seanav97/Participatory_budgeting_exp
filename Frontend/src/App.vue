@@ -1,0 +1,89 @@
+<template>
+  <!-- <div id="app" style="background-size: cover;background-image: url(https://foodservice.potatorolls.com/wp-content/uploads/2017/08/mission-background-image.png)"> -->
+  <div id="app">
+    <!-- <img src="./assets/chefs.jpg" alt="Girl in a jacket" width="500" height="600"> -->
+
+    <!-- <TabBar v-if='!userBlacklisted'> </TabBar> -->
+    <router-view v-if='!userBlacklisted'></router-view>
+    <h1 style="text-align: center" v-else> User failed to answer the quiz and is know forbidden to participate</h1>
+  </div>
+</template>
+
+<script>
+// import NavBar from "./components/NavBar";
+// import TabBar from "./components/TabBar";
+export default {
+  name: "App",
+  components: {
+    // NavBar
+    // TabBar
+  },
+  data(){
+    return{
+      hasCookie: false,
+      userAllreadyExists: false,
+      userBlacklisted: false
+    }
+  },
+  mounted(){
+    this.checkParticipant();
+    this.setConfigurations();
+  },
+  methods:{
+
+    async checkParticipant(){
+      const participant_ID=this.$route.query.participant_ID;
+
+      this.$store.commit('setParticipantID',participant_ID);
+      // alert(this.$store.getters.getParticipantID);
+
+      let existsResponse = await this.axios.get("http://localhost:3000/userExists/participant_ID/"+participant_ID+"/senario/island");
+      let blacklistedResponse = await this.axios.get("http://localhost:3000/isBlacklisted/participant_ID/"+participant_ID);
+      
+
+      let allreadyDidExp=existsResponse.data.exists;
+      let isBlacklisted=blacklistedResponse.data.blacklisted;
+
+      // console.log(isBlacklisted);
+      this.userBlacklisted=isBlacklisted;
+      // alert(participant_ID);
+    },
+
+    async setConfigurations(){
+      let configs = await this.axios.get("http://localhost:3000/config/stages/2");
+      let items= configs.data.items_from_groups;
+      let voting_methods= configs.data.voting_methods;
+      this.$store.commit('setItems',items);
+      this.$store.commit('setStages',voting_methods);
+    }
+  }
+};
+</script>
+
+<style lang="scss">
+// @import "@/scss/form-style.scss";
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  min-height: 100vh;
+
+  background-size: cover;
+  background-image: url(./assets/background.jpg);
+}
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
+}
+</style>
