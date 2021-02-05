@@ -5,26 +5,15 @@
                  @on-error="handleErrorMessage">
         <h2 slot="title"></h2>   
         <tab-content title="Consent" :before-change="validateFirstStep">
-          <consent/>
-          <div style="text-align: center">
-              <el-form :inline="true" :model="formInline" class="demo-form-inline" :rules="rules" ref="ruleForm">
-                  <el-form-item label="Do you agree and will participate in this study?" prop="agree">
-                      <el-select v-model="formInline.agree" placeholder=" ">
-                          <el-option label="Yes" value="Yes"></el-option>
-                      </el-select>
-                  </el-form-item>
-              </el-form>
-          </div>
-        
-
-        </tab-content>
-        <tab-content title="Instructions">
+          <consent ref="consentComp"/>
+        </tab-content >
+        <tab-content title="Instructions" :before-change="scrollToTop">
           <instructions/>
         </tab-content>
-        <tab-content title="Consistency check">
+        <tab-content title="Consistency check" :before-change="scrollToTop">
           <quizz/>
         </tab-content>
-        <tab-content title="A Few Questions">
+        <tab-content title="A Few Questions" :before-change="scrollToTop">
           <personal-questions/>
         </tab-content>
 
@@ -60,17 +49,20 @@ export default {
        },
     methods: {
         onComplete: function(){
-            // alert('Yay. Done!');
             this.$router.push("/Knapsack_exp");
         },
         validateFirstStep:function() {
-            return new Promise((resolve, reject) => {
-             this.$refs.ruleForm.validate((valid) => {
+          return new Promise((resolve, reject) => {
+             this.$refs.consentComp.$refs.ruleForm.validate((valid) => {
+               if(valid) this.scrollToTop();
                resolve(valid);
              });
            })
-            
-
+        },
+        scrollToTop:function(){
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+          return true;
         }
     }
 }

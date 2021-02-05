@@ -1,5 +1,6 @@
 <template>
-  <fieldset>
+<div>
+    <fieldset>
         <h2 style="text-align: center">Step 1: Consent</h2>
         <br>
         <p>Please consider this information carefully before deciding whether to accept this task.</p>
@@ -13,22 +14,37 @@
 
         <p><strong>AGREEMENT:</strong> The nature and purpose of this research have been sufficiently explained and I agree to participate in this study. I understand that I am free to withdraw at any time.</p>
     </fieldset>
+    <div style="text-align: center">
+        <el-form :inline="true" :model="formInline" class="demo-form-inline" :rules="rules" ref="ruleForm">
+            <el-form-item label="Do you agree and will participate in this study?" prop="agree">
+                <el-select v-model="formInline.agree" placeholder=" ">
+                    <el-option label="Yes" value="Yes"></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+    </div>
+</div>
+  
 </template>
 
 <script>
 export default {
     data() {
         return {
-            // checked:false
+            formInline: {
+           agree: ''
+         },
+         rules: {
+           agree: {
+             required: true,
+             message: 'You must agree to participate',
+             trigger: 'change'
+           },
+         }
         }
     },
     methods: {
-        handleValidation: function(isValid, tabIndex){
-           console.log('Tab: '+tabIndex+ ' valid: '+isValid)
-        },
-        handleErrorMessage: function(errorMsg){
-          this.errorMsg = errorMsg
-        }
+
     }
 }   
 </script>
