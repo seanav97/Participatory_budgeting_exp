@@ -40,6 +40,7 @@ import VueFormWizard from 'vue-form-wizard';
 import ScrollFixedHeader from 'vuejs-scroll-fixed-header';
 import Vuelidate from "vuelidate";
 import Vuex from "vuex";
+
 import VueApexCharts from "vue-apexcharts";
 
 
@@ -108,7 +109,10 @@ Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 
 
-router.push('/participant_ID?participant_ID=1112')
+// router.push('/participant_ID?participant_ID=11444');
+// router.push({query: { participant_ID: "11444"}});
+// router.push({name: 'tabs', params: { participant_ID: "11444"}});
+
 
 new Vue({
   store: store,

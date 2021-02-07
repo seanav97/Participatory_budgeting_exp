@@ -5,7 +5,12 @@
 
     <!-- <TabBar v-if='!userBlacklisted'> </TabBar> -->
     <router-view v-if='!userBlacklisted'></router-view>
-    <h1 style="text-align: center" v-else> User failed to answer the quiz and is know forbidden to participate</h1>
+    <div v-else style="width:80%;padding-left: 25%;font-size: 50px;">
+      <br><br>
+      <b-alert show variant="danger">User failed to answer the quiz correctly and is now forbidden from participating</b-alert>
+    </div>
+    
+    <!-- <h1 style="text-align: center" v-else> User failed to answer the quiz and is now forbidden to participate</h1> -->
   </div>
 </template>
 
@@ -27,14 +32,20 @@ export default {
   },
   mounted(){
     this.checkParticipant();
-    this.setConfigurations();
+    // this.setConfigurations();
   },
   methods:{
 
     async checkParticipant(){
-      const participant_ID=this.$route.query.participant_ID;
+      // const participant_ID=this.$route.query.participant_ID;
+      // const participant_ID=this.$route.query.participant_ID;
+      // const participant_ID=this.$store.getters.getParticipantID;
+      const participant_ID=JSON.parse(localStorage.getItem('participant_ID'));
 
-      this.$store.commit('setParticipantID',participant_ID);
+      // console.log('absd');
+      // console.log(participant_ID.participant_ID);
+      // alert(participant_ID);
+      // this.$store.commit('setParticipantID',participant_ID);
       // alert(this.$store.getters.getParticipantID);
 
       let existsResponse = await this.axios.get("http://localhost:3000/userExists/participant_ID/"+participant_ID+"/senario/island");
@@ -52,9 +63,18 @@ export default {
     async setConfigurations(){
       let configs = await this.axios.get("http://localhost:3000/config/stages/2");
       let items= configs.data.items_from_groups;
+      localStorage.setItem('items',JSON.stringify(items));
       let voting_methods= configs.data.voting_methods;
       this.$store.commit('setItems',items);
       this.$store.commit('setStages',voting_methods);
+    },
+
+    async blacklistUser(){
+      // const participant_ID=this.$store.getters.getParticipantID;
+      const participant_ID=JSON.parse(localStorage.getItem('participant_ID'));
+      await this.axios.post("http://localhost:3000/insertToBlacklist",{
+        partisipant_ID:participant_ID
+      });
     }
   }
 };

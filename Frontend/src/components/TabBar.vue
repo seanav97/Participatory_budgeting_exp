@@ -10,8 +10,8 @@
         <tab-content title="Instructions" :before-change="scrollToTop">
           <instructions/>
         </tab-content>
-        <tab-content title="Consistency check" :before-change="scrollToTop">
-          <quizz/>
+        <tab-content title="Consistency check" :before-change="validateQuiz">
+          <quizz ref="quizComp"/>
         </tab-content>
         <tab-content title="A Few Questions" :before-change="scrollToTop">
           <personal-questions/>
@@ -47,6 +47,9 @@ export default {
          }
         }
        },
+    mounted(){
+      this.$parent.setConfigurations();
+    },
     methods: {
         onComplete: function(){
             this.$router.push("/Knapsack_exp");
@@ -55,6 +58,20 @@ export default {
           return new Promise((resolve, reject) => {
              this.$refs.consentComp.$refs.ruleForm.validate((valid) => {
                if(valid) this.scrollToTop();
+               resolve(valid);
+             });
+           })
+        },
+        validateQuiz:function() {
+          return new Promise((resolve, reject) => {
+             this.$refs.quizComp.$refs.ruleForm.validate((valid) => {
+               if(valid){
+                this.scrollToTop();
+               }
+               else{
+                 this.$parent.blacklistUser();
+                 this.$parent.$data.userBlacklisted=true;
+               }
                resolve(valid);
              });
            })

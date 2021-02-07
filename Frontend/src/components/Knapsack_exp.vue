@@ -1,6 +1,8 @@
 <template>
+
     <div id='app'>
-        <h1 style="font-family: 'Courier New', monospace;text-align:center">Building our city</h1>
+        <div v-if='this.id!=null'>
+            <h1 style="font-family: 'Courier New', monospace;text-align:center">Building our city</h1>
             <div class='row'>
                 <div class='column' style="width: 20%;">
                     <apexchart  type="pie" width="350" :options="chartOptions" :series="series[0].data"></apexchart>
@@ -17,9 +19,11 @@
                 </div>
                 <div class='column' style="width: 10%;">sdf</div>
             </div>
-            
-        
-        
+        </div>
+        <div v-else style="width:80%;padding-left: 25%;font-size: 50px;">
+            <br><br>
+            <b-alert show variant="danger">Please complete all the necessary steps</b-alert>
+        </div>
     </div>
 </template>
 
@@ -30,10 +34,12 @@ export default {
     components: { apexchart:VueApexCharts, },
   data() {
       return{
+        id:JSON.parse(localStorage.getItem("participant_ID")),
         output: null,
         budget: 100,
         money_spent: 0,
-        items: this.$store.getters.getItems,
+        // items: this.$store.getters.getItems,
+        items: JSON.parse(localStorage.getItem('items')),
         //for table
         fields: [ 
             {key: "item_name", label: 'Item',sortable: true ,class:"text-center"},
