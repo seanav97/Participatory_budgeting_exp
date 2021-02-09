@@ -3,6 +3,7 @@ const fs = require('fs');
 
 exports.executeQuery = async function(query){
   let result= await dbQuery(query);
+  
   return result;
 };
 
@@ -21,16 +22,16 @@ async function dbQuery(databaseQuery) {
         database: 'expKobi'
     }
   );
-
+  
   return new Promise(data => {
-    conProm.query(databaseQuery, function (error, result) { // change db->connection for your code
+    conProm.query(databaseQuery, function (error, result) {
           if (error) {
               console.log(error);
               throw error;
           }
           try {
               // console.log(result);
-
+              
               data(result);
 
           } catch (error) {
@@ -39,6 +40,7 @@ async function dbQuery(databaseQuery) {
           }
 
       });
+    // conProm.end();
   });
 
 }
@@ -86,7 +88,7 @@ async function dbQuery(databaseQuery) {
   //   return res;
   // });
   // return queryPromp;
-  let x=0;
+  // let x=0;
   // return res;
   // .catch(err => {
   //   console.log(err)

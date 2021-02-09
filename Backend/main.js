@@ -27,7 +27,7 @@ app.use(
 app.use(express.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(express.static(path.join(__dirname, "public"))); //To serve static files such as images, CSS files, and JavaScript files
 var port = process.env.PORT || "3000";
-//#endregion
+
 
 //#region cookie middleware
 // app.use(function (req, res, next) {
@@ -59,10 +59,14 @@ app.get("/isBlacklisted/participant_ID/:participant_ID", async (req, res, next) 
   try {
     const { participant_ID } = req.params;
     let queryRes = await DButils.executeQuery(`select * from BLACKLIST WHERE PARTICIPANT_ID='${participant_ID}'`);
-    if(queryRes.length>0)
+    if(queryRes.length>0){
+      console.log(true);
       res.status(200).send({blacklisted:true});
-    else 
+    }
+    else{ 
+      console.log(false);
       res.status(200).send({blacklisted:false});
+    }
 
   } catch (error) {
     next(error);
@@ -105,7 +109,8 @@ app.get("/config/stages/:stages", async (req, res, next) => {
     chosen_methods=voting_methods.sort(() => Math.random() - Math.random()).slice(0, stages);
 
     //get all items in randomized order
-    let items = await DButils.executeQuery(`SELECT ij.ITEM_NAME,GROUP_NAME,VALUE from ITEMS_GROUPS ij join ITEMS i on i.ITEM_NAME=ij.ITEM_NAME ORDER BY rand()`);
+    // let items = await DButils.executeQuery(`SELECT ij.ITEM_NAME,GROUP_NAME,VALUE from ITEMS_GROUPS ij join ITEMS i on i.ITEM_NAME=ij.ITEM_NAME ORDER BY rand()`);
+    let items = await DButils.executeQuery(`SELECT ij.ITEM_NAME,GROUP_NAME,VALUE,URL,X_COORD,Y_COORD from ITEMS_GROUPS ij join ITEMS i on i.ITEM_NAME=ij.ITEM_NAME`);
     
     //filter from each group 2 items
     groups=[]
@@ -113,12 +118,12 @@ app.get("/config/stages/:stages", async (req, res, next) => {
       if(row.GROUP_NAME in groups){
         if(groups[row.GROUP_NAME]<2){
           groups[row.GROUP_NAME]=groups[row.GROUP_NAME]+1;
-          return_items.push({'item_name':row.ITEM_NAME,'item_value':row.VALUE});
+          return_items.push({'item_name':row.ITEM_NAME,'item_value':row.VALUE,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
         }
 
       }
       else {
-        return_items.push({'item_name':row.ITEM_NAME,'item_value':row.VALUE});
+        return_items.push({'item_name':row.ITEM_NAME,'item_value':row.VALUE,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
         groups[row.GROUP_NAME]=1;
       }
       });
@@ -142,6 +147,9 @@ app.use(function (err, req, res, next) {
 const server = app.listen(port, () => {
   console.log(`Server listen on port ${port}`);
 });
+
+setInterval(function(){ DButils.executeQuery(`SELECT 1`); console.log('1'); }, 10000);
+
 
 process.on("SIGINT", function () {
   if (server) {

@@ -47,9 +47,19 @@ export default {
       // alert(participant_ID);
       // this.$store.commit('setParticipantID',participant_ID);
       // alert(this.$store.getters.getParticipantID);
-
-      let existsResponse = await this.axios.get("http://localhost:3000/userExists/participant_ID/"+participant_ID+"/senario/island");
-      let blacklistedResponse = await this.axios.get("http://localhost:3000/isBlacklisted/participant_ID/"+participant_ID);
+      let blacklistedResponse = null;
+      let existsResponse = null;
+      try {
+        blacklistedResponse = await this.axios.get("http://localhost:3000/isBlacklisted/participant_ID/"+participant_ID);
+      } catch (error) {
+        console.log('blacklist eror');
+      }
+      try {
+        existsResponse = await this.axios.get("http://localhost:3000/userExists/participant_ID/"+participant_ID+"/senario/island");
+        
+      } catch (error) {
+          console.log('exist eror');
+      }
       
 
       let allreadyDidExp=existsResponse.data.exists;
