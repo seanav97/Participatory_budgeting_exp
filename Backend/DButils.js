@@ -9,19 +9,40 @@ exports.executeQuery = async function(query){
 
 async function dbQuery(databaseQuery) {
 
-  const conProm= await mysqlssh.connect(
-    {
-        host: '3.9.16.135',
-        user: 'ubuntu',
-        privateKey: fs.readFileSync('LightsailDefaultKey-eu-west-2.pem')
-    },
-    {
-        host: '127.0.0.1',
-        user: 'root',
-        password: 'mkmHAD20/',
-        database: 'expKobi'
-    }
-  );
+  let conProm=null;
+  try {
+    conProm= await mysqlssh.connect(
+      {
+          host: '3.9.16.135',
+          user: 'ubuntu',
+          privateKey: fs.readFileSync('LightsailDefaultKey-eu-west-2.pem')
+      },
+      {
+          host: '127.0.0.1',
+          user: 'root',
+          password: 'mkmHAD20/',
+          database: 'expKobi'
+      }
+    );
+  } 
+  catch (e) {
+    console.log("Error", e.stack);
+    console.log("Error", e.name);
+    console.log("Error", e.message);
+  }
+  // const conProm= await mysqlssh.connect(
+  //   {
+  //       host: '3.9.16.135',
+  //       user: 'ubuntu',
+  //       privateKey: fs.readFileSync('LightsailDefaultKey-eu-west-2.pem')
+  //   },
+  //   {
+  //       host: '127.0.0.1',
+  //       user: 'root',
+  //       password: 'mkmHAD20/',
+  //       database: 'expKobi'
+  //   }
+  // );
   
   return new Promise(data => {
     conProm.query(databaseQuery, function (error, result) {

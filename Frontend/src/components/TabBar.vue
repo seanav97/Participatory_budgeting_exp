@@ -1,20 +1,18 @@
 <template>
 <scroll-fixed-header>
-    <form-wizard @on-complete="onComplete"
-                 @on-validate="handleValidation"
-                 @on-error="handleErrorMessage">
+    <form-wizard @on-complete="onComplete">
         <h2 slot="title"></h2>   
         <tab-content title="Consent" :before-change="validateFirstStep">
           <consent ref="consentComp"/>
         </tab-content >
-        <tab-content title="Instructions" :before-change="scrollToTop">
+        <tab-content title="Instructions" :before-change="validateInstructions">
           <instructions/>
         </tab-content>
         <tab-content title="Consistency check" :before-change="validateQuiz">
           <quizz ref="quizComp"/>
         </tab-content>
         <tab-content title="A Few Questions" :before-change="scrollToTop">
-          <personal-questions/>
+          <personal-questions ref="persQuestions"/>
         </tab-content>
 
     </form-wizard>
@@ -52,20 +50,48 @@ export default {
     },
     methods: {
         onComplete: function(){
-            this.$router.push("/Knapsack_exp");
+          return new Promise((resolve, reject) => {
+             this.$refs.persQuestions.$refs.ruleForm.validate((valid) => {
+               if(valid){
+                  let time=new Date().getTime();
+                  localStorage.setItem('budgeting_start',JSON.stringify(time));
+                  let participant_info={age:this.$refs.persQuestions.age,gender:this.$refs.persQuestions.gender,education:this.$refs.persQuestions.education,};
+                  localStorage.setItem('participant_info',JSON.stringify(participant_info));
+
+                  this.$router.push("/Knapsack_exp");
+                 } 
+               resolve(valid);
+             });
+           })
+            
         },
         validateFirstStep:function() {
           return new Promise((resolve, reject) => {
              this.$refs.consentComp.$refs.ruleForm.validate((valid) => {
-               if(valid) this.scrollToTop();
+               if(valid){
+                  let time=new Date().getTime();
+                  localStorage.setItem('consent_finish',JSON.stringify(time));
+                  this.scrollToTop();
+                } 
                resolve(valid);
              });
            })
+        },
+        validateInstructions:function(){
+          return new Promise((resolve, reject) => {
+            let time=new Date().getTime();
+            localStorage.setItem('tutorial_finish',JSON.stringify(time));
+            this.scrollToTop();
+            resolve(true);
+          });
+          
         },
         validateQuiz:function() {
           return new Promise((resolve, reject) => {
              this.$refs.quizComp.$refs.ruleForm.validate((valid) => {
                if(valid){
+                let time=new Date().getTime();
+                localStorage.setItem('quiz_finish',JSON.stringify(time));
                 this.scrollToTop();
                }
                else{

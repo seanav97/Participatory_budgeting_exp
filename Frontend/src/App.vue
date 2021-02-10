@@ -32,10 +32,14 @@ export default {
   },
   mounted(){
     this.checkParticipant();
+    this.getCurrTime();
     // this.setConfigurations();
   },
   methods:{
-
+    getCurrTime(){
+      let time=new Date().getTime();
+      localStorage.setItem('startTime',JSON.stringify(time));
+    },
     async checkParticipant(){
       // const participant_ID=this.$route.query.participant_ID;
       // const participant_ID=this.$route.query.participant_ID;
@@ -51,6 +55,7 @@ export default {
       let existsResponse = null;
       try {
         blacklistedResponse = await this.axios.get("http://localhost:3000/isBlacklisted/participant_ID/"+participant_ID);
+        alert(blacklistedResponse.data.blacklisted);
       } catch (error) {
         console.log('blacklist eror');
       }

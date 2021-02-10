@@ -85,13 +85,27 @@ app.post("/insertToBlacklist", async (req, res, next) => {
 
 app.post("/addExperiment", async (req, res, next) => {
   try {
-    const partisipant_ID=req.partisipant_ID;
+    const participant_ID=req.participant_ID;
     const time=req.time;
-    const turorial_time=req.turorial_time;
+    const tutorial_time=req.turorial_time;
     const quiz_time=req.quiz_time;
     const response_time=req.response_time;
     const consistant=req.consistant;
     const senario=req.senario;
+    const stage=req.stage;
+    const items=req.items;
+    const participant_info=req.participant_info;
+    await DButils.executeQuery(`INSERT INTO EXPERIMMENT (PARTICIPANT_ID,STAGE,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT,SENARIO_NAME)
+                               VALUE ('${participant_ID}','${stage}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}','${senario}')`);
+    const exp_id=await DButils.executeQuery(`SELECT LAST_INSERT_ID('EXPERIMMENTS')`);
+
+    await DButils.executeQuery(`INSERT INTO PARTICIPANTS (PARTICIPANT_ID,AGE,EDUCATION,GENDER)
+                                VALUE ('${participant_ID}','${participant_info.age}','${participant_info.education}','${participant_info.gender}')`);
+
+    for(item in items){
+      await DButils.executeQuery(`INSERT INTO EXP_ITEMS (EXP_ID,ITEM_NAME,VALUE)
+                                  VALUE ('${exp_id}','${item.item_name}','${item.item_value}')`);
+    }
 
     res.status(201).send({ message: "expiriment added"});
   } catch (error) {
@@ -148,7 +162,7 @@ const server = app.listen(port, () => {
   console.log(`Server listen on port ${port}`);
 });
 
-setInterval(function(){ DButils.executeQuery(`SELECT 1`); console.log('1'); }, 10000);
+setInterval(function(){ DButils.executeQuery(`SELECT 1`); console.log('1'); }, 100000);
 
 
 process.on("SIGINT", function () {

@@ -32,15 +32,15 @@ export default {
     data() {
         return {
             formInline: {
-           agree: ''
-         },
-         rules: {
-           agree: {
-             required: true,
-             message: 'You must agree to participate',
-             trigger: 'change'
-           },
-         }
+                agree: ''
+            },
+            rules: {
+                agree: {
+                    required: true,
+                    message: 'You must agree to participate',
+                    trigger: 'change'
+                },
+            }
         }
     },
     methods: {
