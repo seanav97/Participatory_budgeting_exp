@@ -78,9 +78,6 @@ export default {
             if((pricyItems>0 && this.form.question3 == 1)||(pricyItems==0 && this.form.question3 == 2))
                 q3=true;
 
-            console.log(q1);
-            console.log(q2);
-            console.log(q3);
 
             if(q1&&q2&&q3)
                 return new Promise((resolve, reject) => {resolve(true)});
@@ -88,11 +85,65 @@ export default {
                 return new Promise((resolve, reject) => {reject(new Error('Wrong!'))});
 
         },
-        submit:function(){
-            this.$refs.ruleForm.validate((valid) => {
-                if(valid) this.isConsistent=true;
-                else this.isConsistent=false;
+        submit:async function(){
+            // await this.$refs.ruleForm.validate((valid) => {
+            //     if(valid) this.isConsistent=true;
+            //     else this.isConsistent=false;
+            //     alert('before');
+            // });
+            new Promise((resolve, reject) => {
+                this.$refs.ruleForm.validate((valid) => {
+                if(valid){
+                    this.isConsistent=true;
+                    resolve(1)
+
+                } 
+                else{
+                    this.isConsistent=false;
+                    resolve(0);
+                } 
+                // resolve();
             });
+            })
+            .then(async (consistant_value)=>{
+                let participant_ID=localStorage.getItem("participant_ID");
+                let time=localStorage.getItem("startTime");
+                let tutorial_time=parseInt(localStorage.getItem("tutorial_finish"))-parseInt(localStorage.getItem("consent_finish"));
+                let quiz_time=parseInt(localStorage.getItem("quiz_finish"))-parseInt(localStorage.getItem("tutorial_finish"));
+                let response_time=parseInt(localStorage.getItem("budgeting_finish"))-parseInt(localStorage.getItem("budgeting_start"));
+                let consistant=consistant_value;
+                let senario="City";
+                let stage=1;
+                let items=JSON.parse(localStorage.getItem("final_items"));
+                let participant_info=JSON.parse(localStorage.getItem("participant_info"));
+
+                await this.axios.post("http://localhost:3000/addExperiment",{
+                participant_ID:participant_ID,
+                time:time,
+                tutorial_time:tutorial_time,
+                quiz_time:quiz_time,
+                response_time:response_time,
+                consistant:consistant,
+                senario:senario,
+                stage:stage,
+                items:items,
+                participant_info:participant_info
+            });
+            })
+
+
+            // console.log(participant_ID);
+            // console.log(time);
+            // console.log(tutorial_time);
+            // console.log(quiz_time);
+            // console.log(response_time);
+            // console.log(consistant);
+            // console.log(senario);
+            // console.log(stage);
+            // console.log(items);
+            // console.log(participant_info);
+
+            
 
         }
     }

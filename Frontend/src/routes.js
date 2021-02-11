@@ -6,7 +6,7 @@ const routes = [
     name: "main",
     beforeEnter: (to, from, next) => {
       const id = to.query.participant_ID;
-      localStorage.setItem('participant_ID',JSON.stringify(id));
+      localStorage.setItem('participant_ID',id);
       next()
     },
     component: () => import("./components/TabBar")

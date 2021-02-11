@@ -85,27 +85,29 @@ app.post("/insertToBlacklist", async (req, res, next) => {
 
 app.post("/addExperiment", async (req, res, next) => {
   try {
-    const participant_ID=req.participant_ID;
-    const time=req.time;
-    const tutorial_time=req.turorial_time;
-    const quiz_time=req.quiz_time;
-    const response_time=req.response_time;
-    const consistant=req.consistant;
-    const senario=req.senario;
-    const stage=req.stage;
-    const items=req.items;
-    const participant_info=req.participant_info;
-    await DButils.executeQuery(`INSERT INTO EXPERIMMENT (PARTICIPANT_ID,STAGE,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT,SENARIO_NAME)
-                               VALUE ('${participant_ID}','${stage}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}','${senario}')`);
-    const exp_id=await DButils.executeQuery(`SELECT LAST_INSERT_ID('EXPERIMMENTS')`);
+    const participant_ID=req.body.participant_ID;
+    const time=req.body.time;
+    const tutorial_time=req.body.tutorial_time;
+    const quiz_time=req.body.quiz_time;
+    const response_time=req.body.response_time;
+    const consistant=req.body.consistant;
+    const senario=req.body.senario;
+    const stage=req.body.stage;
+    const items=req.body.items;
+    const participant_info=req.body.participant_info;
 
     await DButils.executeQuery(`INSERT INTO PARTICIPANTS (PARTICIPANT_ID,AGE,EDUCATION,GENDER)
                                 VALUE ('${participant_ID}','${participant_info.age}','${participant_info.education}','${participant_info.gender}')`);
 
-    for(item in items){
+    await DButils.executeQuery(`INSERT INTO EXPERIMMENTS (PARTICIPANT_ID,STAGE,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT,SENARIO_NAME)
+                               VALUE ('${participant_ID}','${stage}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}','${senario}')`);
+    
+    const exp_id=await DButils.executeQuery(`SELECT max(EXP_ID) as max FROM EXPERIMMENTS`);
+    items.forEach(async function(item) {
       await DButils.executeQuery(`INSERT INTO EXP_ITEMS (EXP_ID,ITEM_NAME,VALUE)
-                                  VALUE ('${exp_id}','${item.item_name}','${item.item_value}')`);
-    }
+                                  VALUE ('${exp_id[0]["max"]}','${item.item_name}','${item.item_value}')`);
+    });
+
 
     res.status(201).send({ message: "expiriment added"});
   } catch (error) {

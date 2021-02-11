@@ -31,7 +31,7 @@ export default {
     }
   },
   mounted(){
-    this.checkParticipant();
+    // await this.checkParticipant();
     this.getCurrTime();
     // this.setConfigurations();
   },
@@ -41,21 +41,13 @@ export default {
       localStorage.setItem('startTime',JSON.stringify(time));
     },
     async checkParticipant(){
-      // const participant_ID=this.$route.query.participant_ID;
-      // const participant_ID=this.$route.query.participant_ID;
-      // const participant_ID=this.$store.getters.getParticipantID;
       const participant_ID=JSON.parse(localStorage.getItem('participant_ID'));
-
-      // console.log('absd');
-      // console.log(participant_ID.participant_ID);
-      // alert(participant_ID);
-      // this.$store.commit('setParticipantID',participant_ID);
-      // alert(this.$store.getters.getParticipantID);
+      console.log('started checking');
       let blacklistedResponse = null;
       let existsResponse = null;
       try {
         blacklistedResponse = await this.axios.get("http://localhost:3000/isBlacklisted/participant_ID/"+participant_ID);
-        alert(blacklistedResponse.data.blacklisted);
+        // alert(blacklistedResponse.data.blacklisted);
       } catch (error) {
         console.log('blacklist eror');
       }

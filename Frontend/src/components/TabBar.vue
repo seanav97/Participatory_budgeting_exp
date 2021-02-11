@@ -46,6 +46,7 @@ export default {
         }
        },
     mounted(){
+      this.$parent.checkParticipant();
       this.$parent.setConfigurations();
     },
     methods: {
@@ -55,7 +56,7 @@ export default {
                if(valid){
                   let time=new Date().getTime();
                   localStorage.setItem('budgeting_start',JSON.stringify(time));
-                  let participant_info={age:this.$refs.persQuestions.age,gender:this.$refs.persQuestions.gender,education:this.$refs.persQuestions.education,};
+                  let participant_info={age:this.$refs.persQuestions.form.age,gender:this.$refs.persQuestions.form.gender,education:this.$refs.persQuestions.form.education,};
                   localStorage.setItem('participant_info',JSON.stringify(participant_info));
 
                   this.$router.push("/Knapsack_exp");
