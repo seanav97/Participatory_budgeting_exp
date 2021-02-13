@@ -49,7 +49,13 @@ var port = process.env.PORT || "3000";
 app.get("/userExists/participant_ID/:participant_ID/senario/:senario", async (req, res, next) => {
   try {
     const { participant_ID, senario } = req.params;
-    res.status(200).send({exists:true});
+    let queryRes = await DButils.executeQuery(`select * from PARTICIPANTS WHERE PARTICIPANT_ID='${participant_ID}'`);
+    if(queryRes.length>0){
+      res.status(200).send({exists:true});
+    }
+    else{ 
+      res.status(200).send({exists:false});
+    }
   } catch (error) {
     next(error);
   }
@@ -60,11 +66,9 @@ app.get("/isBlacklisted/participant_ID/:participant_ID", async (req, res, next) 
     const { participant_ID } = req.params;
     let queryRes = await DButils.executeQuery(`select * from BLACKLIST WHERE PARTICIPANT_ID='${participant_ID}'`);
     if(queryRes.length>0){
-      console.log(true);
       res.status(200).send({blacklisted:true});
     }
     else{ 
-      console.log(false);
       res.status(200).send({blacklisted:false});
     }
 

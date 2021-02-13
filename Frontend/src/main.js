@@ -42,6 +42,8 @@ import Vuelidate from "vuelidate";
 import Vuex from "vuex";
 
 import VueApexCharts from "vue-apexcharts";
+import VueLoading from 'vuejs-loading-plugin'
+
 
 
 // import "bootstrap/dist/css/bootstrap.css";
@@ -79,6 +81,8 @@ Vue.use(Vuex);
 Vue.use(VueApexCharts);
 Vue.use(VueFormWizard)
 Vue.use(Element)
+Vue.use(VueLoading)
+
 
 
 axios.interceptors.request.use(

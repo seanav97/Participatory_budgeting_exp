@@ -1,14 +1,18 @@
 <template>
-  <!-- <div id="app" style="background-size: cover;background-image: url(https://foodservice.potatorolls.com/wp-content/uploads/2017/08/mission-background-image.png)"> -->
   <div id="app">
-    <!-- <img src="./assets/chefs.jpg" alt="Girl in a jacket" width="500" height="600"> -->
-
-    <!-- <TabBar v-if='!userBlacklisted'> </TabBar> -->
-    <router-view v-if='!userBlacklisted'></router-view>
-    <div v-else style="width:80%;padding-left: 25%;font-size: 50px;">
+    <div v-if='userBlacklisted' style="width:80%;padding-left: 25%;font-size: 50px;">
       <br><br>
       <b-alert show variant="danger">User failed to answer the quiz correctly and is now forbidden from participating</b-alert>
     </div>
+    <div v-else-if='!userAllreadyExists' style="width:80%;padding-left: 25%;font-size: 50px;">
+      <br><br>
+      <b-alert show variant="warning">User already participated in the experiment</b-alert>
+    </div>
+    <router-view v-else></router-view>
+    <!-- <div v-else style="width:80%;padding-left: 25%;font-size: 50px;">
+      <br><br>
+      <b-alert show variant="danger">User failed to answer the quiz correctly and is now forbidden from participating</b-alert>
+    </div> -->
     
     <!-- <h1 style="text-align: center" v-else> User failed to answer the quiz and is now forbidden to participate</h1> -->
   </div>
@@ -17,6 +21,8 @@
 <script>
 // import NavBar from "./components/NavBar";
 // import TabBar from "./components/TabBar";
+import { asyncLoading } from 'vuejs-loading-plugin'
+
 export default {
   name: "App",
   components: {
@@ -31,9 +37,16 @@ export default {
     }
   },
   mounted(){
-    // await this.checkParticipant();
+    const items=JSON.parse(localStorage.getItem('items'));
+    if(items==null){
+      alert('just check');
+      asyncLoading(this.checkParticipant(),this.$parent.setConfigurations()).then().catch();
+    }
+    else{
+      // alert('nothing');
+      asyncLoading(this.checkParticipant()).then().catch();
+    }
     this.getCurrTime();
-    // this.setConfigurations();
   },
   methods:{
     getCurrTime(){
@@ -49,13 +62,13 @@ export default {
         blacklistedResponse = await this.axios.get("http://localhost:3000/isBlacklisted/participant_ID/"+participant_ID);
         // alert(blacklistedResponse.data.blacklisted);
       } catch (error) {
-        console.log('blacklist eror');
+        // console.log('blacklist eror');
       }
       try {
         existsResponse = await this.axios.get("http://localhost:3000/userExists/participant_ID/"+participant_ID+"/senario/island");
         
       } catch (error) {
-          console.log('exist eror');
+          // console.log('exist eror');
       }
       
 
@@ -64,6 +77,7 @@ export default {
 
       // console.log(isBlacklisted);
       this.userBlacklisted=isBlacklisted;
+      this.userAllreadyExists=existsResponse;
       // alert(participant_ID);
     },
 
@@ -72,8 +86,8 @@ export default {
       let items= configs.data.items_from_groups;
       localStorage.setItem('items',JSON.stringify(items));
       let voting_methods= configs.data.voting_methods;
-      this.$store.commit('setItems',items);
-      this.$store.commit('setStages',voting_methods);
+      // this.$store.commit('setItems',items);
+      // this.$store.commit('setStages',voting_methods);
     },
 
     async blacklistUser(){

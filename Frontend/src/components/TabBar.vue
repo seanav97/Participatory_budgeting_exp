@@ -46,6 +46,8 @@ export default {
         }
        },
     mounted(){
+      // alert('dd');
+      // asyncLoading(this.$parent.checkParticipant(),this.$parent.setConfigurations()).then().catch();
       this.$parent.checkParticipant();
       this.$parent.setConfigurations();
     },
