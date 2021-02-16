@@ -4,15 +4,15 @@
         <div v-if='this.id!=null'>
             <h1 style="font-family: 'Courier New', monospace;text-align:center">Building our city</h1>
             <div class='row'>
-                <div >
-                    <apexchart  type="pie" width="350" :options="chartOptions" :series="series[0].data"></apexchart>
-                    <p style="display: inline;position:absolute;left:25%;" >
+                <div class='column1'>
+                    <apexchart  type="pie" width="300" :options="chartOptions" :series="series[0].data"></apexchart>
+                    <p style="position:relative;left:5%;" >
                        <b>Money spent:</b> {{money_spent}}
                        <br><br>
                        <span ref="moneyLabel"><b>Budget left:</b> {{budget-money_spent}}</span>
                     </p>
                 </div>
-                <div class='column'>
+                <div class='column2'>
                     <b-table sticky-header="90%" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                              :select-mode="selectMode" ref="selectableTable" responsive="sm" selectable @row-selected="onRowSelected"
                              @row-clicked='onRowClicked' @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
@@ -33,14 +33,25 @@
                     <div style="float: right">
                         <b-button variant="outline-primary" @click="resetTable">reset</b-button>
                         <b-button variant="outline-primary" @click="submit">Submit</b-button>
-                        <!-- <p>
-                            Selected Rows:<br>
-                            {{ selected }}
-                        </p> -->
                     </div>
-
+                    <!-- <vue-good-table ref="selectableTable" :columns="columns" :rows="rows" :fixed-header="true" theme="black-rhino" styleClass="vgt-table" max-height="600px" :row-style-class="rowStyleClassFn"
+                                    @on-row-mouseenter="onRowMouseover" @on-row-mouseleave="onRowMouseleave" @on-row-click="onRowClick"
+                                    :group-options="{
+                                        enabled: true,
+                                        collapsable: true
+                                    }"
+                                    :select-options="{
+                                        enabled: true,
+                                        disableSelectInfo:true
+                                    }">
+                        <template slot="table-row" slot-scope="props">
+                            <img v-if="props.column.field == 'info'" src="../assets/info.png" width="20" height="20" v-b-popover.hover.top="'bla bla bla' ">
+                        </template>
+                    </vue-good-table> -->
                 </div>
-                <Map ref="map"/>
+                <div class="column3">
+                    <Map ref="map"/>
+                </div>
             </div>
         </div>
         <div v-else style="width:80%;padding-left: 25%;font-size: 50px;">
@@ -69,6 +80,8 @@ export default {
             { key: "info",label:'' },
             { key: "select",label:'',class:"text-center" }
         ],
+        selectMode: 'multi',
+        selected: [],
         //for chart
         chartOptions: {
             dataLabels: {
@@ -81,8 +94,13 @@ export default {
             colors: ['#F6F6F6', '#BFC0C2']
         },
         series: [{data:[500000,0]}] ,
-        selectMode: 'multi',
-        selected: []
+        //new table
+        columns: [
+            {label: 'Item',field: 'item_name',sortable: true,},
+            {label: 'Price (pounds)',field: 'item_value',sortable: true,},
+            {label: '',field: 'info',sortable: false,},
+        ],
+        rows: this.getGroupedRows()
 
       }
     
@@ -90,6 +108,55 @@ export default {
   mounted(){
     },
   methods: {
+    // second table
+    rowStyleClassFn(){
+        return 'VGT-row';
+    },
+    getGroupedRows(){
+        let finals=[];
+        let groups={};
+        let items =JSON.parse(localStorage.getItem('items'));
+        items.forEach(item => {
+            groups[item.item_group]=[];
+        });
+        for(var group in groups){
+            items.forEach(item => {
+                if(item.item_group==group) groups[group].push(item);
+            });
+        }
+        for(group in groups){
+            finals.push({label:group,mode:'span',html:false,children:groups[group]});
+        }
+        return finals;
+    },
+    onRowMouseover(params){
+        // console.log(params.row);
+        this.$refs.map.$refs[params.row.item_name][0].style.opacity=1;
+    },
+    onRowMouseleave(params){
+        if(!this.$refs['selectableTable'].selectedRows.some(cell => cell.item_name == params.row.item_name))
+            this.$refs.map.$refs[params.row.item_name][0].style.opacity=0.3;
+    },
+    onRowClick(params){
+        // params.row.vgtSelected=false;
+        // if(params.row.item_value>this.budget-this.money_spent && !params.row.vgtSelected){
+        //     // alert('ff');
+        //     params.row.vgtSelected=false;
+        //     this.$refs.selectableTable.selectRow(index);
+        //     this.$refs.moneyLabel.classList.add('run-animation');
+        //     console.log(this.$refs['moneyLabel'])
+        //     var self = this;
+        //     setTimeout(function(){
+        //             self.$refs.moneyLabel.classList.remove('run-animation');
+        //     }, 500);
+        // }
+        // else{
+        //     if(!this.$refs.selectableTable.isRowSelected(index))
+        //         this.$refs.map.$refs[item.item_name][0].style.opacity=1;
+        //     else this.$refs.map.$refs[item.item_name][0].style.opacity=0.3;
+        // }
+    },
+    //first teble
     onRowClicked(item,index){
         if(item.item_value>this.budget-this.money_spent && !this.$refs.selectableTable.isRowSelected(index)){
             // alert('ff');
@@ -162,20 +229,40 @@ export default {
 </script>
 
 <style>
-.column {
-  /* float: left;  */
-}
-html {
-  overflow-y: scroll; 
-}
-.run-animation{
-    animation:change 0.5s;
-}
-@keyframes change {
-        /* from { color: red; font-size: 140%; }
-        to   { color: black } */
-        0% { color: black; }
-        50%   { color: red; font-size: 140%; }
-        100%   { color: black }
+    .column1 {
+        float: left;
+        width: 20%;
+        padding: 10px;
     }
+    .column2 {
+        float: left;
+        width: 40%;
+        padding: 10px;
+    }
+    .column3 {
+        float: left;
+        width: 40%;
+        padding: 10px;
+    }
+    .row {
+        content: "";
+    display: table;
+    clear: both;  
+    }
+    html {
+    overflow-y: scroll; 
+    }
+    .run-animation{
+        animation:change 0.5s;
+    }
+    .VGT-row:hover {
+        background-color: #B1BDDB;
+    }
+    @keyframes change {
+            /* from { color: red; font-size: 140%; }
+            to   { color: black } */
+            0% { color: black; }
+            50%   { color: red; font-size: 140%; }
+            100%   { color: black }
+        }
 </style>

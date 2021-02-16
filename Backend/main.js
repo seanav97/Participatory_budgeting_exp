@@ -138,12 +138,12 @@ app.get("/config/stages/:stages", async (req, res, next) => {
       if(row.GROUP_NAME in groups){
         if(groups[row.GROUP_NAME]<2){
           groups[row.GROUP_NAME]=groups[row.GROUP_NAME]+1;
-          return_items.push({'item_name':row.ITEM_NAME,'item_value':row.VALUE,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
+          return_items.push({'item_name':row.ITEM_NAME,'item_value':row.VALUE,'item_group':row.GROUP_NAME,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
         }
 
       }
       else {
-        return_items.push({'item_name':row.ITEM_NAME,'item_value':row.VALUE,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
+        return_items.push({'item_name':row.ITEM_NAME,'item_value':row.VALUE,'item_group':row.GROUP_NAME,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
         groups[row.GROUP_NAME]=1;
       }
       });

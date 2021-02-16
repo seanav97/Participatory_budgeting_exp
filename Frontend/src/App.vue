@@ -1,6 +1,16 @@
 <template>
   <div id="app">
-    <div v-if='userBlacklisted' style="width:80%;padding-left: 25%;font-size: 50px;">
+    <router-view v-if='!userBlacklisted && !userAllreadyExists'></router-view>
+    <div v-else-if='userBlacklisted' style="width:80%;padding-left: 25%;font-size: 50px;">
+      <br><br>
+      <b-alert show variant="danger">User failed to answer the quiz correctly and is now forbidden from participating</b-alert>
+    </div>
+    <div v-else-if='userAllreadyExists' style="width:80%;padding-left: 25%;font-size: 50px;">
+      <br><br>
+      <b-alert show variant="warning">User already participated in the experiment</b-alert>
+    </div>
+
+    <!-- <div v-if='userBlacklisted' style="width:80%;padding-left: 25%;font-size: 50px;">
       <br><br>
       <b-alert show variant="danger">User failed to answer the quiz correctly and is now forbidden from participating</b-alert>
     </div>
@@ -8,13 +18,7 @@
       <br><br>
       <b-alert show variant="warning">User already participated in the experiment</b-alert>
     </div>
-    <router-view v-else></router-view>
-    <!-- <div v-else style="width:80%;padding-left: 25%;font-size: 50px;">
-      <br><br>
-      <b-alert show variant="danger">User failed to answer the quiz correctly and is now forbidden from participating</b-alert>
-    </div> -->
-    
-    <!-- <h1 style="text-align: center" v-else> User failed to answer the quiz and is now forbidden to participate</h1> -->
+    <router-view v-else></router-view> -->
   </div>
 </template>
 
@@ -33,20 +37,54 @@ export default {
     return{
       hasCookie: false,
       userAllreadyExists: false,
-      userBlacklisted: false
+      userBlacklisted: false,
+      userCheckFinish: false,
+      itemsPutFinish: false
     }
   },
   mounted(){
-    const items=JSON.parse(localStorage.getItem('items'));
-    if(items==null){
-      alert('just check');
-      asyncLoading(this.checkParticipant(),this.$parent.setConfigurations()).then().catch();
-    }
-    else{
-      // alert('nothing');
-      asyncLoading(this.checkParticipant()).then().catch();
-    }
+    console.log('mount');
+    asyncLoading(this.checkParticipant(),this.setConfigurations());
+    // this.$loading(true);
+    // this.checkParticipant();
+    // this.setConfigurations();
     this.getCurrTime();
+    // while(!this.userCheckFinish || !this.itemsPutFinish){let x=0;}
+    // this.$loading(false);
+    // console.log('mount');
+    // const items=JSON.parse(localStorage.getItem('items'));
+    // if(items==null){
+    //       asyncLoading(this.setConfigurations()).then().catch();
+    // }
+    // asyncLoading(this.checkParticipant()).then().catch();
+    // this.getCurrTime();
+    // new Promise((resolve,reject)=>{
+    //   this.$loading(true);
+    //   const items=JSON.parse(localStorage.getItem('items'));
+    //   if(items==null){
+    //     // asyncLoading(this.checkParticipant(),this.setConfigurations()).then().catch();
+    //     this.setConfigurations();
+    //   }
+    //     this.checkParticipant();
+    //     // asyncLoading(this.checkParticipant()).then().catch();
+    //   resolve();
+    // })
+    // .then(()=>{
+    //   this.$loading(false);
+    // })
+    
+    // if(items==null){
+    //   // asyncLoading(this.checkParticipant(),this.setConfigurations()).then().catch();
+    //   await this.checkParticipant();
+    //   await this.setConfigurations();
+    // }
+    // else{
+    //   await this.checkParticipant();
+    //   // asyncLoading(this.checkParticipant()).then().catch();
+    // }
+    // await this.getCurrTime();
+    // this.$loading(false);
+
   },
   methods:{
     getCurrTime(){
@@ -60,28 +98,23 @@ export default {
       let existsResponse = null;
       try {
         blacklistedResponse = await this.axios.get("http://localhost:3000/isBlacklisted/participant_ID/"+participant_ID);
-        // alert(blacklistedResponse.data.blacklisted);
+        existsResponse = await this.axios.get("http://localhost:3000/userExists/participant_ID/"+participant_ID+"/senario/island");
       } catch (error) {
         // console.log('blacklist eror');
       }
-      try {
-        existsResponse = await this.axios.get("http://localhost:3000/userExists/participant_ID/"+participant_ID+"/senario/island");
-        
-      } catch (error) {
-          // console.log('exist eror');
-      }
-      
 
-      let allreadyDidExp=existsResponse.data.exists;
-      let isBlacklisted=blacklistedResponse.data.blacklisted;
-
-      // console.log(isBlacklisted);
-      this.userBlacklisted=isBlacklisted;
-      this.userAllreadyExists=existsResponse;
+      this.userBlacklisted=blacklistedResponse.data.blacklisted;
+      this.userAllreadyExists=existsResponse.data.exists;
+      this.userCheckFinish=true;
       // alert(participant_ID);
     },
 
     async setConfigurations(){
+      console.log('started checking items');
+      if(JSON.parse(localStorage.getItem('items'))!=null){
+        this.itemsPutFinish=true;
+        return;
+      }
       let configs = await this.axios.get("http://localhost:3000/config/stages/2");
       let items= configs.data.items_from_groups;
       localStorage.setItem('items',JSON.stringify(items));

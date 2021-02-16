@@ -12,6 +12,11 @@ const routes = [
     component: () => import("./components/TabBar")
   },
   {
+    path: "/ApprovalVoting_exp",
+    name: "ApprovalVoting_exp",
+    component: () => import("./components/ApprovalVoting_exp")
+  },
+  {
     path: "/Knapsack_exp",
     name: "Knapsack_exp",
     component: () => import("./components/Knapsack_exp")
