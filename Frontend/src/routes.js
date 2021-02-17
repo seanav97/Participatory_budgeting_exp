@@ -22,6 +22,11 @@ const routes = [
     component: () => import("./components/Knapsack_exp")
   },
   {
+    path: "/Preferences_exp",
+    name: "Preferences_exp",
+    component: () => import("./components/Preferences_exp")
+  },
+  {
     path: "/Consistency",
     name: "Consistency",
     component: () => import("./components/Consistency")
