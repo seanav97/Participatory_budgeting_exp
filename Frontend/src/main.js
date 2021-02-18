@@ -20,12 +20,6 @@ import VueRouter from "vue-router";
 import VueLocalStorage from 'vue-localstorage'
 Vue.use(VueLocalStorage)
 
-//Global components
-import RecipePreview from "./components/RecipePreview";
-import store from "./store"
-Vue.component("RecipePreview", RecipePreview);
-import Login from "./components/Login";
-Vue.component("Login", Login);
 
 Vue.use(VueRouter);
 const router = new VueRouter({
@@ -128,7 +122,7 @@ Vue.config.productionTip = false;
 
 
 new Vue({
-  store: store,
+  // store: store,
   router,
   methods: {
     toast(title, content, variant = null, append = false) {

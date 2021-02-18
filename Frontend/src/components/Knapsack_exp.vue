@@ -13,24 +13,14 @@
                     </p>
                 </div>
                 <div class='column2'>
-                    <b-dropdown text="view defferent categories" variant="primary" class="m-2">
-                        <!-- <div  v-for="group in this.groups" :key='group'>
-                            <b-form-checkbox>{{group}}</b-form-checkbox>
-                        </div> -->
-                        <b-form-checkbox-group
-                            id="groups"
-                            :options="groups"
-                            class="ml-4"
-                            stacked>
-                        </b-form-checkbox-group>
-                    </b-dropdown>
+                    <filter-group/>
                     <b-table sticky-header="90%" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                              :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                         <template #cell(arrow)="row">
                             <img src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
                         </template>
                         <template slot="cell(select)" slot-scope="row">
-                            <b-form-checkbox size="lg" v-model="row.item.selected" :ref="row.item.item_name+'_check'" :id="'a'+row.index" @change="update($event,row)"></b-form-checkbox>
+                            <b-form-checkbox size="lg" v-model="row.item.selected" @change="update($event,row)"></b-form-checkbox>
                         </template>
                         <template #row-details="row">
                             <b-card>
@@ -58,9 +48,10 @@
 <script>
 import VueApexCharts from "vue-apexcharts";
 import Map from './Map.vue';
+import FilterGroup from './FilterGroup.vue';
 
 export default {
-    components: { apexchart:VueApexCharts,Map, },
+    components: { apexchart:VueApexCharts,Map, FilterGroup, },
   data() {
       return{
         id:JSON.parse(localStorage.getItem("participant_ID")),
@@ -89,46 +80,12 @@ export default {
             colors: ['#F6F6F6', '#BFC0C2']
         },
         series: [{data:[500000,0]}] ,
-        groups: this.getGroupedItems()
-
       }
     
   },
   mounted(){
     },
   methods: {
-    // second table
-    getGroupedItems(){
-        let groups=[];
-        let groupedItems=[];
-        let items =JSON.parse(localStorage.getItem('items'));
-        items.forEach(item => {
-            groups.push(item.item_group);
-        });
-        groups=[...new Set(groups)];
-        // groups.forEach(group => {
-        //     groups.push(item.item_group);
-        // });
-        // items.forEach(item => {
-        //     groups[item.item_group]=[];
-        // });
-        // for(var group in groups){
-        //     items.forEach(item => {
-        //         // item.text=item.item_name;
-        //         if(item.item_group==group) groups[group].push({text:item.item_name,value:item});
-        //     });
-        // }
-        return groups;
-    },
-    getItemsOfGroup(group_name){
-        let return_items=[];
-        this.items.forEach(item => {
-            if(item.group_name==group_name)
-                return_items.push(item);
-        });
-        return return_items;
-    },
-    //first teble
     update(e,row) {
         let currBudget=this.budget;
         if(e){

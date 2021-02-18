@@ -1,5 +1,3 @@
-import NotFound from "./pages/NotFoundPage";
-
 const routes = [
   {
     path: "/participant_ID/:participant_ID",
@@ -17,6 +15,11 @@ const routes = [
     component: () => import("./components/ApprovalVoting_exp")
   },
   {
+    path: "/ThresholdApproval_exp",
+    name: "ThresholdApproval_exp",
+    component: () => import("./components/ThresholdApproval_exp")
+  },
+  {
     path: "/Knapsack_exp",
     name: "Knapsack_exp",
     component: () => import("./components/Knapsack_exp")
@@ -31,11 +34,11 @@ const routes = [
     name: "Consistency",
     component: () => import("./components/Consistency")
   },
-  {
-    path: "*",
-    name: "notFound",
-    component: NotFound
-  }
+  // {
+  //   path: "*",
+  //   name: "notFound",
+  //   component: NotFound
+  // }
 
 ];
 

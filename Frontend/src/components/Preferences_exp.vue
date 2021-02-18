@@ -6,6 +6,7 @@
                 <apexchart  type="pie" width="300" :options="chartOptions" :series="series[0].data"></apexchart>
             </div>
             <div class='column2'>
+                <filter-group/>
                 <b-table sticky-header="90%" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                             ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                     <template #cell(arrow)="row">
@@ -37,15 +38,13 @@
 <script>
 import VueApexCharts from "vue-apexcharts";
 import Map from './Map.vue';
+import FilterGroup from './FilterGroup.vue';
 export default {
-    components: { Map,apexchart:VueApexCharts },
-
+    components: { Map,apexchart:VueApexCharts,FilterGroup },
     data(){
         return{
             budget: 500000,
-            bbb:this.budget/2,
             items: JSON.parse(localStorage.getItem('items')).map(v => ({...v, given_value: 0})),
-            userSum:this.sum,
             fields: [ 
                 {key: "arrow", label: ''},
                 {key: "item_name", label: 'Item',sortable: true ,class:"text-center"},
@@ -61,9 +60,7 @@ export default {
         }
     },
     computed:{
-        sum(){
-            return this.items.reduce((a,b)=> a.given_value+b.given_value);
-        }
+
     },
     methods:{
         calc(row){

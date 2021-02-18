@@ -7,7 +7,7 @@
                         :thickness="10" emptyThickness="10%" lineMode="in 10" :legend="true" dash="strict 5 0.05" animation="reverse 700 400"
                         :noData="false" :loading="false" :half="false" :fontSize="fontSize" :fontColor="fontColor">
                         <template v-slot:legend-value>
-                            <span ref="moneyLabel" slot="value">/5</span>
+                            <span ref="moneyLabel" slot="value">/{{items.length}}</span>
                         </template>
                             <template v-slot:legend-caption>
                             <p slot="legend-caption">selected</p>
@@ -68,36 +68,15 @@ export default {
     },
     computed: {
         tasksDonePercent() {
-            return (this.numberSelected * 100) / 5;
+            return (this.numberSelected * 100) / this.items.length;
         },
     },
     methods:{
         update(e,row) {
             let currBudget=this.budget;
             if(e){
-                if(this.numberSelected==5){
-                    const self=this;
-                    setTimeout(function(){
-                        self.items.forEach(item => {
-                            if(item.item_name==row.item.item_name){ item.selected=false;console.log(item.selected);}
-                        });
-                    }, 5);
-                    this.fontSize='100px';
-                    this.fontColor='red';
-                    setTimeout(function(){
-                            self.fontSize='50px';
-                            self.fontColor='black';
-                    }, 500);
-                    
-
-                }
-                else{
-                    this.$refs.map.$refs[row.item.item_name][0].style.opacity=1;
-                    this.numberSelected++;
-                    // this.money_spent+=row.item.item_value;
-                    // this.selected.push(row.item);
-                }
-
+                this.$refs.map.$refs[row.item.item_name][0].style.opacity=1;
+                this.numberSelected++;
             }
             else{
                 this.$refs.map.$refs[row.item.item_name][0].style.opacity=0.3;
