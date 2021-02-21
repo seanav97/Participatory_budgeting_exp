@@ -7,14 +7,22 @@
                 <div class='column1'>
                     <apexchart  type="pie" width="300" :options="chartOptions" :series="series[0].data"></apexchart>
                     <p style="position:relative;left:5%;" >
-                       <b>Money spent:</b> {{money_spent}}
+                       <b>Money spent:</b> {{money_spent.toLocaleString({ style: 'currency'})}}
                        <br><br>
-                       <span ref="moneyLabel"><b>Budget left:</b> {{budget-money_spent}}</span>
+                       <span ref="moneyLabel"><b>Budget left:</b> {{(budget-money_spent).toLocaleString({ style: 'currency'})}}</span>
                     </p>
+                    <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
+                        <u><b> What you need to do</b></u>
+                        <br>
+                        <a> You need to select which projects to build based on the budget.</a>
+                        <br><br>
+                        <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
+
+                    </div>
                 </div>
                 <div class='column2'>
                     <filter-group/>
-                    <b-table sticky-header="90%" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
+                    <b-table sticky-header="500px" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                              :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                         <template #cell(arrow)="row">
                             <img src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
@@ -29,6 +37,7 @@
                         </template>
                     </b-table>
                     <div style="float: right">
+                        <div style="float: left; margin-right:30px;color:red;" v-if="!somethingSelected">You must select some items</div>
                         <b-button variant="outline-primary" @click="resetTable">reset</b-button>
                         <b-button variant="outline-primary" @click="submit">Submit</b-button>
                     </div>
@@ -42,6 +51,10 @@
             <br><br>
             <b-alert show variant="danger">Please complete all the necessary steps</b-alert>
         </div>
+        <b-modal size="lg" id="instructions_modal" hide-footer>
+            <instructions/>
+            <b-button variant="outline-primary" block @click="$bvModal.hide('instructions_modal')">Close</b-button>
+        </b-modal>
     </div>
 </template>
 
@@ -49,9 +62,10 @@
 import VueApexCharts from "vue-apexcharts";
 import Map from './Map.vue';
 import FilterGroup from './FilterGroup.vue';
+import Instructions from './Instructions.vue';
 
 export default {
-    components: { apexchart:VueApexCharts,Map, FilterGroup, },
+    components: { apexchart:VueApexCharts,Map, FilterGroup, Instructions, },
   data() {
       return{
         id:JSON.parse(localStorage.getItem("participant_ID")),
@@ -62,12 +76,14 @@ export default {
         fields: [ 
             {key: "arrow", label: ''},
             {key: "item_name", label: 'Item',sortable: true ,class:"text-center"},
-            { key: "item_value", label: 'Price (pounds)',sortable: true,class:"text-center" },
+            { key: "item_value", label: 'Price (pounds)',sortable: true,class:"text-center",
+                formatter: (value, key, item) => {
+                    return value.toLocaleString({ style: 'currency'});
+                }
+            },
             // { key: "info",label:'' },
             { key: "select",label:'',class:"text-center" }
         ],
-        selectMode: 'multi',
-        selected: [],
         //for chart
         chartOptions: {
             dataLabels: {
@@ -80,6 +96,7 @@ export default {
             colors: ['#F6F6F6', '#BFC0C2']
         },
         series: [{data:[500000,0]}] ,
+        somethingSelected:true
       }
     
   },
@@ -87,7 +104,7 @@ export default {
     },
   methods: {
     update(e,row) {
-        let currBudget=this.budget;
+        // let currBudget=this.budget;
         if(e){
             if(row.item.item_value>this.budget-this.money_spent){
                 let self=this;
@@ -106,6 +123,7 @@ export default {
             else{
                 this.$refs.map.$refs[row.item.item_name][0].style.opacity=1;
                 this.money_spent+=row.item.item_value;
+                this.somethingSelected=true;
                 // this.selected.push(row.item);
             }
 
@@ -135,17 +153,24 @@ export default {
         });
     },
     submit(){
-        let time=new Date().getTime();
-        localStorage.setItem('budgeting_finish',JSON.stringify(time));
         let final_items=[];
+        let itemsSelected=0;
         this.items.forEach(item => {
             if(item.selected){
                 final_items.push({item_name:item.item_name,item_value:1,item_price:item.item_value});
+                itemsSelected++;
             }
             else{
                 final_items.push({item_name:item.item_name,item_value:0,item_price:item.item_value});
             }
         });
+        // console.log(final_items);
+        if(itemsSelected==0){
+            this.somethingSelected=false;
+            return;
+        }
+        let time=new Date().getTime();
+        localStorage.setItem('budgeting_finish',JSON.stringify(time));
         localStorage.setItem('final_items',JSON.stringify(final_items));
         this.$router.push("/Consistency");
 

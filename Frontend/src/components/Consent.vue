@@ -5,7 +5,7 @@
         <br>
         <p>Please consider this information carefully before deciding whether to accept this task.</p>
         <p><strong>PURPOSE OF RESEARCH:</strong> To understand people’s preferences about what to take to a mission to a desert island.</p>
-        <p><strong>WHAT YOU WILL DO:</strong> You will be asked to distribute 100 points among 10 items.</p>
+        <p><strong>WHAT YOU WILL DO:</strong> {{todo}}</p>
         <p><strong>TIME REQUIRED:</strong> Participation will take approximately 4 minutes.</p>
         <p><strong>RISKS:</strong> There are no anticipated risks associated with participating in this study. The effects of participating should be comparable to those you would experience from viewing a computer monitor for 4 minutes and using a mouse.</p>
         <p><strong>COMPENSATION:</strong> Upon completion of this task, you will receive a code to enter on the Amazon Mechanical Turk task page, and you will receive the amount that was indicated on the task page.</p>
@@ -29,6 +29,7 @@
 
 <script>
 export default {
+    props: ['todo'],
     data() {
         return {
             formInline: {

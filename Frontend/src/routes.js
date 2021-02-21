@@ -30,6 +30,11 @@ const routes = [
     component: () => import("./components/Preferences_exp")
   },
   {
+    path: "/Ranking_exp",
+    name: "Ranking_exp",
+    component: () => import("./components/Ranking_exp")
+  },
+  {
     path: "/Consistency",
     name: "Consistency",
     component: () => import("./components/Consistency")

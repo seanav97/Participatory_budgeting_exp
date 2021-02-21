@@ -3,8 +3,8 @@
     <form-wizard @on-complete="onComplete">
         <h2 slot="title"></h2>   
         <tab-content title="Consent" :before-change="validateFirstStep">
-          <consent ref="consentComp"/>
-        </tab-content >
+          <consent todo="You will select  how to distribute a budget of 500,000 pound, by selecting from a list of items." ref="consentComp"/>
+        </tab-content>
         <tab-content title="Instructions" :before-change="validateInstructions">
           <instructions/>
         </tab-content>

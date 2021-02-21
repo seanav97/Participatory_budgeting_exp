@@ -42,7 +42,8 @@ import 'vue-good-table/dist/vue-good-table.css'
 Vue.use(VueGoodTablePlugin);
 import VueEllipseProgress from 'vue-ellipse-progress';
 Vue.use(VueEllipseProgress);
-
+import draggable from 'vuedraggable'
+Vue.use(draggable);
 
 
 

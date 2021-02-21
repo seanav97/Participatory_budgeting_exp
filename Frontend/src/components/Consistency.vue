@@ -8,7 +8,7 @@
                 <el-form-item prop="allQuestions">
                     <h4>Question 1: Was the {{this.random_items[0].item_name}} one of your choices?</h4>
                     <br>
-                    <el-form-item prop="q1">
+                    <el-form-item prop="question1">
                         <el-radio-group v-model="form.question1">
                             <el-radio :label="1">Yes</el-radio><br>
                             <el-radio :label="2">No</el-radio><br>
@@ -17,7 +17,7 @@
                     <br><br>
                     <h4>Question 2: Was the {{this.random_items[1].item_name}} one of your choices?</h4>
                     <br>
-                    <el-form-item prop="q2">
+                    <el-form-item prop="question2">
                         <el-radio-group v-model="form.question2" type="vertical">
                             <el-radio :label="1">Yes</el-radio><br>
                             <el-radio :label="2">No</el-radio><br>
@@ -26,7 +26,7 @@
                     <br><br>
                     <h4>Question 3: Did you select any items that cost {{this.price}} pounds or more?</h4>
                     <br>
-                    <el-form-item prop="q3">
+                    <el-form-item prop="question3">
                         <el-radio-group v-model="form.question3" type="vertical">
                             <el-radio :label="1">Yes</el-radio><br>
                             <el-radio :label="2">No</el-radio><br>
@@ -70,12 +70,19 @@ export default {
             },
             rules: {
                 allQuestions: [{ validator: this.qAll,trigger: 'blur'}],
+                question1: {required: true,message: 'Please answer all questions.',trigger: 'blur'},
+                question2: {required: true,message: 'Please answer all questions.',trigger: 'blur'},
+                question3: {required: true,message: 'Please answer all questions.',trigger: 'blur'},
             },
             finished:false
         }
     },
     methods:{
         qAll: async function(){
+            if(this.form.question1 == 0 || this.form.question2 == 0 || this.form.question3 == 0){
+                this.$loading(false);
+                return new Promise((resolve, reject) => {reject(new Error('You must answer all questions'))});
+            }
             let q1=false;
             let q2=false;
             let q3=false;
@@ -97,86 +104,58 @@ export default {
             if(q1&&q2&&q3)
                 return new Promise((resolve, reject) => {resolve(true)});
             else
-                return new Promise((resolve, reject) => {reject(new Error('Wrong!'))});
+                return new Promise((resolve, reject) => {reject(new Error('.'))});
 
         },
         submit:async function(){
-            // await this.$refs.ruleForm.validate((valid) => {
-            //     if(valid) this.isConsistent=true;
-            //     else this.isConsistent=false;
-            //     alert('before');
-            // });
-            // asyncLoading(()=>{
-                this.$loading(true);
-
-                new Promise((resolve, reject) => {
-                   
-                    // alert('1');
-                    this.$refs.ruleForm.validate((valid) => {
-                        // alert('3');
-                        if(valid){
-                            this.isConsistent=true;
-                             
-                            resolve(1)
-
-                        } 
-                        else{
-                            this.isConsistent=false;
-                            resolve(0);
-                        } 
-                        // resolve();
-                    });
-                    // alert('2');
-                })
-                .then(async (consistant_value)=>{
-                    let participant_ID=localStorage.getItem("participant_ID");
-                    let time=localStorage.getItem("startTime");
-                    let tutorial_time=parseInt(localStorage.getItem("tutorial_finish"))-parseInt(localStorage.getItem("consent_finish"));
-                    let quiz_time=parseInt(localStorage.getItem("quiz_finish"))-parseInt(localStorage.getItem("tutorial_finish"));
-                    let response_time=parseInt(localStorage.getItem("budgeting_finish"))-parseInt(localStorage.getItem("budgeting_start"));
-                    let consistant=consistant_value;
-                    let senario="City";
-                    let stage=1;
-                    let items=JSON.parse(localStorage.getItem("final_items"));
-                    let participant_info=JSON.parse(localStorage.getItem("participant_info"));
-                    await this.axios.post("http://localhost:3000/addExperiment",{
-                    participant_ID:participant_ID,
-                    time:time,
-                    tutorial_time:tutorial_time,
-                    quiz_time:quiz_time,
-                    response_time:response_time,
-                    consistant:consistant,
-                    senario:senario,
-                    stage:stage,
-                    items:items,
-                    participant_info:participant_info
-                });
-                })
-                .then(()=>{
-                    this.finished=true;
-                    this.$loading(false);
-
-                });
-            // }).then().catch()
-
             
+            this.$loading(true);
 
-            // this.finished=true;
+            new Promise((resolve, reject) => {
+                
+                this.$refs.ruleForm.validate((valid) => {
+                    if(valid){
+                        this.isConsistent=true;
+                            
+                        resolve(1)
 
+                    } 
+                    else{
+                        this.isConsistent=false;
+                        if(this.form.question1 == 0 || this.form.question2 == 0 || this.form.question3 == 0)
+                            return;            
+                    } 
+                });
+            })
+            .then(async (consistant_value)=>{
+                let participant_ID=localStorage.getItem("participant_ID");
+                let time=localStorage.getItem("startTime");
+                let tutorial_time=parseInt(localStorage.getItem("tutorial_finish"))-parseInt(localStorage.getItem("consent_finish"));
+                let quiz_time=parseInt(localStorage.getItem("quiz_finish"))-parseInt(localStorage.getItem("tutorial_finish"));
+                let response_time=parseInt(localStorage.getItem("budgeting_finish"))-parseInt(localStorage.getItem("budgeting_start"));
+                let consistant=consistant_value;
+                let senario="City";
+                let stage=1;
+                let items=JSON.parse(localStorage.getItem("final_items"));
+                let participant_info=JSON.parse(localStorage.getItem("participant_info"));
+                await this.axios.post("http://localhost:3000/addExperiment",{
+                participant_ID:participant_ID,
+                time:time,
+                tutorial_time:tutorial_time,
+                quiz_time:quiz_time,
+                response_time:response_time,
+                consistant:consistant,
+                senario:senario,
+                stage:stage,
+                items:items,
+                participant_info:participant_info
+            });
+            })
+            .then(()=>{
+                this.finished=true;
+                this.$loading(false);
 
-
-            // console.log(participant_ID);
-            // console.log(time);
-            // console.log(tutorial_time);
-            // console.log(quiz_time);
-            // console.log(response_time);
-            // console.log(consistant);
-            // console.log(senario);
-            // console.log(stage);
-            // console.log(items);
-            // console.log(participant_info);
-
-            
+            });
 
         }
     }
