@@ -13,10 +13,18 @@
                             <p slot="legend-caption">selected</p>
                         </template>
                     </vue-ellipse-progress>
+                    <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
+                        <u><b> What you need to do</b></u>
+                        <br>
+                        <a> You need to select which projects to build based on the budget.</a>
+                        <br><br>
+                        <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
+
+                    </div>
                 </div>
                 <div class='column2'>
                     <filter-group/>
-                    <b-table sticky-header="90%" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
+                    <b-table sticky-header="500px" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                              :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                         <template #cell(arrow)="row">
                             <img src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
@@ -30,6 +38,7 @@
                             </b-card>
                         </template>
                     </b-table>
+                    <b-alert style="text-align:center" v-if="!somethingSelected" show variant="danger">You must select some projects.</b-alert>
                     <div style="float: right">
                         <b-button variant="outline-primary" @click="resetTable">reset</b-button>
                         <b-button variant="outline-primary" @click="submit">Submit</b-button>
@@ -52,7 +61,8 @@ export default {
     data(){
         return{
             numberSelected:0,
-            items: JSON.parse(localStorage.getItem('items')),
+            somethingSelected:true,
+            items: JSON.parse(localStorage.getItem('items')).map(v => ({...v, selected: false})),
             //for table
             fields: [ 
                 {key: "arrow", label: ''},
@@ -61,7 +71,7 @@ export default {
                 { key: "select",label:'',class:"text-center" }
             ],
             selectMode: 'multi',
-            selected: [],
+            // selected: [],
             fontSize: "50px",
             fontColor:'black'
         }
@@ -79,7 +89,7 @@ export default {
                     const self=this;
                     setTimeout(function(){
                         self.items.forEach(item => {
-                            if(item.item_name==row.item.item_name){ item.selected=false;console.log(item.selected);}
+                            if(item.item_name==row.item.item_name){ item.selected=false;}
                         });
                     }, 5);
                     this.fontSize='100px';
@@ -94,6 +104,8 @@ export default {
                 else{
                     this.$refs.map.$refs[row.item.item_name][0].style.opacity=1;
                     this.numberSelected++;
+                    this.somethingSelected=true;
+
                     // this.money_spent+=row.item.item_value;
                     // this.selected.push(row.item);
                 }
@@ -108,43 +120,7 @@ export default {
             // console.log(this.selected);
             this.series=[{data:[this.budget-this.money_spent,this.money_spent]}];
         },
-        onRowClicked(item,index){
-            if(this.numberSelected==5 && !this.$refs.selectableTable.isRowSelected(index)){
-                this.$refs.selectableTable.selectRow(index);
-                this.fontSize='100px';
-                this.fontColor='red';
-                const self=this;
-                setTimeout(function(){
-                        self.fontSize='50px';
-                        self.fontColor='black';
-                }, 500);
-            }
-            else{
-                if(!this.$refs.selectableTable.isRowSelected(index))
-                    this.$refs.map.$refs[item.item_name][0].style.opacity=1;
-                else this.$refs.map.$refs[item.item_name][0].style.opacity=0.3;
-            }
-        },
-        onRowSelected(items) {
-            let currItem=null;
 
-            items.forEach(item => {
-                // console.log(item.item_name);
-                if(!this.selected.some(cell => cell.item_name === item.item_name)){
-                    currItem=item;
-                }
-            });
-
-            this.selected = items;
-            this.numberSelected=this.selected.length;
-            // let currBudget=this.budget;
-            // this.money_spent=0;
-            // items.forEach(item => {
-                // currBudget-=item.item_value;
-                // this.money_spent+=item.item_value;
-            // });
-            // this.series=[{data:[currBudget,this.money_spent]}];
-        },
         rowHovered(item){
             this.$refs.map.$refs[item.item_name][0].style.opacity=1;
         },
@@ -155,24 +131,31 @@ export default {
         },
         resetTable(){
             this.$refs.selectableTable.clearSelected();
-            this.selected = [];
             this.items.forEach(item => {
+                item.selected=false;
                 this.$refs.map.$refs[item.item_name][0].style.opacity=0.3;
             });
+            this.numberSelected=0;
         },
         submit(){
             let time=new Date().getTime();
-            localStorage.setItem('budgeting_finish',JSON.stringify(time));
             let final_items=[];
+            let itemsSelected=0;
             this.items.forEach(item => {
-                // console.log(item.item_name);
-                if(this.selected.some(cell => cell.item_name === item.item_name)){
+                if(item.selected){
                     final_items.push({item_name:item.item_name,item_value:1,item_price:item.item_value});
+                    itemsSelected++;
                 }
                 else{
                     final_items.push({item_name:item.item_name,item_value:0,item_price:item.item_value});
                 }
             });
+            if(itemsSelected==0){
+                this.somethingSelected=false;
+                return;
+            }
+    
+            localStorage.setItem('budgeting_finish',JSON.stringify(time));
             localStorage.setItem('final_items',JSON.stringify(final_items));
             this.$router.push("/Consistency");
 

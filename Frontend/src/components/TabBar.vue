@@ -8,7 +8,7 @@
         <tab-content title="Instructions" :before-change="validateInstructions">
           <instructions/>
         </tab-content>
-        <tab-content title="Consistency check" :before-change="validateQuiz">
+      <tab-content title="Quiz" :before-change="validateQuiz">
           <quizz ref="quizComp"/>
         </tab-content>
         <tab-content title="A Few Questions" :before-change="scrollToTop">

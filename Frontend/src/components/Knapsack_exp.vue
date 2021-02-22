@@ -36,8 +36,8 @@
                             </b-card>
                         </template>
                     </b-table>
+                    <b-alert style="text-align:center" v-if="!somethingSelected" show variant="danger">You must select some projects.</b-alert>
                     <div style="float: right">
-                        <div style="float: left; margin-right:30px;color:red;" v-if="!somethingSelected">You must select some items</div>
                         <b-button variant="outline-primary" @click="resetTable">reset</b-button>
                         <b-button variant="outline-primary" @click="submit">Submit</b-button>
                     </div>
@@ -104,7 +104,6 @@ export default {
     },
   methods: {
     update(e,row) {
-        // let currBudget=this.budget;
         if(e){
             if(row.item.item_value>this.budget-this.money_spent){
                 let self=this;

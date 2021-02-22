@@ -12,8 +12,8 @@
                     </div>
                 </div>
                 <div class='column2'>
-                    <b-table head-variant="dark" :fields="fields" thead-class=""> </b-table>
-                    <draggable  :forceFallback="true" v-model="items" @start="startDrag" @end="finishDrag" style="overflow-y:scroll; height:480px;">
+                    <b-table head-variant="dark" items='[]' :fields="fields" thead-class=""> </b-table>
+                    <draggable v-model="items" @start="drag=true" @end="drag=false" style="overflow-y:scroll; height:480px;">
                         <div v-for="(item,index) in items" :key="item.item_name">
                             <b-table style="cursor: all-scroll" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
                                         ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
@@ -54,6 +54,11 @@ export default {
             fields: [ 
                 {key: "arrow", label: '',class: 'text-right'},
                 {key: "item_name", label: 'Project',class: 'text-left'},
+                { key: "item_value", label: 'Price (pounds)',sortable: true,class:"text-right",
+                    formatter: (value, key, item) => {
+                        return value.toLocaleString({ style: 'currency'});
+                    }
+            },
             ],
             columns: [
                 {label: 'Project',field: 'item_name',sortable: false,class: 'text-center'},
@@ -63,25 +68,14 @@ export default {
         }
     },
     methods:{
-        finishDrag(e){
-            const className = 'grabbing';
-            const html = document.getElementsByTagName('html').item(0);
-            if (html && new RegExp(className).test(html.className) === true) {
-                // Remove className with the added space (from setClassToHTMLElement)
-                html.className = html.className.replace(
-                    new RegExp(' ' + className),
-                    ''
-                );
-                // Remove className without added space (just in case)
-                html.className = html.className.replace(new RegExp(className), '');
-            }
-        },
-        startDrag(){
-            const className = 'grabbing';
-            const html = document.getElementsByTagName('html').item(0);
-            if (html && new RegExp(className).test(html.className) === false) {
-                html.className += ' ' + className; // use a space in case there are other classNames
-            }
+        getHeaderClass(index){
+            console.log
+          if(index==0){
+              return '';
+          }
+          else{
+              return 'd-none';
+          }
         },
         getArrayItems(){
             let items=JSON.parse(localStorage.getItem('items'));
@@ -94,7 +88,7 @@ export default {
             return arrayItems;
         },
         rowHovered(item){
-            // console.log(item);
+            console.log(item);
             this.$refs.map.$refs[item.item_name][0].style.opacity=1;
         },
         rowUnHovered(item){
@@ -106,10 +100,9 @@ export default {
             let final_items=[];
             let index=1;
             this.items.forEach(item => {
-                final_items.push({item_name:item[0].item_name,item_value:index});
+                final_items.push({item_name:item.item_name,item_value:index,item_price:item.item_value});
                 index++; 
             });
-            console.log(final_items);
             localStorage.setItem('final_items',JSON.stringify(final_items));
             this.$router.push("/Consistency");
 

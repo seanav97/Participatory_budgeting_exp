@@ -11,7 +11,7 @@ export default {
     data(){
         return{
             groups: this.getGroupes(),
-            items_by_groups:JSON.parse(localStorage.getItem('items')).map(v => ({...v, selected: false})),
+            items_by_groups:JSON.parse(localStorage.getItem('items')).map(v => ({...v, selected: false})).map(v => ({...v, given_value: 0})),
         }
     },
     methods:{
@@ -38,7 +38,7 @@ export default {
                     console.log(item.item_name);
                     if(item.item_group==group.group_name){
                         this.items_by_groups.forEach(ig => {
-                            if(ig.item_name==item.item_name) ig.selected=item.selected;
+                            if(ig.item_name==item.item_name){ ig.selected=item.selected;ig.given_value=item.given_value;}
                         });
                         itemsToSplice.push(item.item_name);
                     }
