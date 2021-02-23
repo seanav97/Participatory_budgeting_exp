@@ -13,18 +13,23 @@
                 </div>
                 <div class='column2'>
                     <b-table head-variant="dark" :fields="fields" thead-class=""> </b-table>
-                    <draggable  :forceFallback="true" v-model="items" @start="startDrag" @end="finishDrag" style="overflow-y:scroll; height:480px;">
-                        <div v-for="(item,index) in items" :key="item.item_name">
-                            <b-table style="cursor: all-scroll" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
+                    <draggable :forceFallback="true" v-model="items" @start="startDrag" @end="finishDrag" style="overflow-y:scroll; height:540px;margin-top:-15px">
+                        <div v-for="(item,index) in items" :key="index">
+                            <br v-if="index==0">
+                            <b-table style="cursor: all-scroll;margin-top:-20px" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
                                         ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
-                                <template #cell(arrow)="row">
-                                    <img style="cursor: pointer;float: left;" src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
-                                    <b-button disabled variant="primary" style="float: left;margin-left:10px;border-radius: 25px;">{{index+1}} )</b-button>
+                                <template #cell(details)="row">
+                                    <img style="cursor: pointer;float: left;margin-right:10px" src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
+                                    <!-- <b-button size="sm" disabled variant="primary" style="float: left;margin-left:10px;margin-top:0px;border-radius: 25px;">{{index+1}} )</b-button> -->
+                                    {{row.item.item_name}}
                                 </template>
                                 <template #row-details="row">
                                     <b-card>
                                         {{row.item.item_name}}
                                     </b-card>
+                                </template>
+                                <template #cell(group)="row">
+                                    <img :src="getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                                 </template>
                             </b-table>
                         </div>
@@ -52,17 +57,16 @@ export default {
         return{
             items: this.getArrayItems(),
             fields: [ 
-                {key: "arrow", label: '',class: 'text-right'},
-                {key: "item_name", label: 'Project',class: 'text-left'},
-            ],
-            columns: [
-                {label: 'Project',field: 'item_name',sortable: false,class: 'text-center'},
-                {label: 'Value',field: 'item_value',sortable: false},
-                {label: '',field: 'info',sortable: false,},
+                {key: "details", label: 'Project',class: 'text-center'},
+                {key: "group", label: '',class: 'text-right'},
+                // {key: "item_name", label: 'Project',class: 'text-center'},
             ]
         }
     },
     methods:{
+        getImageURL(img){
+            return require('../assets/'+img+'.png');
+        },
         finishDrag(e){
             const className = 'grabbing';
             const html = document.getElementsByTagName('html').item(0);
@@ -126,12 +130,12 @@ export default {
     }
     .column2 {
         float: left;
-        width: 50%;
+        width: 40%;
         padding: 10px;
     }
     .column3 {
         float: left;
-        width: 10%;
+        width: 30%;
         padding-left: 10px;
     }
     .row {
@@ -139,5 +143,5 @@ export default {
         display: table;
         clear: both;  
     }
-
+    
 </style>

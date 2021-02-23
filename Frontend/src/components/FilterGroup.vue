@@ -1,8 +1,13 @@
 <template>
   <b-dropdown text="Filter defferent categories" variant="primary" class="m-2">
-        <div v-for="group in this.groups" :key='group' style="padding-left: 20px">
-            <b-form-checkbox v-model="group.selected" @change="checkGroup($event,group)">{{group.group_name}}</b-form-checkbox>
-        </div>
+        <!-- <b-dropdown-form> -->
+            <div v-for="group in this.groups" :key='group'>
+                <b-dropdown-item @click.native.capture.stop>
+                    <b-form-checkbox v-model="group.selected" @change="checkGroup($event,group)" style="display: inline;">{{group.group_name}}</b-form-checkbox>
+                    <img :src="getImageURL(group.group_name)" alt="" width="30" height="30" style="display: inline;margin-left:5px"/>
+                </b-dropdown-item>
+            </div>
+        <!-- </b-dropdown-form> -->
     </b-dropdown>
 </template>
 
@@ -15,6 +20,9 @@ export default {
         }
     },
     methods:{
+        getImageURL(img){
+            return require('../assets/'+img+'.png');
+        },
         getGroupes(){
             let groups=[];
             let groupedItems=[];

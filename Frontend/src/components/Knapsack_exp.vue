@@ -25,7 +25,10 @@
                     <b-table sticky-header="500px" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                              :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                         <template #cell(arrow)="row">
-                            <img src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
+                            <img style="cursor: pointer;display: inline;float:left" src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
+                        </template>
+                        <template #cell(group)="row">
+                            <img :src="getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                         </template>
                         <template slot="cell(select)" slot-scope="row">
                             <b-form-checkbox size="lg" v-model="row.item.selected" @change="update($event,row)"></b-form-checkbox>
@@ -75,6 +78,7 @@ export default {
         //for table
         fields: [ 
             {key: "arrow", label: ''},
+            {key: "group", label: ''},
             {key: "item_name", label: 'Item',sortable: true ,class:"text-center"},
             { key: "item_value", label: 'Price (pounds)',sortable: true,class:"text-center",
                 formatter: (value, key, item) => {
@@ -103,6 +107,9 @@ export default {
   mounted(){
     },
   methods: {
+    getImageURL(img){
+        return require('../assets/'+img+'.png');
+    },
     update(e,row) {
         if(e){
             if(row.item.item_value>this.budget-this.money_spent){

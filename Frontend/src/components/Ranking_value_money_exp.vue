@@ -12,14 +12,17 @@
                     </div>
                 </div>
                 <div class='column2'>
-                    <b-table head-variant="dark" items='[]' :fields="fields" thead-class=""> </b-table>
-                    <draggable v-model="items" @start="drag=true" @end="drag=false" style="overflow-y:scroll; height:480px;">
+                    <b-table head-variant="dark" :fields="fields" thead-class=""> </b-table>
+                    <draggable v-model="items" :forceFallback="true" @start="startDrag" @end="finishDrag" style="overflow-y:scroll; height:540px;margin-top:-15px">
                         <div v-for="(item,index) in items" :key="item.item_name">
-                            <b-table style="cursor: all-scroll" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
+                            <br v-if="index==0">
+                            <b-table style="cursor: all-scroll;margin-top:-20px" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
                                         ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
-                                <template #cell(arrow)="row">
-                                    <img style="cursor: pointer;float: left;" src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
-                                    <b-button disabled variant="primary" style="float: left;margin-left:10px;border-radius: 25px;">{{index+1}} )</b-button>
+                                <template #cell(details)="row">
+                                    <img style="cursor: pointer;float: left;margin-right:10px" src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
+                                    <img style="float: left;margin-right:20px" :src="getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
+                                    <!-- <b-button size="sm" disabled variant="primary" style="float: left;margin-left:10px;margin-top:0px;border-radius: 25px;">{{index+1}} )</b-button> -->
+                                    {{row.item.item_name}}
                                 </template>
                                 <template #row-details="row">
                                     <b-card>
@@ -52,22 +55,43 @@ export default {
         return{
             items: this.getArrayItems(),
             fields: [ 
-                {key: "arrow", label: '',class: 'text-right'},
-                {key: "item_name", label: 'Project',class: 'text-left'},
+                {key: "details", label: 'Project',class: 'text-left'},
+                {key: "group", label: '',class: 'text-right'},
+
+                // {key: "item_name", label: 'Project',class: 'text-left'},
                 { key: "item_value", label: 'Price (pounds)',sortable: true,class:"text-right",
                     formatter: (value, key, item) => {
                         return value.toLocaleString({ style: 'currency'});
-                    }
-            },
+                    },
+                    
+                },
             ],
-            columns: [
-                {label: 'Project',field: 'item_name',sortable: false,class: 'text-center'},
-                {label: 'Value',field: 'item_value',sortable: false},
-                {label: '',field: 'info',sortable: false,},
-            ]
         }
     },
     methods:{
+        getImageURL(img){
+            return require('../assets/'+img+'.png');
+        },
+        finishDrag(e){
+            const className = 'grabbing';
+            const html = document.getElementsByTagName('html').item(0);
+            if (html && new RegExp(className).test(html.className) === true) {
+                // Remove className with the added space (from setClassToHTMLElement)
+                html.className = html.className.replace(
+                    new RegExp(' ' + className),
+                    ''
+                );
+                // Remove className without added space (just in case)
+                html.className = html.className.replace(new RegExp(className), '');
+            }
+        },
+        startDrag(){
+            const className = 'grabbing';
+            const html = document.getElementsByTagName('html').item(0);
+            if (html && new RegExp(className).test(html.className) === false) {
+                html.className += ' ' + className; // use a space in case there are other classNames
+            }
+        },
         getHeaderClass(index){
             console.log
           if(index==0){
@@ -114,17 +138,17 @@ export default {
 <style scoped>
     .column1 {
         float: left;
-        width: 30%;
+        width: 20%;
         padding: 10px;
     }
     .column2 {
         float: left;
-        width: 50%;
+        width: 40%;
         padding: 10px;
     }
     .column3 {
         float: left;
-        width: 10%;
+        width: 20%;
         padding-left: 10px;
     }
     .row {

@@ -134,8 +134,6 @@ export default {
                 let quiz_time=parseInt(localStorage.getItem("quiz_finish"))-parseInt(localStorage.getItem("tutorial_finish"));
                 let response_time=parseInt(localStorage.getItem("budgeting_finish"))-parseInt(localStorage.getItem("budgeting_start"));
                 let consistant=consistant_value;
-                let senario="City";
-                let stage=1;
                 let items=JSON.parse(localStorage.getItem("final_items"));
                 let participant_info=JSON.parse(localStorage.getItem("participant_info"));
                 await this.axios.post("http://localhost:3000/addExperiment",{
@@ -145,8 +143,6 @@ export default {
                 quiz_time:quiz_time,
                 response_time:response_time,
                 consistant:consistant,
-                senario:senario,
-                stage:stage,
                 items:items,
                 participant_info:participant_info
             });

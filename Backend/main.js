@@ -46,9 +46,9 @@ var port = process.env.PORT || "3000";
 // });
 //#endregion
 
-app.get("/userExists/participant_ID/:participant_ID/senario/:senario", async (req, res, next) => {
+app.get("/userExists/participant_ID/:participant_ID", async (req, res, next) => {
   try {
-    const { participant_ID, senario } = req.params;
+    const { participant_ID } = req.params;
     let queryRes = await DButils.executeQuery(`select * from PARTICIPANTS WHERE PARTICIPANT_ID='${participant_ID}'`);
     if(queryRes.length>0){
       res.status(200).send({exists:true});
@@ -95,16 +95,14 @@ app.post("/addExperiment", async (req, res, next) => {
     const quiz_time=req.body.quiz_time;
     const response_time=req.body.response_time;
     const consistant=req.body.consistant;
-    const senario=req.body.senario;
-    const stage=req.body.stage;
     const items=req.body.items;
     const participant_info=req.body.participant_info;
 
     await DButils.executeQuery(`INSERT INTO PARTICIPANTS (PARTICIPANT_ID,AGE,EDUCATION,GENDER)
                                 VALUE ('${participant_ID}','${participant_info.age}','${participant_info.education}','${participant_info.gender}')`);
 
-    await DButils.executeQuery(`INSERT INTO EXPERIMMENTS (PARTICIPANT_ID,STAGE,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT,SENARIO_NAME)
-                               VALUE ('${participant_ID}','${stage}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}','${senario}')`);
+    await DButils.executeQuery(`INSERT INTO EXPERIMMENTS (PARTICIPANT_ID,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT)
+                               VALUE ('${participant_ID}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}')`);
     
     const exp_id=await DButils.executeQuery(`SELECT max(EXP_ID) as max FROM EXPERIMMENTS`);
     items.forEach(async function(item) {
@@ -119,36 +117,36 @@ app.post("/addExperiment", async (req, res, next) => {
   }
 });
 
-app.get("/config/stages/:stages", async (req, res, next) => {
+app.get("/config", async (req, res, next) => {
   try {
-    const { stages } = req.params;
     let return_items=[];
     
-    //choose random voting methods for stages
     voting_methods=['Knapsack','Ranking_value','Ranking_value_money','Threshold','k-approval','Utilities']
-    chosen_methods=voting_methods.sort(() => Math.random() - Math.random()).slice(0, stages);
+    chosen_method=voting_methods[Math.floor(Math.random() * voting_methods.length)];
 
-    //get all items in randomized order
-    // let items = await DButils.executeQuery(`SELECT ij.ITEM_NAME,GROUP_NAME,VALUE from ITEMS_GROUPS ij join ITEMS i on i.ITEM_NAME=ij.ITEM_NAME ORDER BY rand()`);
-    let items = await DButils.executeQuery(`SELECT ij.ITEM_NAME,GROUP_NAME,VALUE,URL,X_COORD,Y_COORD from ITEMS_GROUPS ij join ITEMS i on i.ITEM_NAME=ij.ITEM_NAME`);
+    let num_of_senarios=await DButils.executeQuery('SELECT count(distinct(SENARIO)) as count from ARRANGED_ITEMS');
+    let senario_number=Math.floor(Math.random() * (num_of_senarios[0].count)) + 1
+    let items = await DButils.executeQuery(`SELECT ITEM_NAME,GROUP_NAME,ITEM_VALUE,URL,X_COORD,Y_COORD,DESCRIPTION from ARRANGED_ITEMS where SENARIO='${senario_number}'`);
     
-    //filter from each group 2 items
-    groups=[]
     items.forEach(row => {
-      if(row.GROUP_NAME in groups){
-        if(groups[row.GROUP_NAME]<2){
-          groups[row.GROUP_NAME]=groups[row.GROUP_NAME]+1;
-          return_items.push({'item_name':row.ITEM_NAME,'item_value':row.VALUE,'item_group':row.GROUP_NAME,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
-        }
+      return_items.push({'item_name':row.ITEM_NAME,'item_value':row.ITEM_VALUE,'item_group':row.GROUP_NAME,'item_desc':row.DESCRIPTION,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
+    });
+    // groups=[]
+    // items.forEach(row => {
+    //   if(row.GROUP_NAME in groups){
+    //     if(groups[row.GROUP_NAME]<2){
+    //       groups[row.GROUP_NAME]=groups[row.GROUP_NAME]+1;
+    //       return_items.push({'item_name':row.ITEM_NAME,'item_value':row.ITEM_VALUE,'item_group':row.GROUP_NAME,'item_desc':row.DESCRIPTION,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
+    //     }
 
-      }
-      else {
-        return_items.push({'item_name':row.ITEM_NAME,'item_value':row.VALUE,'item_group':row.GROUP_NAME,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
-        groups[row.GROUP_NAME]=1;
-      }
-      });
+    //   }
+    //   else {
+    //     return_items.push({'item_name':row.ITEM_NAME,'item_value':row.ITEM_VALUE,'item_group':row.GROUP_NAME,'item_desc':row.DESCRIPTION,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
+    //     groups[row.GROUP_NAME]=1;
+    //   }
+    //   });
 
-    res.status(200).send({'items_from_groups':return_items,'voting_methods':chosen_methods});
+    res.status(200).send({'items_from_groups':return_items,'voting_method':chosen_method});
   } catch (error) {
     next(error);
   }

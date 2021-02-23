@@ -98,7 +98,7 @@ export default {
       let existsResponse = null;
       try {
         blacklistedResponse = await this.axios.get("http://localhost:3000/isBlacklisted/participant_ID/"+participant_ID);
-        existsResponse = await this.axios.get("http://localhost:3000/userExists/participant_ID/"+participant_ID+"/senario/island");
+        existsResponse = await this.axios.get("http://localhost:3000/userExists/participant_ID/"+participant_ID);
       } catch (error) {
         // console.log('blacklist eror');
       }
@@ -115,10 +115,11 @@ export default {
         this.itemsPutFinish=true;
         return;
       }
-      let configs = await this.axios.get("http://localhost:3000/config/stages/2");
+      let configs = await this.axios.get("http://localhost:3000/config");
       let items= configs.data.items_from_groups;
+      let voting_method= configs.data.voting_method;
       localStorage.setItem('items',JSON.stringify(items));
-      let voting_methods= configs.data.voting_methods;
+      localStorage.setItem('voting_method',voting_method);
       // this.$store.commit('setItems',items);
       // this.$store.commit('setStages',voting_methods);
     },

@@ -68,11 +68,6 @@
         <b-alert style="width: 70%;font-size: 200%;" show variant="warning">Double check yourself, you have only one chance! <br>
                         If you fail this quiz you can't continue to the next step.
                         If you need, you can click on the 'Back' button to read the instructions again.</b-alert>
-        <!-- <el-alert title="Double check yourself, you have only one chance! 
-                        If you fail this quiz you can't continue to the next step.
-                        If you need, you can click on PREVIOUS button to read the instructions again."
-                    type="warning" :closable="false"  show-icon style="width: 70%;font-size: 150%;">
-         </el-alert> -->
 
     </div>
     
