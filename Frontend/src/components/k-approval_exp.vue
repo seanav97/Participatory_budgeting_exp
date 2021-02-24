@@ -3,9 +3,9 @@
         <h1 style="font-family: 'Courier New', monospace;text-align:center">Building our city</h1>
             <div class='row'>
                 <div class='column1'>
-                      <vue-ellipse-progress :progress="tasksDonePercent" :legend-value="numberSelected" color="blue" emptyColor="#8ec5fc" :size="300"
+                      <vue-ellipse-progress :progress="tasksDonePercent" :legend-value="numberSelected" color="blue" emptyColor="#8ec5fc" :size="250"
                         :thickness="10" emptyThickness="10%" lineMode="in 10" :legend="true" dash="strict 5 0.05" animation="reverse 700 400"
-                        :noData="false" :loading="false" :half="false" :fontSize="fontSize" :fontColor="fontColor">
+                        :noData="false" :loading="false" :half="false" :fontSize="fontSize" :fontColor="fontColor" style="margin-left:20px">
                         <template v-slot:legend-value>
                             <span ref="moneyLabel" slot="value">/5</span>
                         </template>
@@ -16,7 +16,7 @@
                     <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                         <u><b> What you need to do</b></u>
                         <br>
-                        <a> You need to select which projects to build based on the budget.</a>
+                        <a> You need to select up to 5 projects from the list, according to your best judgement.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
 
@@ -28,6 +28,9 @@
                              :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                         <template #cell(arrow)="row">
                             <img src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
+                        </template>
+                        <template #cell(group)="row">
+                            <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                         </template>
                         <template slot="cell(select)" slot-scope="row">
                             <b-form-checkbox size="lg" v-model="row.item.selected" @change="update($event,row)"></b-form-checkbox>
@@ -66,6 +69,7 @@ export default {
             //for table
             fields: [ 
                 {key: "arrow", label: ''},
+                {key: "group", label: ''},
                 {key: "item_name", label: 'Item',sortable: true ,class:"text-center"},
                 { key: "info",label:'' },
                 { key: "select",label:'',class:"text-center" }
@@ -167,12 +171,12 @@ export default {
 <style>
     .column1 {
         float: left;
-        width: 25%;
+        width: 20%;
         padding: 10px;
     }
     .column2 {
         float: left;
-        width: 35%;
+        width: 40%;
         padding: 10px;
     }
     .column3 {

@@ -6,7 +6,7 @@
                     <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                         <u><b> What you need to do</b></u>
                         <br>
-                        <a> You need to select which projects to build based on the budget.</a>
+                        <a> You need to rank the projects from the most important to the least important according to your best judgment.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
                     </div>

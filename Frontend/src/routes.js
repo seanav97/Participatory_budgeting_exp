@@ -10,14 +10,14 @@ const routes = [
     component: () => import("./components/TabBar")
   },
   {
-    path: "/ApprovalVoting_exp",
-    name: "ApprovalVoting_exp",
-    component: () => import("./components/ApprovalVoting_exp")
+    path: "/k-approval_exp",
+    name: "k-approval_exp",
+    component: () => import("./components/k-approval_exp")
   },
   {
-    path: "/ThresholdApproval_exp",
-    name: "ThresholdApproval_exp",
-    component: () => import("./components/ThresholdApproval_exp")
+    path: "/Threshold_exp",
+    name: "Threshold_exp",
+    component: () => import("./components/Threshold_exp")
   },
   {
     path: "/Knapsack_exp",
@@ -25,9 +25,9 @@ const routes = [
     component: () => import("./components/Knapsack_exp")
   },
   {
-    path: "/Preferences_exp",
-    name: "Preferences_exp",
-    component: () => import("./components/Preferences_exp")
+    path: "/Utilities_exp",
+    name: "Utilities_exp",
+    component: () => import("./components/Utilities_exp")
   },
   {
     path: "/Ranking_value_exp",

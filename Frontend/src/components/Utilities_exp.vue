@@ -12,7 +12,7 @@
                 <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                     <u><b> What you need to do</b></u>
                     <br>
-                    <a> You need to select which projects to build based on the budget.</a>
+                    <a> You need to distribute {{(budget).toLocaleString({ style: 'currency'})}} pounds among the projects. The more money you assign to a project, the more important it is to build.</a>
                     <br><br>
                     <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
 
@@ -24,6 +24,9 @@
                             ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                     <template #cell(arrow)="row">
                         <img src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
+                    </template>
+                    <template #cell(group)="row">
+                        <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                     </template>
                     <template slot="cell(range)" slot-scope="row">
                         <b-form-input v-model="row.item.given_value" type="range" min="0" max="500000" step="1000" @change="calc(row)"></b-form-input>
@@ -63,6 +66,7 @@ export default {
             items: JSON.parse(localStorage.getItem('items')).map(v => ({...v, given_value: 0})),
             fields: [ 
                 {key: "arrow", label: ''},
+                {key: "group", label: ''},
                 {key: "item_name", label: 'Item',sortable: true ,class:"text-center"},
                 {key: "range", label: ''},
                 {key: "given_value", label: 'value',

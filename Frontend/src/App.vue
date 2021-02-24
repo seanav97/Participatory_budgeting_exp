@@ -39,12 +39,14 @@ export default {
       userAllreadyExists: false,
       userBlacklisted: false,
       userCheckFinish: false,
-      itemsPutFinish: false
+      itemsPutFinish: false,
+      servername:localStorage.getItem('server')
     }
   },
   mounted(){
-    console.log('mount');
-    asyncLoading(this.checkParticipant(),this.setConfigurations());
+    // console.log('mount');
+    localStorage.setItem('server','3.9.16.135:3000');
+    asyncLoading(this.checkParticipant());
     // this.$loading(true);
     // this.checkParticipant();
     // this.setConfigurations();
@@ -87,25 +89,38 @@ export default {
 
   },
   methods:{
+    getImageURL(img){
+        return require('./assets/'+img+'.png');
+    },
     getCurrTime(){
       let time=new Date().getTime();
       localStorage.setItem('startTime',JSON.stringify(time));
     },
     async checkParticipant(){
+      console.log("start check participant");
       const participant_ID=JSON.parse(localStorage.getItem('participant_ID'));
       console.log('started checking');
       let blacklistedResponse = null;
       let existsResponse = null;
+      // let configs = null;
       try {
-        blacklistedResponse = await this.axios.get("http://localhost:3000/isBlacklisted/participant_ID/"+participant_ID);
-        existsResponse = await this.axios.get("http://localhost:3000/userExists/participant_ID/"+participant_ID);
+        let servername=localStorage.getItem('server');
+        console.log(servername);
+        // console.log(servername+"/isBlacklisted/participant_ID/"+participant_ID);
+        // console.log(servername+"/userExists/participant_ID/"+participant_ID);
+        // configs = await this.axios.get("http://"+this.servername+"/config");
+        blacklistedResponse = await this.axios.get("http://"+this.servername+"/isBlacklisted/participant_ID/"+participant_ID);
+        existsResponse = await this.axios.get("http://"+this.servername+"/userExists/participant_ID/"+participant_ID);
+        console.log(blacklistedResponse);
+        console.log(existsResponse);
       } catch (error) {
-        // console.log('blacklist eror');
+        console.log(error);
       }
 
       this.userBlacklisted=blacklistedResponse.data.blacklisted;
       this.userAllreadyExists=existsResponse.data.exists;
       this.userCheckFinish=true;
+      await this.setConfigurations();
       // alert(participant_ID);
     },
 
@@ -115,7 +130,16 @@ export default {
         this.itemsPutFinish=true;
         return;
       }
-      let configs = await this.axios.get("http://localhost:3000/config");
+      let servername=localStorage.getItem('server');
+      let configs=null;
+      try {
+        
+        configs = await this.axios.get("http://"+this.servername+"/config");
+        console.log(configs);
+      } catch (error) {
+        console.log(111);
+        // console.log(error);
+      }
       let items= configs.data.items_from_groups;
       let voting_method= configs.data.voting_method;
       localStorage.setItem('items',JSON.stringify(items));
@@ -127,7 +151,8 @@ export default {
     async blacklistUser(){
       // const participant_ID=this.$store.getters.getParticipantID;
       const participant_ID=JSON.parse(localStorage.getItem('participant_ID'));
-      await this.axios.post("http://localhost:3000/insertToBlacklist",{
+      let servername=localStorage.getItem('server');
+      await this.axios.post("http://"+this.servername+"/insertToBlacklist",{
         partisipant_ID:participant_ID
       });
     }
@@ -148,4 +173,7 @@ export default {
   background-size: cover;
   background-image: url(./assets/background.jpg);
 }
+html {
+    overflow-y: scroll; 
+    }
 </style>

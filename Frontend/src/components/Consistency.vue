@@ -136,7 +136,8 @@ export default {
                 let consistant=consistant_value;
                 let items=JSON.parse(localStorage.getItem("final_items"));
                 let participant_info=JSON.parse(localStorage.getItem("participant_info"));
-                await this.axios.post("http://localhost:3000/addExperiment",{
+                let servername=localStorage.getItem('server');
+                await this.axios.post("http://"+this.servername+"/addExperiment",{
                 participant_ID:participant_ID,
                 time:time,
                 tutorial_time:tutorial_time,

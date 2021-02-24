@@ -1,3 +1,3 @@
 export const shared_data={
-    lastSearch:[],
+    server:'3.9.16.135:3000'
 }

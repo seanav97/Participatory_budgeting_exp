@@ -62,7 +62,8 @@ export default {
                   localStorage.setItem('participant_info',JSON.stringify(participant_info));
                   
                   let voting_method=localStorage.getItem('voting_method');
-                  this.$router.push("/Knapsack_exp");
+                  this.$router.push("/"+voting_method+"_exp");
+                  // this.$router.push("/Knapsack_exp");
                  } 
                resolve(valid);
              });

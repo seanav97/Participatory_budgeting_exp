@@ -14,7 +14,7 @@
                     <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                         <u><b> What you need to do</b></u>
                         <br>
-                        <a> You need to select which projects to build based on the budget.</a>
+                        <a> You need to select which projects to build based on the budget of {{(budget).toLocaleString({ style: 'currency'})}} pounds.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
 
@@ -28,7 +28,7 @@
                             <img style="cursor: pointer;display: inline;float:left" src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
                         </template>
                         <template #cell(group)="row">
-                            <img :src="getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
+                            <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                         </template>
                         <template slot="cell(select)" slot-scope="row">
                             <b-form-checkbox size="lg" v-model="row.item.selected" @change="update($event,row)"></b-form-checkbox>
@@ -107,9 +107,6 @@ export default {
   mounted(){
     },
   methods: {
-    getImageURL(img){
-        return require('../assets/'+img+'.png');
-    },
     update(e,row) {
         if(e){
             if(row.item.item_value>this.budget-this.money_spent){
