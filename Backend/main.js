@@ -61,6 +61,10 @@ app.get("/userExists/participant_ID/:participant_ID", async (req, res, next) => 
   }
 });
 
+app.get("/dummy", async (req, res, next) => {
+  res.status(200).send({dummy:works});
+});
+
 app.get("/isBlacklisted/participant_ID/:participant_ID", async (req, res, next) => {
   try {
     const { participant_ID } = req.params;
