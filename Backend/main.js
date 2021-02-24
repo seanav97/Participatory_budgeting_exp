@@ -6,14 +6,17 @@ var logger = require("morgan");
 const session = require("client-sessions");
 const cors = require("cors");
 const DButils = require("./DButils");
+var fs = require('fs');
 
 var app = express();
 var corsOptions = {
   origin: true,
   credentials: true
 }
-app.use(cors(corsOptions))
-app.use(logger("dev")); //logger
+app.use(cors(corsOptions));
+let logStream = fs.createWriteStream(path.join("./", 'logger.log'), {flags: 'a'});
+app.use(logger('combined', { stream: logStream }));
+// app.use(logger("dev")); //logger
 app.use(express.json()); // parse application/json
 app.use(
   session({
@@ -27,7 +30,6 @@ app.use(
 app.use(express.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(express.static(path.join(__dirname, "public"))); //To serve static files such as images, CSS files, and JavaScript files
 var port = process.env.PORT || "3000";
-
 
 //#region cookie middleware
 // app.use(function (req, res, next) {
