@@ -1,8 +1,6 @@
 {
   "scripts": {
-    "start_Task": "nodemon ./main.js",
-    "start_solution": "nodemon codes/solution/main.js",
-    "start": "nodemon codes/solution/main.js"
+    "start": "node ./main.js"
   },
   "keywords": [],
   "author": "",

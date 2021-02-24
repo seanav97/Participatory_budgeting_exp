@@ -60,7 +60,8 @@ export default {
                   localStorage.setItem('budgeting_start',JSON.stringify(time));
                   let participant_info={age:this.$refs.persQuestions.form.age,gender:this.$refs.persQuestions.form.gender,education:this.$refs.persQuestions.form.education,};
                   localStorage.setItem('participant_info',JSON.stringify(participant_info));
-
+                  
+                  let voting_method=localStorage.getItem('voting_method');
                   this.$router.push("/Knapsack_exp");
                  } 
                resolve(valid);

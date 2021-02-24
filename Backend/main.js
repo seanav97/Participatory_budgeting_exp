@@ -166,7 +166,7 @@ const server = app.listen(port, () => {
   console.log(`Server listen on port ${port}`);
 });
 
-setInterval(function(){ DButils.executeQuery(`SELECT 1`); console.log('1'); }, 100000);
+// setInterval(function(){ DButils.executeQuery(`SELECT 1`); console.log('1'); }, 100000);
 
 
 process.on("SIGINT", function () {
