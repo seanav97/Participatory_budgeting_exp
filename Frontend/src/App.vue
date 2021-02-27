@@ -26,6 +26,8 @@
 // import NavBar from "./components/NavBar";
 // import TabBar from "./components/TabBar";
 import { asyncLoading } from 'vuejs-loading-plugin'
+const config = require("./config.js");
+console.log(config.data.server);
 
 export default {
   name: "App",
@@ -40,52 +42,14 @@ export default {
       userBlacklisted: false,
       userCheckFinish: false,
       itemsPutFinish: false,
-      servername:localStorage.getItem('server')
+      // servername:localStorage.getItem('server')
     }
   },
   mounted(){
-    // console.log('mount');
-    localStorage.setItem('server','3.9.16.135:3000');
+    // localStorage.setItem('server','3.9.16.135:3000');
+    // localStorage.setItem('server','localhost:3000');
     asyncLoading(this.checkParticipant());
-    // this.$loading(true);
-    // this.checkParticipant();
-    // this.setConfigurations();
     this.getCurrTime();
-    // while(!this.userCheckFinish || !this.itemsPutFinish){let x=0;}
-    // this.$loading(false);
-    // console.log('mount');
-    // const items=JSON.parse(localStorage.getItem('items'));
-    // if(items==null){
-    //       asyncLoading(this.setConfigurations()).then().catch();
-    // }
-    // asyncLoading(this.checkParticipant()).then().catch();
-    // this.getCurrTime();
-    // new Promise((resolve,reject)=>{
-    //   this.$loading(true);
-    //   const items=JSON.parse(localStorage.getItem('items'));
-    //   if(items==null){
-    //     // asyncLoading(this.checkParticipant(),this.setConfigurations()).then().catch();
-    //     this.setConfigurations();
-    //   }
-    //     this.checkParticipant();
-    //     // asyncLoading(this.checkParticipant()).then().catch();
-    //   resolve();
-    // })
-    // .then(()=>{
-    //   this.$loading(false);
-    // })
-    
-    // if(items==null){
-    //   // asyncLoading(this.checkParticipant(),this.setConfigurations()).then().catch();
-    //   await this.checkParticipant();
-    //   await this.setConfigurations();
-    // }
-    // else{
-    //   await this.checkParticipant();
-    //   // asyncLoading(this.checkParticipant()).then().catch();
-    // }
-    // await this.getCurrTime();
-    // this.$loading(false);
 
   },
   methods:{
@@ -104,13 +68,9 @@ export default {
       let existsResponse = null;
       // let configs = null;
       try {
-        let servername=localStorage.getItem('server');
-        console.log(servername);
-        // console.log(servername+"/isBlacklisted/participant_ID/"+participant_ID);
-        // console.log(servername+"/userExists/participant_ID/"+participant_ID);
-        // configs = await this.axios.get("http://"+this.servername+"/config");
-        blacklistedResponse = await this.axios.get("http://"+this.servername+"/isBlacklisted/participant_ID/"+participant_ID);
-        existsResponse = await this.axios.get("http://"+this.servername+"/userExists/participant_ID/"+participant_ID);
+        // console.log(servername);
+        blacklistedResponse = await this.axios.get("http://"+config.data.server+"/isBlacklisted/participant_ID/"+participant_ID);
+        existsResponse = await this.axios.get("http://"+config.data.server+"/userExists/participant_ID/"+participant_ID);
         console.log(blacklistedResponse);
         console.log(existsResponse);
       } catch (error) {
@@ -134,7 +94,7 @@ export default {
       let configs=null;
       try {
         
-        configs = await this.axios.get("http://"+this.servername+"/config");
+        configs = await this.axios.get("http://"+config.data.server+"/config");
         console.log(configs);
       } catch (error) {
         console.log(111);
@@ -151,8 +111,8 @@ export default {
     async blacklistUser(){
       // const participant_ID=this.$store.getters.getParticipantID;
       const participant_ID=JSON.parse(localStorage.getItem('participant_ID'));
-      let servername=localStorage.getItem('server');
-      await this.axios.post("http://"+this.servername+"/insertToBlacklist",{
+      // let servername=localStorage.getItem('server');
+      await this.axios.post("http://"+config.data.server+"/insertToBlacklist",{
         partisipant_ID:participant_ID
       });
     }

@@ -54,7 +54,9 @@
 </template>
 
 <script>
-import { asyncLoading } from 'vuejs-loading-plugin'
+import { asyncLoading } from 'vuejs-loading-plugin';
+const config = require("../config.js");
+
 
 export default {
     data(){
@@ -136,8 +138,8 @@ export default {
                 let consistant=consistant_value;
                 let items=JSON.parse(localStorage.getItem("final_items"));
                 let participant_info=JSON.parse(localStorage.getItem("participant_info"));
-                let servername=localStorage.getItem('server');
-                await this.axios.post("http://"+this.servername+"/addExperiment",{
+                // let servername=localStorage.getItem('server');
+                await this.axios.post("http://"+config.data.server+"/addExperiment",{
                 participant_ID:participant_ID,
                 time:time,
                 tutorial_time:tutorial_time,
