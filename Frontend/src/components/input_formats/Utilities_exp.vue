@@ -23,7 +23,7 @@
                 <b-table sticky-header="500px" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                             ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                     <template #cell(arrow)="row">
-                        <img src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
+                        <img src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
                     </template>
                     <template #cell(group)="row">
                         <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
@@ -54,8 +54,8 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
-import Map from './Map.vue';
-import FilterGroup from './FilterGroup.vue';
+import Map from '../Map.vue';
+import FilterGroup from '../FilterGroup.vue';
 export default {
     components: { Map,apexchart:VueApexCharts,FilterGroup },
     data(){
@@ -153,7 +153,7 @@ export default {
             localStorage.setItem('budgeting_finish',JSON.stringify(time));
             let final_items=[];
             this.items.forEach(item => {
-                final_items.push({item_name:item.item_name,item_value:item.given_value,item_price:item.item_value});
+                final_items.push({item_id:item.item_id,item_name:item.item_name,item_value:item.given_value,item_price:item.item_value});
             });
             localStorage.setItem('final_items',JSON.stringify(final_items));
             this.$router.push("/Consistency");

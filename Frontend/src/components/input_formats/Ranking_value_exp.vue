@@ -3,6 +3,7 @@
         <h1 style="font-family: 'Courier New', monospace;text-align:center">Building our city</h1>
             <div class='row'>
                 <div class='column1'>
+                    
                     <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                         <u><b> What you need to do</b></u>
                         <br>
@@ -19,7 +20,7 @@
                             <b-table style="cursor: all-scroll;margin-top:-20px" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
                                         ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                                 <template #cell(details)="row">
-                                    <img style="cursor: pointer;float: left;margin-right:10px" src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
+                                    <img style="cursor: pointer;float: left;margin-right:10px" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
                                     <!-- <b-button size="sm" disabled variant="primary" style="float: left;margin-left:10px;margin-top:0px;border-radius: 25px;">{{index+1}} )</b-button> -->
                                     {{row.item.item_name}}
                                 </template>
@@ -48,7 +49,7 @@
 
 <script>
 import draggable from 'vuedraggable'
-import Map from './Map.vue';
+import Map from '../Map.vue';
 
 
 export default {
@@ -65,7 +66,7 @@ export default {
     },
     methods:{
         getImageURL(img){
-            return require('../assets/'+img+'.png');
+            return require('../../assets/'+img+'.png');
         },
         finishDrag(e){
             const className = 'grabbing';
@@ -110,7 +111,7 @@ export default {
             let final_items=[];
             let index=1;
             this.items.forEach(item => {
-                final_items.push({item_name:item[0].item_name,item_value:index});
+                final_items.push({item_id:item[0].item_id,item_name:item[0].item_name,item_value:index});
                 index++; 
             });
             console.log(final_items);

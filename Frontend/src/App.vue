@@ -10,15 +10,6 @@
       <b-alert show variant="warning">User already participated in the experiment</b-alert>
     </div>
 
-    <!-- <div v-if='userBlacklisted' style="width:80%;padding-left: 25%;font-size: 50px;">
-      <br><br>
-      <b-alert show variant="danger">User failed to answer the quiz correctly and is now forbidden from participating</b-alert>
-    </div>
-    <div v-else-if='!userAllreadyExists' style="width:80%;padding-left: 25%;font-size: 50px;">
-      <br><br>
-      <b-alert show variant="warning">User already participated in the experiment</b-alert>
-    </div>
-    <router-view v-else></router-view> -->
   </div>
 </template>
 

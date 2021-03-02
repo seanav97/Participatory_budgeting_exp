@@ -19,7 +19,7 @@
                             <b-table style="cursor: all-scroll;margin-top:-20px" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
                                         ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                                 <template #cell(details)="row">
-                                    <img style="cursor: pointer;float: left;margin-right:10px" src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
+                                    <img style="cursor: pointer;float: left;margin-right:10px" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
                                     <img style="float: left;margin-right:20px" :src="getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                                     <!-- <b-button size="sm" disabled variant="primary" style="float: left;margin-left:10px;margin-top:0px;border-radius: 25px;">{{index+1}} )</b-button> -->
                                     {{row.item.item_name}}
@@ -46,7 +46,7 @@
 
 <script>
 import draggable from 'vuedraggable'
-import Map from './Map.vue';
+import Map from '../Map.vue';
 
 
 export default {
@@ -70,7 +70,7 @@ export default {
     },
     methods:{
         getImageURL(img){
-            return require('../assets/'+img+'.png');
+            return require('../../assets/'+img+'.png');
         },
         finishDrag(e){
             const className = 'grabbing';
@@ -124,7 +124,7 @@ export default {
             let final_items=[];
             let index=1;
             this.items.forEach(item => {
-                final_items.push({item_name:item.item_name,item_value:index,item_price:item.item_value});
+                final_items.push({item_id:item[0].item_id,item_name:item[0].item_name,item_value:index,item_price:item[0].item_value});
                 index++; 
             });
             localStorage.setItem('final_items',JSON.stringify(final_items));

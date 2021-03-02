@@ -25,7 +25,7 @@
                     <b-table sticky-header="500px" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                              :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                         <template #cell(arrow)="row">
-                            <img style="cursor: pointer;display: inline;float:left" src="../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
+                            <img style="cursor: pointer;display: inline;float:left" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
                         </template>
                         <template #cell(group)="row">
                             <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
@@ -63,9 +63,9 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
-import Map from './Map.vue';
-import FilterGroup from './FilterGroup.vue';
-import Instructions from './Instructions.vue';
+import Map from '../Map.vue';
+import FilterGroup from '../FilterGroup.vue';
+import Instructions from '../Instructions.vue';
 
 export default {
     components: { apexchart:VueApexCharts,Map, FilterGroup, Instructions, },
@@ -160,11 +160,11 @@ export default {
         let itemsSelected=0;
         this.items.forEach(item => {
             if(item.selected){
-                final_items.push({item_name:item.item_name,item_value:1,item_price:item.item_value});
+                final_items.push({item_id:item.item_id,item_name:item.item_name,item_value:1,item_price:item.item_value});
                 itemsSelected++;
             }
             else{
-                final_items.push({item_name:item.item_name,item_value:0,item_price:item.item_value});
+                final_items.push({item_id:item.item_id,item_name:item.item_name,item_value:0,item_price:item.item_value});
             }
         });
         // console.log(final_items);
@@ -200,8 +200,8 @@ export default {
     }
     .row {
         content: "";
-    display: table;
-    clear: both;  
+        display: table;
+        clear: both;  
     }
     html {
     overflow-y: scroll; 

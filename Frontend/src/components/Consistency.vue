@@ -1,11 +1,11 @@
 <template>
 <div>
-    <div v-if="!this.finished">
-        <h1 style="font-family: 'Courier New', monospace;text-align:center">Consistency check</h1>
-        <br>
-        <div style="padding-left: 25%;">
-            <el-form :inline="true" :model="form" class="demo-form-inline" :rules="rules" ref="ruleForm">
-                <el-form-item prop="allQuestions">
+    <h1 style="font-family: 'Courier New', monospace;text-align:center">Consistency check</h1>
+    <br>
+    <div style="padding-left: 25%;">
+        <el-form :inline="true" :model="form" class="demo-form-inline" :rules="rules" ref="ruleForm">
+            <el-form-item prop="allQuestions">
+                <b-card style="background-color:#e8e8e8; max-width:700px">
                     <h4>Question 1: Was the {{this.random_items[0].item_name}} one of your choices?</h4>
                     <br>
                     <el-form-item prop="question1">
@@ -14,7 +14,9 @@
                             <el-radio :label="2">No</el-radio><br>
                         </el-radio-group>
                     </el-form-item>
-                    <br><br>
+                </b-card>
+                <!-- <br> -->
+                <b-card style="background-color:#e8e8e8; max-width:700px">
                     <h4>Question 2: Was the {{this.random_items[1].item_name}} one of your choices?</h4>
                     <br>
                     <el-form-item prop="question2">
@@ -23,7 +25,10 @@
                             <el-radio :label="2">No</el-radio><br>
                         </el-radio-group>
                     </el-form-item>
-                    <br><br>
+                </b-card>
+                    
+                <!-- <br> -->
+                <b-card style="background-color:#e8e8e8; max-width:700px">
                     <h4>Question 3: Did you select any items that cost {{this.price}} pounds or more?</h4>
                     <br>
                     <el-form-item prop="question3">
@@ -32,22 +37,12 @@
                             <el-radio :label="2">No</el-radio><br>
                         </el-radio-group>
                     </el-form-item>
-                </el-form-item>
-            </el-form>
-        </div>
-        <div style="text-align:center">
-            <b-button variant="outline-primary" @click="submit">Submit and finish</b-button>
-        </div>
+                </b-card>
+            </el-form-item>
+        </el-form>
     </div>
-    <div style="width: 65%;padding-left: 30%;" v-else>
-        <br><br>
-        <h1 style="font-family: 'Courier New', monospace;text-align:center">Thank you for taking part in our study!</h1>
-        <br><br>
-        <b-alert style v-if="isConsistent" show variant="success">You passed the consistency check and you will recieve a 10 cent bonus</b-alert>
-        <b-alert style v-else show variant="warning">You FAILED the consistency check and you will not recieve a 10 cent bonus</b-alert>
-        <br><br>
-        <b-alert style show variant="success">To be eligible for a payment, copy the token below and paste it in the MTurk HIT page! Close the page to exit the experiment.</b-alert>
-
+    <div style="text-align:center">
+        <b-button variant="outline-primary" @click="submit">Submit and finish</b-button>
     </div>
 </div>
   
@@ -125,7 +120,8 @@ export default {
                     else{
                         this.isConsistent=false;
                         if(this.form.question1 == 0 || this.form.question2 == 0 || this.form.question3 == 0)
-                            return;            
+                            return;
+                        resolve(0);
                     } 
                 });
             })
@@ -138,21 +134,25 @@ export default {
                 let consistant=consistant_value;
                 let items=JSON.parse(localStorage.getItem("final_items"));
                 let participant_info=JSON.parse(localStorage.getItem("participant_info"));
+                console.log('here');
                 // let servername=localStorage.getItem('server');
-                await this.axios.post("http://"+config.data.server+"/addExperiment",{
-                participant_ID:participant_ID,
-                time:time,
-                tutorial_time:tutorial_time,
-                quiz_time:quiz_time,
-                response_time:response_time,
-                consistant:consistant,
-                items:items,
-                participant_info:participant_info
-            });
+                const experiment_id=await this.axios.post("http://"+config.data.server+"/addExperiment",{
+                    participant_ID:participant_ID,
+                    time:time,
+                    tutorial_time:tutorial_time,
+                    quiz_time:quiz_time,
+                    response_time:response_time,
+                    consistant:consistant,
+                    items:items,
+                    participant_info:participant_info
+                });
+                localStorage.setItem('experiment_id',experiment_id.data.experiment_id);
             })
             .then(()=>{
-                this.finished=true;
+                // this.finished=true;
                 this.$loading(false);
+                // this.$router.push("/Feedback_quiz");
+                this.$router.push({ name: 'Feedback_quiz', params: {isConsistent: this.isConsistent }});
 
             });
 

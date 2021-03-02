@@ -51,6 +51,7 @@ var port = process.env.PORT || "3000";
 app.get("/userExists/participant_ID/:participant_ID", async (req, res, next) => {
   try {
     const { participant_ID } = req.params;
+    console.log("part_id: "+participant_ID);
     let queryRes = await DButils.executeQuery(`select * from PARTICIPANTS WHERE PARTICIPANT_ID='${participant_ID}'`);
     if(queryRes.length>0){
       res.status(200).send({exists:true});
@@ -111,13 +112,32 @@ app.post("/addExperiment", async (req, res, next) => {
                                VALUE ('${participant_ID}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}')`);
     
     const exp_id=await DButils.executeQuery(`SELECT max(EXP_ID) as max FROM EXPERIMMENTS`);
+    console.log("epx id: "+exp_id[0]["max"]);
+
+
     items.forEach(async function(item) {
-      await DButils.executeQuery(`INSERT INTO EXP_ITEMS (EXP_ID,ITEM_NAME,VALUE)
-                                  VALUE ('${exp_id[0]["max"]}','${item.item_name}','${item.item_value}')`);
+      await DButils.executeQuery(`INSERT INTO EXP_ITEMS (EXP_ID,ITEM_ID,VALUE)
+                                  VALUE ('${exp_id[0]["max"]}','${item.item_id}','${item.item_value}')`);
     });
 
 
-    res.status(201).send({ message: "expiriment added"});
+    res.status(201).send({ experiment_id: exp_id[0]["max"]});
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post("/addFeedback", async (req, res, next) => {
+  try {
+    const experiment_id=req.body.experiment_id;
+    const q_ease=req.body.q_ease;
+    const q_interface=req.body.q_interface;
+    const q_capture=req.body.q_capture;
+    await DButils.executeQuery(`UPDATE EXPERIMMENTS SET FEEDBACK_EASE = '${q_ease}',
+                                FEEDBACK_INTERFACE ='${q_interface}', FEEDBACK_CAPTURE = '${q_capture}'
+                                WHERE EXP_ID = '${experiment_id}';`);
+
+    res.status(201).send({ message: "feedback added"});
   } catch (error) {
     next(error);
   }
@@ -132,10 +152,10 @@ app.get("/config", async (req, res, next) => {
 
     let num_of_senarios=await DButils.executeQuery('SELECT count(distinct(SENARIO)) as count from ARRANGED_ITEMS');
     let senario_number=Math.floor(Math.random() * (num_of_senarios[0].count)) + 1
-    let items = await DButils.executeQuery(`SELECT ITEM_NAME,GROUP_NAME,ITEM_VALUE,URL,X_COORD,Y_COORD,DESCRIPTION from ARRANGED_ITEMS where SENARIO='${senario_number}'`);
+    let items = await DButils.executeQuery(`SELECT ITEMS.ITEM_ID,ITEM_NAME,GROUP_NAME,VALUE,URL,X_COORD,Y_COORD,DESCRIPTION from ARRANGED_ITEMS JOIN ITEMS ON ITEMS.ITEM_ID=ARRANGED_ITEMS.ITEM_ID where SENARIO='${senario_number}'`);
     
     items.forEach(row => {
-      return_items.push({'item_name':row.ITEM_NAME,'item_value':row.ITEM_VALUE,'item_group':row.GROUP_NAME,'item_desc':row.DESCRIPTION,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
+      return_items.push({'item_id':row.ITEM_ID,'item_name':row.ITEM_NAME,'item_value':row.VALUE,'item_group':row.GROUP_NAME,'item_desc':row.DESCRIPTION,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD});
     });
     // groups=[]
     // items.forEach(row => {
