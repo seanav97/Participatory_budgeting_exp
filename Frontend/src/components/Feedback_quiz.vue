@@ -8,7 +8,7 @@
             <b-alert dismissible style v-else show variant="warning">You FAILED the consistency check and you will not recieve a 10 cent bonus</b-alert>
             <br>
         </div>
-        <div class="column1" style="padding-left: 10%;">
+        <div class="column1">
             <u><h2>Feedback quiz (if you fill it out, you'll recieve a 10 cent bonus)</h2></u>
             <br><br>
             <el-form :inline="true" :model="form" class="demo-form-inline" :rules="rules" ref="ruleForm">
@@ -101,6 +101,7 @@ export default {
 .column1 {
     float: left;
     width: 85%;
+    padding-left: 10%;
 }
 .column2 {
     float: left;

@@ -147,7 +147,7 @@ app.get("/config", async (req, res, next) => {
   try {
     let return_items=[];
     
-    voting_methods=['Knapsack','Ranking_value','Ranking_value_money','Threshold','k-approval','Utilities']
+    voting_methods=['Knapsack','Ranking_value','Ranking_value_money','Threshold','k_approval','Utilities']
     chosen_method=voting_methods[Math.floor(Math.random() * voting_methods.length)];
 
     let num_of_senarios=await DButils.executeQuery('SELECT count(distinct(SENARIO)) as count from ARRANGED_ITEMS');

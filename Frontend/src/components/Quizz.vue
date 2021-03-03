@@ -116,15 +116,6 @@ export default {
 </script>
 
 <style>
-.zoom {
-      transition: transform .2s; /* Animation */
-    }
-
-    .zoom:hover {
-      transform: scale(2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-      position:absolute;
-      right:0;
-    }
 .q-body{
     border-left: thick solid #3f9396;
     padding-left:50px;

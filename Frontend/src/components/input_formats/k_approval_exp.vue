@@ -27,7 +27,7 @@
                     <b-table sticky-header="500px" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                              :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                         <template #cell(arrow)="row">
-                            <img src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
+                            <img style="cursor: pointer;" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
                         </template>
                         <template #cell(group)="row">
                             <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>

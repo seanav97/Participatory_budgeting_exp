@@ -10,9 +10,9 @@ const routes = [
     component: () => import("./components/TabBar")
   },
   {
-    path: "/k-approval_exp",
-    name: "k-approval_exp",
-    component: () => import("./components/input_formats/k-approval_exp")
+    path: "/k_approval_exp",
+    name: "k_approval_exp",
+    component: () => import("./components/input_formats/k_approval_exp")
   },
   {
     path: "/Threshold_exp",
