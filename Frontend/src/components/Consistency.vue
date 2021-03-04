@@ -214,20 +214,25 @@ export default {
                 let consistant=consistant_value;
                 let items=JSON.parse(localStorage.getItem("final_items"));
                 let participant_info=JSON.parse(localStorage.getItem("participant_info"));
-                console.log('here');
                 // let servername=localStorage.getItem('server');
-                const experiment_id=await this.axios.post("http://"+config.data.server+"/addExperiment",{
-                    participant_ID:participant_ID,
-                    time:time,
-                    tutorial_time:tutorial_time,
-                    quiz_time:quiz_time,
-                    response_time:response_time,
-                    consistant:consistant,
-                    items:items,
-                    participant_info:participant_info
-                });
-                localStorage.clear();
-                localStorage.setItem('experiment_id',experiment_id.data.experiment_id);
+                try {
+                    const experiment_id=await this.axios.post("http://"+config.data.server+"/addExperiment",{
+                        participant_ID:participant_ID,
+                        time:time,
+                        tutorial_time:tutorial_time,
+                        quiz_time:quiz_time,
+                        response_time:response_time,
+                        consistant:consistant,
+                        items:items,
+                        participant_info:participant_info
+                    });
+                    localStorage.clear();
+                    localStorage.setItem('experiment_id',experiment_id.data.experiment_id);
+                } 
+                catch (error) {
+                    console.log(error);
+                    this.$parent.server_error=true;
+                }
             })
             .then(()=>{
                 // this.finished=true;

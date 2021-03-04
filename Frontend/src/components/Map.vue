@@ -11,7 +11,7 @@
 export default {
     data(){
         return{
-            url:'userHome.png',
+            url:'../assets/userHome.png',
             our_items:JSON.parse(localStorage.getItem('items'))
         }
     },
