@@ -5,9 +5,9 @@
             <div class='column1'>
                 <apexchart  type="pie" width="300" :options="chartOptions" :series="series[0].data"></apexchart>
                 <p style="position:relative;left:5%;" >
-                    <b>Money spent:</b> {{currSum.toLocaleString({ style: 'currency'})}}
+                    <b>Points used:</b> {{currSum}}
                     <br><br>
-                    <span ref="moneyLabel"><b>Budget left:</b> {{(budget-currSum).toLocaleString({ style: 'currency'})}}</span>
+                    <span ref="moneyLabel"><b>Points left:</b> {{budget-currSum}}</span>
                 </p>
                 <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                     <u><b> What you need to do</b></u>
@@ -29,12 +29,12 @@
                         <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                     </template>
                     <template slot="cell(range)" slot-scope="row">
-                        <b-form-input v-model="row.item.given_value" type="range" min="0" max="500000" step="1000" @change="calc(row)"></b-form-input>
+                        <b-form-input v-model="row.item.given_value" type="range" min="0" max="100" step="1" @change="calc(row)"></b-form-input>
                         <!-- <b-form-checkbox size="lg" v-model="row.item.selected" :ref="row.item.item_name+'_check'" :id="'a'+row.index" @change="update($event,row)"></b-form-checkbox> -->
                     </template>
                     <template #row-details="row">
                         <b-card>
-                            {{row.item.item_name}}
+                            {{row.item.item_desc}}
                         </b-card>
                     </template>
                 </b-table>
@@ -61,7 +61,7 @@ export default {
     data(){
         return{
             currSum:0,
-            budget: 500000,
+            budget: 100,
             goodSum:true,
             items: JSON.parse(localStorage.getItem('items')).map(v => ({...v, given_value: 0})),
             fields: [ 

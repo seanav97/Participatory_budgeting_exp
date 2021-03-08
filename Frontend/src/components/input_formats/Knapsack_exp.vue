@@ -2,16 +2,16 @@
 
     <div id='app'>
         <div v-if='this.id!=null'>
-            <h1 style="font-family: 'Courier New', monospace;text-align:center">Building our city</h1>
             <div class='row'>
+            <h1 style="font-family: 'Courier New', monospace;text-align:center;">Building our city</h1>
                 <div class='column1'>
-                    <apexchart  type="pie" width="300" :options="chartOptions" :series="series[0].data"></apexchart>
+                    <div class="apexchart"><apexchart type="pie" width="300" :options="chartOptions" :series="series[0].data"></apexchart></div>
                     <p style="position:relative;left:5%;" >
                        <b>Money spent:</b> {{money_spent.toLocaleString({ style: 'currency'})}}
                        <br><br>
                        <span ref="moneyLabel"><b>Budget left:</b> {{(budget-money_spent).toLocaleString({ style: 'currency'})}}</span>
                     </p>
-                    <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
+                    <div class="instruction">
                         <u><b> What you need to do</b></u>
                         <br>
                         <a> You need to select which projects to build based on the budget of {{(budget).toLocaleString({ style: 'currency'})}} pounds.</a>
@@ -35,7 +35,7 @@
                         </template>
                         <template #row-details="row">
                             <b-card>
-                                {{row.item.item_name}}
+                                {{row.item.item_desc}}
                             </b-card>
                         </template>
                     </b-table>
@@ -185,7 +185,7 @@ export default {
 <style>
     .column1 {
         float: left;
-        width: 20%;
+        width: 15%;
         padding: 10px;
     }
     .column2 {
@@ -203,18 +203,104 @@ export default {
         display: table;
         clear: both;  
     }
-    html {
-    overflow-y: scroll; 
-    }
+    /* html {
+        overflow-y: scroll; 
+    } */
     .run-animation{
         animation:change 0.5s;
     }
+    .instruction{
+        text-align:center;
+        /* position:absolute; */
+        border-radius: 25px; 
+        border: 3px solid #555; 
+        background-color:lightblue; 
+        width:90%; 
+        margin-left:10px; 
+        margin-top:40px;
+        padding:10px
+    }
+    .apexchart{
+        position:relative;
+        left:-25%;
+    }
 
     @keyframes change {
-            /* from { color: red; font-size: 140%; }
-            to   { color: black } */
-            0% { color: black; }
-            50%   { color: red; font-size: 140%; }
-            100%   { color: black }
+        /* from { color: red; font-size: 140%; }
+        to   { color: black } */
+        0% { color: black; }
+        50%   { color: red; font-size: 140%; }
+        100%   { color: black }
+    }
+
+    @media (max-width:1300px){
+        .column1 {
+            float: left;
+            width: 30%;
+            padding: 10px;
         }
+        .column2 {
+            float: left;
+            width: 65%;
+            padding: 10px;
+        }
+        .column3 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .apexchart{
+            position:relative;
+            left:-10%;
+        }
+    }
+    @media (max-width:720px){
+        .column1 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .column2 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .column3 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .apexchart{
+            position:relative;
+            left:20%;
+        }
+    }
+    /* @media (max-width:500px){
+        .column1 {
+            float: none;
+            width: 20%;
+            padding: 10px;
+        }
+        .column2 {
+            float: none;
+            width: 40%;
+            padding: 10px;
+        }
+        .column3 {
+            float: none;
+            width: 40%;
+            padding: 10px;
+        }
+        .instruction{
+            border-radius: 25px; 
+            border: 3px solid #555; 
+            background-color:lightblue; 
+            width:200%; 
+            margin-left:100%; 
+            padding:10px
+        }
+        .h1{
+            white-space: normal
+        }
+    } */
 </style>

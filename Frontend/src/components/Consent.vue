@@ -3,7 +3,7 @@
     <fieldset>
         <h2 style="text-align: center"><u>Step 1: Consent</u></h2>
         <br>
-        <b-card style="background-color:#e8e8e8; max-width:900px;margin-left: 20%;">
+        <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
             <p>Please consider this information carefully before deciding whether to accept this task.</p>
             <hr>
             <p><strong>PURPOSE OF RESEARCH:</strong> To understand people’s preferences about what to take to a mission to a desert island.</p>

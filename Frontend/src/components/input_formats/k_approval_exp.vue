@@ -37,7 +37,7 @@
                         </template>
                         <template #row-details="row">
                             <b-card>
-                                {{row.item.item_name}}
+                                {{row.item.item_desc}}
                             </b-card>
                         </template>
                     </b-table>

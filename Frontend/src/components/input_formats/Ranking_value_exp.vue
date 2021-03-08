@@ -26,7 +26,7 @@
                                 </template>
                                 <template #row-details="row">
                                     <b-card>
-                                        {{row.item.item_name}}
+                                        {{row.item.item_desc}}
                                     </b-card>
                                 </template>
                                 <template #cell(group)="row">
@@ -126,12 +126,12 @@ export default {
 <style scoped>
     .column1 {
         float: left;
-        width: 30%;
+        width:25%;
         padding: 10px;
     }
     .column2 {
         float: left;
-        width: 40%;
+        width: 45%;
         padding: 10px;
     }
     .column3 {

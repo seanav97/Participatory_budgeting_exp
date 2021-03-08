@@ -26,7 +26,7 @@
                                 </template>
                                 <template #row-details="row">
                                     <b-card>
-                                        {{row.item.item_name}}
+                                        {{row.item.item_desc}}
                                     </b-card>
                                 </template>
                             </b-table>
@@ -59,7 +59,7 @@ export default {
                 {key: "group", label: '',class: 'text-right'},
 
                 // {key: "item_name", label: 'Project',class: 'text-left'},
-                { key: "item_value", label: 'Price (pounds)',sortable: true,class:"text-right",
+                { key: "item_value", label: 'Price (dollars)',sortable: true,class:"text-right",
                     formatter: (value, key, item) => {
                         return value.toLocaleString({ style: 'currency'});
                     },

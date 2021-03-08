@@ -1,36 +1,38 @@
 <template>
     <div >
         <h2 style="text-align: center">Step 4: Just a few questions</h2>
-        <br><br><br>
+        <br><br>
         <el-form :inline="true" :model="form" class="demo-form-inline" :rules="rules" ref="ruleForm" >
-            <el-form-item style="margin-left:18%">
-                <h2>How old are you?</h2>
-                <el-input-number size="medium" v-model="form.age" :min="18" :max="90"></el-input-number>
-            </el-form-item>
-            <!-- <br><br> -->
-            <el-form-item prop="gender" style="margin-left:10%">
-                <h2>Gender:</h2>
-                <el-select v-model="form.gender" placeholder="Select your gender" style="text-align:center "> 
-                    <el-option
-                        v-for="item in genders"
-                        :key="item.value"
-                        :label="item.value"
-                        :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <!-- <br><br> -->
-            <el-form-item prop="education" style="margin-left:10%">
-                <h2>Education:</h2>
-                <el-select v-model="form.education" placeholder="Select your education">
-                    <el-option
-                        v-for="item in educations"
-                        :key="item.value"
-                        :label="item.value"
-                        :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
+            <b-card style="background-color: #e8e8e8;max-width:550px;margin:auto">
+                <el-form-item >
+                    <h3>How old are you?</h3>
+                    <el-input-number style="margin-left:30px" size="medium" v-model="form.age" :min="18" :max="90"></el-input-number>
+                </el-form-item>
+                <br><br>
+                <el-form-item prop="gender" >
+                    <h3>Gender:</h3>
+                    <el-select v-model="form.gender" placeholder="Select your gender" style="text-align:center;margin-left:30px"> 
+                        <el-option
+                            v-for="item in genders"
+                            :key="item.value"
+                            :label="item.value"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <br><br>
+                <el-form-item prop="education" >
+                    <h3>Education:</h3>
+                    <el-select style="margin-left:30px" v-model="form.education" placeholder="Select your education">
+                        <el-option
+                            v-for="item in educations"
+                            :key="item.value"
+                            :label="item.value"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </b-card>
         </el-form>
         <br><br>
         
@@ -65,6 +67,20 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+    .b-card{
+        max-width:100px
+    }
+    h3{
+        display: inline-block;
+    }
 
+@media (max-width:600px) {
+    h3{
+        display: block;
+    }
+    .b-card{
+        max-width:100px
+    }
+}
 </style>

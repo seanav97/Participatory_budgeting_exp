@@ -1,5 +1,5 @@
 <template>
-  <div id="map" ref="map" style="margin-left:1%">
+  <div id="map" ref="map" style="margin-left:1%;">
         <img :src="getImageURL('userHome.png')" height="45" width="65" ref="homeImage">
         <div  v-for="item in this.our_items" :key='item'>
             <img :src="getImageURL(item.url)" height="45" width="65" :ref="item.item_name">

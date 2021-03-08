@@ -1,12 +1,13 @@
 <template>
     <div>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=yes">
         <h2 style="text-align: center">Step 3: Quiz</h2>
         <br>
         <div style="padding-left: 10%;">
             
-            <el-form :inline="true" :model="formInline" class="demo-form-inline" :rules="rules" ref="ruleForm">
+            <el-form style="white-space: normal" :inline="true" :model="formInline" class="demo-form-inline" :rules="rules" ref="ruleForm">
                 <el-form-item prop="allQuestions">
-                    <b-card style="background-color:#e8e8e8; max-width:850px">
+                    <b-card style="background-color:#e8e8e8;">
                         <h4 class="q-title" >Question 1</h4>
                         <div class="q-body" >
                             <h4> What is the main goal of this task?</h4>
@@ -22,7 +23,7 @@
                         </div>
                     </b-card>
                     <br>
-                    <b-card style="background-color: #e8e8e8;max-width:850px">
+                    <b-card style="background-color: #e8e8e8;">
                         <h4 class="q-title">Question 2</h4>
                         <div class="q-body">
                             <h4> You get a 10 cent bonus ...</h4>
@@ -44,7 +45,7 @@
                         <div class="q-body">
                             <h4> What's wrong with clicking SUBMIT in the image?</h4>
                             <br>
-                            <img style="margin-left:30px;border: 5px solid #555;" src="../assets/‏‏knapsack_example.png" width="650" height="425">
+                            <img class="quizimage" src="../assets/‏‏knapsack_example.png" >
                             <el-form-item prop="q3" style="float:left;position:relative">
                                 <el-radio-group v-model="formInline.question3" type="vertical">
                                     <el-radio style="margin-top:50px" :label="1">Everything is normal</el-radio><br>
@@ -61,7 +62,7 @@
                         <div class="q-body">
                             <h4> What's wrong with clicking SUBMIT in the image?</h4>
                             <br>
-                            <img style="margin-left:30px;border: 5px solid #555;" src="../assets/‏‏knapsack_empty_example.png" width="650" height="425">
+                            <img class="quizimage" src="../assets/‏‏knapsack_empty_example.png">
                             <el-form-item prop="q4" style="float:left;position:relative">
                                 <el-radio-group v-model="formInline.question4" type="vertical">
                                     <el-radio style="margin-top:50px" :label="1">Everything is normal</el-radio><br>
@@ -79,7 +80,7 @@
 
         </div>
             <b-alert style="text-align:center;font-size: 200%;" show variant="warning">Double check yourself, you have only one chance! <br>
-                            If you fail this quiz you can't continue to the next step.
+                            If you fail this quiz you can't continue to the next step. <br>
                             If you need, you can click on the 'Back' button to read the instructions again.
             </b-alert>
     </div>
@@ -120,6 +121,7 @@ export default {
     border-left: thick solid #3f9396;
     padding-left:50px;
     float: left;
+    position:relative;
     /* border-spacing: 50px 50px 50px 50px; */
 
 }
@@ -127,5 +129,33 @@ export default {
     float: left;
     margin-top:65px;
     padding-right: 40px;
+}
+.quizimage{
+    margin-left:30px;
+    border: 5px solid #555;
+    width:650px;
+}
+
+.el-radio,h4{
+    white-space: normal
+}
+
+@media (max-width:900px) {
+    .q-body{
+        border-left: thick solid #3f9396;
+        padding-left:40px;
+        float: left;
+        position:relative;
+    }
+    .q-title{
+        float: left;
+        margin-top:65px;
+        padding-right: 0px;
+    }
+    .quizimage{
+        border: 5px solid #555;
+        width:100%;
+        margin-left:0px;
+    }
 }
 </style>

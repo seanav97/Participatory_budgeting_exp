@@ -14,14 +14,14 @@
                             <p slot="legend-caption">selected</p>
                         </template>
                     </vue-ellipse-progress>
-                    <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
+                    <!-- <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                         <u><b> What you need to do</b></u>
                         <br>
                         <a> Select each of the following projects ONLY if the answer to the following question is YES: If {{(budget).toLocaleString({ style: 'currency'})}} pounds are divided among the projects based on their importance, should this project get AT LEAST {{(budget/10).toLocaleString({ style: 'currency'})}} pounds? Use your best judgement.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
 
-                    </div>
+                    </div> -->
                 </div>
                 <div class='column2'>
                     <filter-group/>
@@ -38,7 +38,7 @@
                         </template>
                         <template #row-details="row">
                             <b-card>
-                                {{row.item.item_name}}
+                                {{row.item.item_desc}}
                             </b-card>
                         </template>
                     </b-table>
