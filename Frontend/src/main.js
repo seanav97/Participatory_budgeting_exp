@@ -44,6 +44,9 @@ import VueEllipseProgress from 'vue-ellipse-progress';
 Vue.use(VueEllipseProgress);
 import draggable from 'vuedraggable'
 Vue.use(draggable);
+import * as SurveyVue from "survey-vue";
+Vue.use(SurveyVue);
+
 
 
 

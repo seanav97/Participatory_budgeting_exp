@@ -9,14 +9,14 @@
                     <br><br>
                     <span ref="moneyLabel"><b>Points left:</b> {{budget-currSum}}</span>
                 </p>
-                <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
+                <!-- <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                     <u><b> What you need to do</b></u>
                     <br>
                     <a> You need to distribute {{(budget).toLocaleString({ style: 'currency'})}} pounds among the projects. The more money you assign to a project, the more important it is to build.</a>
                     <br><br>
                     <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
 
-                </div>
+                </div> -->
             </div>
             <div class='column2'>
                 <filter-group/>
@@ -110,11 +110,11 @@ export default {
 
         },
         rowHovered(item){
-            this.$refs.map.$refs[item.item_name][0].style.opacity=1;
+            this.$refs.map.changeOpacity(item.item_name,1);
         },
         rowUnHovered(item,index){
             if(item.given_value==0)
-                this.$refs.map.$refs[item.item_name][0].style.opacity=0.3;
+                this.$refs.map.changeOpacity(item.item_name,0.3);
         },
         normalize(){
             // let currSum=0;
@@ -133,7 +133,7 @@ export default {
         resetTable(){
             this.items.forEach(item => {
                 item.given_value=0;
-                this.$refs.map.$refs[item.item_name][0].style.opacity=0.3;
+                this.$refs.map.changeOpacity(item.item_name,0.3);
             });
             this.chartOptions={
                 dataLabels: {enabled: false},

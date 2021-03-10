@@ -13,14 +13,14 @@
                             <p slot="legend-caption">selected</p>
                         </template>
                     </vue-ellipse-progress>
-                    <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
+                    <!-- <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                         <u><b> What you need to do</b></u>
                         <br>
                         <a> You need to select up to 5 projects from the list, according to your best judgement.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
 
-                    </div>
+                    </div> -->
                 </div>
                 <div class='column2'>
                     <filter-group/>
@@ -106,7 +106,7 @@ export default {
 
                 }
                 else{
-                    this.$refs.map.$refs[row.item.item_name][0].style.opacity=1;
+                    this.$refs.map.changeOpacity(row.item.item_name,1);
                     this.numberSelected++;
                     this.somethingSelected=true;
 
@@ -116,7 +116,7 @@ export default {
 
             }
             else{
-                this.$refs.map.$refs[row.item.item_name][0].style.opacity=0.3;
+                this.$refs.map.changeOpacity(row.item.item_name,0.3);
                 this.numberSelected--;
                 // this.money_spent-=row.item.item_value;
                 // this.selected=this.selected.filter(item => item.item_name != row.item.item_name);
@@ -126,18 +126,18 @@ export default {
         },
 
         rowHovered(item){
-            this.$refs.map.$refs[item.item_name][0].style.opacity=1;
+            this.$refs.map.changeOpacity(item.item_name,1);
         },
         rowUnHovered(item,index){
             let isSelected=this.items.filter(obj => {return obj.item_name == item.item_name})[0].selected;
             if(!isSelected)
-                this.$refs.map.$refs[item.item_name][0].style.opacity=0.3;
+                this.$refs.map.changeOpacity(item.item_name,0.3);
         },
         resetTable(){
             this.$refs.selectableTable.clearSelected();
             this.items.forEach(item => {
                 item.selected=false;
-                this.$refs.map.$refs[item.item_name][0].style.opacity=0.3;
+                this.$refs.map.changeOpacity(item.item_name,0.3);
             });
             this.numberSelected=0;
         },

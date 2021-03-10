@@ -10,14 +10,14 @@
                     <b-card style="background-color:#e8e8e8;">
                         <h4 class="q-title" >Question 1</h4>
                         <div class="q-body" >
-                            <h4> What is the main goal of this task?</h4>
+                            <h4>{{questions.q1.q}}</h4>
                             <br>
                             <el-form-item prop="q1">
                                 <el-radio-group v-model="formInline.question1">
-                                    <el-radio :label="1">To think like John</el-radio><br>
-                                    <el-radio :label="2">To select what to take within a carrying capacity of 10 pounds from a list of 65 items.</el-radio><br>
-                                    <el-radio :label="3">To select what to take within a carrying capacity of 65 pounds from a list of 10 items.</el-radio><br>
-                                    <el-radio :label="4">To have fun</el-radio><br>
+                                    <el-radio :label="1">{{questions.q1.ans1}}</el-radio><br>
+                                    <el-radio :label="2">{{questions.q1.ans2}}</el-radio><br>
+                                    <el-radio :label="3">{{questions.q1.ans3}}</el-radio><br>
+                                    <el-radio :label="4">{{questions.q1.ans4}}</el-radio><br>
                                 </el-radio-group>
                             </el-form-item>
                         </div>
@@ -26,14 +26,14 @@
                     <b-card style="background-color: #e8e8e8;">
                         <h4 class="q-title">Question 2</h4>
                         <div class="q-body">
-                            <h4> You get a 10 cent bonus ...</h4>
+                            <h4> {{questions.q2.q}}</h4>
                             <br>
                             <el-form-item prop="q2">
                                 <el-radio-group v-model="formInline.question2" type="vertical">
-                                    <el-radio :label="1">for passing the quiz</el-radio><br>
-                                    <el-radio :label="2">for correctly answering a survey after submitting the task</el-radio><br>
-                                    <el-radio :label="3">for doing the task</el-radio><br>
-                                    <el-radio :label="4">for nothing</el-radio><br>
+                                    <el-radio :label="1">{{questions.q2.ans1}}</el-radio><br>
+                                    <el-radio :label="2">{{questions.q2.ans2}}</el-radio><br>
+                                    <el-radio :label="3">{{questions.q2.ans3}}</el-radio><br>
+                                    <el-radio :label="4">{{questions.q2.ans4}}</el-radio><br>
                                 </el-radio-group>
                             </el-form-item>
                         </div>
@@ -43,15 +43,16 @@
                     <b-card style="background-color: #e8e8e8;">
                         <h4 class="q-title">Question 3</h4>
                         <div class="q-body">
-                            <h4> What's wrong with clicking SUBMIT in the image?</h4>
+                            <h4> {{questions.q3.q}}</h4>
                             <br>
-                            <img class="quizimage" src="../assets/‏‏knapsack_example.png" >
+                            <!-- <img class="quizimage" src="../assets/‏‏knapsack_example.png" > -->
+                            <img class="quizimage" :src="getImageURL(this.voting_method+'1')" >
                             <el-form-item prop="q3" style="float:left;position:relative">
                                 <el-radio-group v-model="formInline.question3" type="vertical">
-                                    <el-radio style="margin-top:50px" :label="1">Everything is normal</el-radio><br>
-                                    <el-radio style="margin-top:70px" :label="2">Some items are unselected</el-radio><br>
-                                    <el-radio style="margin-top:70px" :label="3">Current total is lower than the limit</el-radio><br>
-                                    <el-radio style="margin-top:70px" :label="4">None of the items are selected</el-radio><br>
+                                    <el-radio style="margin-top:50px" :label="1">{{questions.q3.ans1}}</el-radio><br>
+                                    <el-radio style="margin-top:70px" :label="2">{{questions.q3.ans2}}</el-radio><br>
+                                    <el-radio style="margin-top:70px" :label="3">{{questions.q3.ans3}}</el-radio><br>
+                                    <el-radio style="margin-top:70px" :label="4">{{questions.q3.ans4}}</el-radio><br>
                                 </el-radio-group>
                             </el-form-item>
                         </div>
@@ -60,15 +61,16 @@
                     <b-card style="background-color: #e8e8e8;">
                         <h4 class="q-title">Question 4</h4>
                         <div class="q-body">
-                            <h4> What's wrong with clicking SUBMIT in the image?</h4>
+                            <h4> {{questions.q4.q}}</h4>
                             <br>
-                            <img class="quizimage" src="../assets/‏‏knapsack_empty_example.png">
+                            <!-- <img class="quizimage" src="../assets/‏‏knapsack_empty_example.png"> -->
+                            <img class="quizimage" :src="getImageURL(this.voting_method+'2')">
                             <el-form-item prop="q4" style="float:left;position:relative">
                                 <el-radio-group v-model="formInline.question4" type="vertical">
-                                    <el-radio style="margin-top:50px" :label="1">Everything is normal</el-radio><br>
-                                    <el-radio style="margin-top:70px" :label="2">Some items are unselected</el-radio><br>
-                                    <el-radio style="margin-top:70px" :label="3">Total is lower than the limit</el-radio><br>
-                                    <el-radio style="margin-top:70px" :label="4">None of the items are selected</el-radio><br>
+                                    <el-radio style="margin-top:50px" :label="1">{{questions.q4.ans1}}</el-radio><br>
+                                    <el-radio style="margin-top:70px" :label="2">{{questions.q4.ans2}}</el-radio><br>
+                                    <el-radio style="margin-top:70px" :label="3">{{questions.q4.ans3}}</el-radio><br>
+                                    <el-radio style="margin-top:70px" :label="4">{{questions.q4.ans4}}</el-radio><br>
                                 </el-radio-group>
                             </el-form-item>
                         </div>
@@ -88,6 +90,9 @@
 </template>
 
 <script>
+const questions = require("../quiz_questions.js");
+const voting_method = localStorage.getItem('voting_method');
+console.log(questions.data["Threshold"]);
 export default {
     data(){
         return{
@@ -97,10 +102,12 @@ export default {
                 question3:1,
                 question4:4     
             },
-            
+            // voting_method:localStorage.getItem('voting_method'),
             rules: {
                 allQuestions: [{ validator: this.q1Vall,trigger: 'blur'}],
-            },  
+            },
+            questions:questions.data[voting_method],
+            voting_method: localStorage.getItem('voting_method')
         }
         
     },
@@ -112,6 +119,9 @@ export default {
             }
             else return new Promise((resolve, reject) => {resolve(true)});
         },    
+        getImageURL(img){
+        return require('../assets/quiz_examples/'+img+'.png');
+    },
     }
 }
 </script>

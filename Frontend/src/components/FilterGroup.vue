@@ -1,6 +1,8 @@
 <template>
   <b-dropdown text="Filter defferent categories" variant="primary" class="m-2">
         <!-- <b-dropdown-form> -->
+            <b-form-checkbox v-model="select_all" @change="checkAll($event)" style="display: inline;margin-left:10px">Select all</b-form-checkbox>
+            <hr>
             <div v-for="group in this.groups" :key='group'>
                 <b-dropdown-item @click.native.capture.stop>
                     <b-form-checkbox v-model="group.selected" @change="checkGroup($event,group)" style="display: inline;">{{group.group_name}}</b-form-checkbox>
@@ -17,6 +19,7 @@ export default {
         return{
             groups: this.getGroupes(),
             items_by_groups:JSON.parse(localStorage.getItem('items')).map(v => ({...v, selected: false})).map(v => ({...v, given_value: 0})),
+            select_all:true
         }
     },
     methods:{
@@ -56,10 +59,19 @@ export default {
                 });
             }
         },
+        checkAll(e){
+            this.groups.forEach(group => {
+                this.checkGroup(e,group);
+                group.selected=e;
+            });
+        }
     }
 }
 </script>
 
 <style>
-
+hr {
+  margin-top: 3px;
+  margin-bottom: 2px;
+}
 </style>

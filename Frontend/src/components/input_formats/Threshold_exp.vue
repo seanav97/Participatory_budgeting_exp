@@ -89,12 +89,12 @@ export default {
         update(e,row) {
             let currBudget=this.budget;
             if(e){
-                this.$refs.map.$refs[row.item.item_name][0].style.opacity=1;
+                this.$refs.map.changeOpacity(row.item.item_name,1);
                 this.numberSelected++;
                 this.somethingSelected=true;
             }
             else{
-                this.$refs.map.$refs[row.item.item_name][0].style.opacity=0.3;
+                this.$refs.map.changeOpacity(row.item.item_name,0.3);
                 this.numberSelected--;
                 // this.money_spent-=row.item.item_value;
                 // this.selected=this.selected.filter(item => item.item_name != row.item.item_name);
@@ -103,19 +103,19 @@ export default {
             this.series=[{data:[this.budget-this.money_spent,this.money_spent]}];
         },
         rowHovered(item){
-            this.$refs.map.$refs[item.item_name][0].style.opacity=1;
+            this.$refs.map.changeOpacity(item.item_name,1);
         },
         rowUnHovered(item,index){
             let isSelected=this.items.filter(obj => {return obj.item_name == item.item_name})[0].selected;
             if(!isSelected)
-                this.$refs.map.$refs[item.item_name][0].style.opacity=0.3;
+                this.$refs.map.changeOpacity(item.item_name,0.3);
         },
         resetTable(){
             this.$refs.selectableTable.clearSelected();
             this.selected = [];
             this.items.forEach(item => {
                 item.selected=false;
-                this.$refs.map.$refs[item.item_name][0].style.opacity=0.3;
+                this.$refs.map.changeOpacity(item.item_name,0.3);
             });
             this.numberSelected=0;
         },

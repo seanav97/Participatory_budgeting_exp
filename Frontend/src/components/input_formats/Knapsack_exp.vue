@@ -11,19 +11,19 @@
                        <br><br>
                        <span ref="moneyLabel"><b>Budget left:</b> {{(budget-money_spent).toLocaleString({ style: 'currency'})}}</span>
                     </p>
-                    <div class="instruction">
+                    <!-- <div class="instruction">
                         <u><b> What you need to do</b></u>
                         <br>
                         <a> You need to select which projects to build based on the budget of {{(budget).toLocaleString({ style: 'currency'})}} pounds.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
 
-                    </div>
+                    </div> -->
                 </div>
                 <div class='column2'>
                     <filter-group/>
                     <b-table sticky-header="500px" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
-                             :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
+                            ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
                         <template #cell(arrow)="row">
                             <img style="cursor: pointer;display: inline;float:left" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
                         </template>
@@ -97,12 +97,11 @@ export default {
             legend: {
                   position: 'top'
                 },
-            colors: ['#F6F6F6', '#BFC0C2']
+            colors: ['#EAEAEA', '#BFC0C2']
         },
         series: [{data:[500000,0]}] ,
         somethingSelected:true
       }
-    
   },
   mounted(){
     },
@@ -124,7 +123,7 @@ export default {
 
             }
             else{
-                this.$refs.map.$refs[row.item.item_name][0].style.opacity=1;
+                this.$refs.map.changeOpacity(row.item.item_name,1);
                 this.money_spent+=row.item.item_value;
                 this.somethingSelected=true;
                 // this.selected.push(row.item);
@@ -132,7 +131,7 @@ export default {
 
         }
         else{
-            this.$refs.map.$refs[row.item.item_name][0].style.opacity=0.3;
+            this.$refs.map.changeOpacity(row.item.item_name,0.3);
             this.money_spent-=row.item.item_value;
             // this.selected=this.selected.filter(item => item.item_name != row.item.item_name);
         }
@@ -140,19 +139,20 @@ export default {
         this.series=[{data:[this.budget-this.money_spent,this.money_spent]}];
     },
     rowHovered(item){
-        this.$refs.map.$refs[item.item_name][0].style.opacity=1;
+        this.$refs.map.changeOpacity(item.item_name,1);
     },
     rowUnHovered(item,index){
         let isSelected=this.items.filter(obj => {return obj.item_name == item.item_name})[0].selected;
-        if(!isSelected)
-            this.$refs.map.$refs[item.item_name][0].style.opacity=0.3;
+        if(!isSelected){
+            this.$refs.map.changeOpacity(item.item_name,0.3);
+        }
     },
     resetTable(){
         this.money_spent=0;
         this.series=[{data:[this.budget,this.money_spent]}];
         this.items.forEach(item => {
             item.selected=false;
-            this.$refs.map.$refs[item.item_name][0].style.opacity=0.3;
+            this.$refs.map.changeOpacity(item.item_name,0.3);
         });
     },
     submit(){

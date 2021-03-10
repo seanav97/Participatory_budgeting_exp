@@ -57,6 +57,7 @@ export default {
     data(){
         return{
             items: this.getArrayItems(),
+            initial_items: this.getArrayItems(),
             fields: [ 
                 {key: "details", label: 'Project',class: 'text-center'},
                 {key: "group", label: '',class: 'text-right'},
@@ -100,19 +101,19 @@ export default {
         },
         rowHovered(item){
             // console.log(item);
-            this.$refs.map.$refs[item.item_name][0].style.opacity=1;
+            this.$refs.map.changeOpacity(item.item_name,1);
         },
         rowUnHovered(item){
-            this.$refs.map.$refs[item.item_name][0].style.opacity=0.6;
+            this.$refs.map.changeOpacity(item.item_name,0.6);
         },
         submit(){
             let time=new Date().getTime();
             localStorage.setItem('budgeting_finish',JSON.stringify(time));
             let final_items=[];
-            let index=1;
-            this.items.forEach(item => {
-                final_items.push({item_id:item[0].item_id,item_name:item[0].item_name,item_value:index});
-                index++; 
+            this.items.forEach((item,i) => {
+                let prevPos = this.initial_items.map(function(e) { return e[0].item_id; }).indexOf(item[0].item_id);
+                let value = prevPos +"-"+i;
+                final_items.push({item_id:item[0].item_id,item_name:item[0].item_name,item_value:value});
             });
             console.log(final_items);
             localStorage.setItem('final_items',JSON.stringify(final_items));

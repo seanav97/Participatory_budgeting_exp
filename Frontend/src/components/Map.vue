@@ -1,8 +1,9 @@
 <template>
   <div id="map" ref="map" style="margin-left:1%;">
-        <img :src="getImageURL('userHome.png')" height="45" width="65" ref="homeImage">
+        <img :src="getImageURL('userHome')" height="45" width="65" ref="homeImage">
         <div  v-for="item in this.our_items" :key='item'>
-            <img :src="getImageURL(item.url)" height="45" width="65" :ref="item.item_name">
+            <img v-if="item.coords.length==1" :src="getImageURL(item.item_group)" :height="image_size" :width="image_size" :ref="item.item_name" v-b-tooltip.hover :title="item.item_name">
+            <img v-else :src="getImageURL(item.item_group)" :height="image_size/1.5" :width="image_size/1.5" :ref="item.item_name" v-b-tooltip.hover :title="item.item_name">
         </div>
     </div>
 </template>
@@ -12,28 +13,62 @@ export default {
     data(){
         return{
             url:'../assets/userHome.png',
-            our_items:JSON.parse(localStorage.getItem('items'))
+            // our_items:JSON.parse(localStorage.getItem('items')),
+            our_items:this.getAllItems(),
+            image_size:"50"
         }
     },
     mounted(){
         this.drawImages();
+        console.log(this.$refs);
+        // this.getAllItems();
     },
     methods: {
         getImageURL(img){
-            return require('../assets/'+img);
+            return require('../assets/'+img+".png");
         },
         drawImages(){
             this.$refs.homeImage.style.position='relative';
-            this.$refs.homeImage.style.left='30%';
+            this.$refs.homeImage.style.left='60%';
             this.$refs.homeImage.style.top='30%';
 
+            let i=0;
             this.our_items.forEach(item => {
-                this.$refs[item.item_name][0].style.position='relative';
-                this.$refs[item.item_name][0].style.left=item.x_coord.toString()+'%';
-                this.$refs[item.item_name][0].style.top=item.y_coord.toString()+'%';
-                this.$refs[item.item_name][0].style.opacity=0.3;
+
+                if(this.$refs[item.item_name].length==1 || i==3) i=0;
+
+                this.$refs[item.item_name][i].style.position='relative';
+                this.$refs[item.item_name][i].style.left=item.x_coord.toString()+'%';
+                this.$refs[item.item_name][i].style.top=item.y_coord.toString()+'%';
+                this.$refs[item.item_name][i].style.opacity=0.3;
+
+                i++;
             });
         },
+        getAllItems(){
+            let items=JSON.parse(localStorage.getItem('items'));
+            
+            let allItems=[];
+            items.forEach(item => {
+                let coords=item.coords.split("#");
+                coords.forEach(coord => {
+                    allItems.push({'item_name':item.item_name,'item_group':item.item_group,'x_coord':coord.split(',')[0],'y_coord':coord.split(',')[1],'coords':coords})
+                });
+            });
+
+            // allItems.forEach(item => {
+            //     console.log(this.$refs[item.item_name]);
+            // });
+            return allItems;
+        },
+        changeOpacity(item_name,opacity){
+            console.log(1);
+            let items=this.$refs[item_name];
+            console.log(items);
+            items.forEach(item => {
+                item.style.opacity=opacity;
+            });
+        }
     }
 }
 </script>
