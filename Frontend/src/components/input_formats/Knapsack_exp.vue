@@ -11,14 +11,17 @@
                        <br><br>
                        <span ref="moneyLabel"><b>Budget left:</b> {{(budget-money_spent).toLocaleString({ style: 'currency'})}}</span>
                     </p>
-                    <!-- <div class="instruction">
+                    <div class="instruction">
                         <u><b> What you need to do</b></u>
                         <br>
                         <a> You need to select which projects to build based on the budget of {{(budget).toLocaleString({ style: 'currency'})}} pounds.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
-
-                    </div> -->
+                    </div>
+                    <b-modal size="lg" id="instructions_modal" hide-footer>
+                        <instructions/>
+                        <b-button variant="outline-primary" block @click="$bvModal.hide('instructions_modal')">Close</b-button>
+                    </b-modal>
                 </div>
                 <div class='column2'>
                     <filter-group/>
@@ -54,10 +57,7 @@
             <br><br>
             <b-alert show variant="danger">Please complete all the necessary steps</b-alert>
         </div>
-        <b-modal size="lg" id="instructions_modal" hide-footer>
-            <instructions/>
-            <b-button variant="outline-primary" block @click="$bvModal.hide('instructions_modal')">Close</b-button>
-        </b-modal>
+        
     </div>
 </template>
 

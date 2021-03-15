@@ -9,14 +9,17 @@
                     <br><br>
                     <span ref="moneyLabel"><b>Points left:</b> {{budget-currSum}}</span>
                 </p>
-                <!-- <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
+                <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                     <u><b> What you need to do</b></u>
                     <br>
                     <a> You need to distribute {{(budget).toLocaleString({ style: 'currency'})}} pounds among the projects. The more money you assign to a project, the more important it is to build.</a>
                     <br><br>
                     <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
-
-                </div> -->
+                </div>
+                <b-modal size="lg" id="instructions_modal" hide-footer>
+                        <instructions/>
+                        <b-button variant="outline-primary" block @click="$bvModal.hide('instructions_modal')">Close</b-button>
+                    </b-modal>
             </div>
             <div class='column2'>
                 <filter-group/>
@@ -56,8 +59,10 @@
 import VueApexCharts from "vue-apexcharts";
 import Map from '../Map.vue';
 import FilterGroup from '../FilterGroup.vue';
+import Instructions from '../Instructions.vue';
+
 export default {
-    components: { Map,apexchart:VueApexCharts,FilterGroup },
+    components: { Map,apexchart:VueApexCharts,FilterGroup,Instructions },
     data(){
         return{
             currSum:0,
@@ -186,5 +191,47 @@ export default {
         content: "";
         display: table;
         clear: both;  
+    }
+    @media (max-width:1300px){
+        .column1 {
+            float: left;
+            width: 30%;
+            padding: 10px;
+        }
+        .column2 {
+            float: left;
+            width: 65%;
+            padding: 10px;
+        }
+        .column3 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .apexchart{
+            position:relative;
+            left:-10%;
+        }
+    }
+    @media (max-width:720px){
+        .column1 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .column2 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .column3 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .apexchart{
+            position:relative;
+            left:20%;
+        }
     }
 </style>

@@ -10,6 +10,10 @@
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
                     </div>
+                    <b-modal size="lg" id="instructions_modal" hide-footer>
+                        <instructions/>
+                        <b-button variant="outline-primary" block @click="$bvModal.hide('instructions_modal')">Close</b-button>
+                    </b-modal>
                 </div>
                 <div class='column2'>
                     <b-table head-variant="dark" :fields="fields" thead-class=""> </b-table>
@@ -47,10 +51,10 @@
 <script>
 import draggable from 'vuedraggable'
 import Map from '../Map.vue';
-
+import Instructions from '../Instructions.vue';
 
 export default {
-    components: { draggable,Map },
+    components: { draggable,Map,Instructions },
     data(){
         return{
             items: this.getArrayItems(),
@@ -156,6 +160,48 @@ export default {
         content: "";
         display: table;
         clear: both;  
+    }
+    @media (max-width:1300px){
+        .column1 {
+            float: left;
+            width: 30%;
+            padding: 10px;
+        }
+        .column2 {
+            float: left;
+            width: 65%;
+            padding: 10px;
+        }
+        .column3 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .apexchart{
+            position:relative;
+            left:-10%;
+        }
+    }
+    @media (max-width:720px){
+        .column1 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .column2 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .column3 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .apexchart{
+            position:relative;
+            left:20%;
+        }
     }
 
 </style>

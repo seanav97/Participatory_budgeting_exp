@@ -13,14 +13,17 @@
                             <p slot="legend-caption">selected</p>
                         </template>
                     </vue-ellipse-progress>
-                    <!-- <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
+                    <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                         <u><b> What you need to do</b></u>
                         <br>
                         <a> You need to select up to 5 projects from the list, according to your best judgement.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
-
-                    </div> -->
+                    </div>
+                    <b-modal size="lg" id="instructions_modal" hide-footer>
+                        <instructions/>
+                        <b-button variant="outline-primary" block @click="$bvModal.hide('instructions_modal')">Close</b-button>
+                    </b-modal>
                 </div>
                 <div class='column2'>
                     <filter-group/>
@@ -59,8 +62,9 @@
 <script>
 import FilterGroup from '../FilterGroup.vue';
 import Map from '../Map.vue';
+import Instructions from '../Instructions.vue';
 export default {
-    components: { Map, FilterGroup, },
+    components: { Map, FilterGroup, Instructions},
     data(){
         return{
             numberSelected:0,
@@ -195,5 +199,47 @@ export default {
         0% { color: black; }
         50%   { color: red; font-size: 140%; }
         100%   { color: black }
+    }
+    @media (max-width:1300px){
+        .column1 {
+            float: left;
+            width: 30%;
+            padding: 10px;
+        }
+        .column2 {
+            float: left;
+            width: 65%;
+            padding: 10px;
+        }
+        .column3 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .apexchart{
+            position:relative;
+            left:-10%;
+        }
+    }
+    @media (max-width:720px){
+        .column1 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .column2 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .column3 {
+            float: left;
+            width: 100%;
+            padding: 10px;
+        }
+        .apexchart{
+            position:relative;
+            left:20%;
+        }
     }
 </style>
