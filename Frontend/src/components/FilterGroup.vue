@@ -1,7 +1,7 @@
 <template>
-  <b-dropdown text="Filter defferent categories" variant="primary" class="m-2">
+  <b-dropdown text="Filter different categories" variant="primary" class="m-2">
         <!-- <b-dropdown-form> -->
-            <b-form-checkbox v-model="select_all" @change="checkAll($event)" style="display: inline;margin-left:10px">Select all</b-form-checkbox>
+            <b-form-checkbox v-model="select_all" @change="checkAll($event)" style="display: inline;margin-left:5px">Select all</b-form-checkbox>
             <hr>
             <div v-for="group in this.groups" :key='group'>
                 <b-dropdown-item @click.native.capture.stop>
@@ -57,12 +57,19 @@ export default {
                 itemsToSplice.forEach(index => {
                     this.$parent.items.splice(this.$parent.items.map(function(i) { return i.item_name; }).indexOf(index),1);
                 });
+                this.select_all=false;
             }
         },
         checkAll(e){
             this.groups.forEach(group => {
-                this.checkGroup(e,group);
-                group.selected=e;
+                if(e && !group.selected){
+                    this.checkGroup(e,group);
+                    group.selected=e;
+                }
+                else if(!e && group.selected){
+                    this.checkGroup(e,group);
+                    group.selected=e;
+                }
             });
         }
     }

@@ -1,7 +1,9 @@
 <template>
-  <div id="map" ref="map" style="margin-left:1%;">
-        <img :src="getImageURL('userHome')" height="45" width="65" ref="homeImage">
-        <div  v-for="item in this.our_items" :key='item'>
+  <div id="map" ref="map" style="margin-left:1%;width: 600px;height: 600px; position:relative">
+        <transition name="fade" appear>
+            <img :src="getImageURL('userHome')" height="45" width="65" ref="homeImage">
+        </transition>
+        <div v-for="item in this.our_items" :key='item'>
             <img v-if="item.coords.length==1" :src="getImageURL(item.item_group)" :height="image_size" :width="image_size" :ref="item.item_name" v-b-tooltip.hover :title="item.item_name">
             <img v-else :src="getImageURL(item.item_group)" :height="image_size/1.5" :width="image_size/1.5" :ref="item.item_name" v-b-tooltip.hover :title="item.item_name">
         </div>
@@ -15,7 +17,8 @@ export default {
             url:'../assets/userHome.png',
             // our_items:JSON.parse(localStorage.getItem('items')),
             our_items:this.getAllItems(),
-            image_size:"50"
+            image_size:"50",
+            home:[{x:10,y:20},{x:60,y:50},{x:40,y:30},{x:20,y:80}],
         }
     },
     mounted(){
@@ -28,16 +31,23 @@ export default {
             return require('../assets/'+img+".png");
         },
         drawImages(){
+            // console.log(2);
+            let homePos=this.home[Math.floor(Math.random() * this.home.length)];
+            console.log(homePos);
+            // console.log(this.home);
             this.$refs.homeImage.style.position='relative';
-            this.$refs.homeImage.style.left='60%';
-            this.$refs.homeImage.style.top='30%';
+            // this.$refs.homeImage.style.left='60%';
+            // this.$refs.homeImage.style.top='30%';
+            this.$refs.homeImage.style.left=homePos.x+'%';
+            this.$refs.homeImage.style.top=homePos.y+'%';
 
             let i=0;
             this.our_items.forEach(item => {
 
                 if(this.$refs[item.item_name].length==1 || i==3) i=0;
 
-                this.$refs[item.item_name][i].style.position='relative';
+                this.$refs[item.item_name][i].style.position='absolute';
+                // this.$refs[item.item_name][i].style.float='left';
                 this.$refs[item.item_name][i].style.left=item.x_coord.toString()+'%';
                 this.$refs[item.item_name][i].style.top=item.y_coord.toString()+'%';
                 this.$refs[item.item_name][i].style.opacity=0.3;
@@ -47,7 +57,6 @@ export default {
         },
         getAllItems(){
             let items=JSON.parse(localStorage.getItem('items'));
-            
             let allItems=[];
             items.forEach(item => {
                 let coords=item.coords.split("#");
@@ -56,15 +65,16 @@ export default {
                 });
             });
 
+            // console.log(allItems);
             // allItems.forEach(item => {
             //     console.log(this.$refs[item.item_name]);
             // });
             return allItems;
         },
         changeOpacity(item_name,opacity){
-            console.log(1);
+            // console.log(1);
             let items=this.$refs[item_name];
-            console.log(items);
+            // console.log(items);
             items.forEach(item => {
                 item.style.opacity=opacity;
             });
@@ -76,8 +86,18 @@ export default {
 <style>
     #map
     {
-        background-image: url('../assets/city_ams.png');
+        background-image: url('../assets/city_digital1.png');
+        background-size:cover;
+        /* background-repeat: no-repeat; */
         width: 600px;
         height: 600px;
+    }
+    .fade-enter-active{
+        animation: bounce-in 1s;
+    }
+    @keyframes bounce-in {
+        0% {
+            top:100%
+        }
     }
 </style>

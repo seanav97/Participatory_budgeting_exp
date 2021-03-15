@@ -1,5 +1,10 @@
 const routes = [
   {
+    path: "/",
+    name: "mainTest",
+    component: () => import("./components/main")
+  },
+  {
     path: "/participant_ID/:participant_ID",
     name: "main",
     beforeEnter: (to, from, next) => {

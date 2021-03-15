@@ -181,4 +181,7 @@ export default {
     float: left;
     width: 15%;
 }
+.sq-title{
+    color: red;
+}
 </style>

@@ -91,7 +91,9 @@ export default {
       let items= configs.data.items_from_groups;
       let voting_method= configs.data.voting_method;
       localStorage.setItem('items',JSON.stringify(items));
-      localStorage.setItem('voting_method',voting_method);
+
+      if(JSON.parse(localStorage.getItem('voting_method'))==null)
+        localStorage.setItem('voting_method',voting_method);
     },
 
     async blacklistUser(){

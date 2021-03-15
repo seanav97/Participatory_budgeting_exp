@@ -46,6 +46,7 @@ export default {
         }
        },
     mounted(){
+      
       // alert('dd');
       // asyncLoading(this.$parent.checkParticipant(),this.$parent.setConfigurations()).then().catch();
       // this.$parent.checkParticipant();
@@ -102,6 +103,7 @@ export default {
                else{
                  this.$parent.blacklistUser();
                  this.$parent.$data.userBlacklisted=true;
+                 localStorage.removeItem('participant_ID');
                }
                resolve(valid);
              });
