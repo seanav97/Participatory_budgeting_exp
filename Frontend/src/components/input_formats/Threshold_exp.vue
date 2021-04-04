@@ -17,7 +17,7 @@
                     <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                         <u><b> What you need to do</b></u>
                         <br>
-                        <a> Select each of the following projects ONLY if the answer to the following question is YES: If {{(budget).toLocaleString({ style: 'currency'})}} pounds are divided among the projects based on their importance, should this project get AT LEAST {{(budget/10).toLocaleString({ style: 'currency'})}} pounds? Use your best judgement.</a>
+                        <a> Select each of the following projects ONLY if the answer to the following question is YES: If {{(budget).toLocaleString('ja-JP',{ style: 'currency',currency: 'USD',maximumFractionDigits:0})}} are divided among the projects based on their importance, should this project get AT LEAST {{(budget/10).toLocaleString('ja-JP',{ style: 'currency',currency: 'USD',maximumFractionDigits:0})}} ? Use your best judgement.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal1')" variant="outline-primary">Show instructions</b-button>
                     </div>
@@ -47,8 +47,8 @@
                     </b-table>
                     <b-alert style="text-align:center" v-if="!somethingSelected" show variant="danger">You must select some projects.</b-alert>
                     <div style="float: right">
-                        <b-button variant="outline-primary" @click="resetTable">reset</b-button>
-                        <b-button variant="outline-primary" @click="submit">Submit</b-button>
+                        <b-button variant="outline-primary" @click="resetTable" style="width: 70px;">Reset</b-button>
+                        <b-button variant="outline-primary" @click="submit" style="margin-left:10px;width: 70px;">Submit</b-button>
                     </div>
                 </div>
                 <div class='column3'>
@@ -76,7 +76,7 @@ export default {
             fields: [ 
                 {key: "arrow", label: ''},
                 {key: "group", label: ''},
-                {key: "item_name", label: 'Item',sortable: true ,class:"text-center"},
+                {key: "item_name", label: 'Project',sortable: true ,class:"text-center"},
                 { key: "info",label:'' },
                 { key: "select",label:'',class:"text-center" }
             ],
@@ -123,7 +123,10 @@ export default {
             });
             this.numberSelected=0;
         },
-        submit(){
+        async submit(){
+            if (!confirm("Once you press OK you can't go back and change your choices"))
+                return;
+                
             let time=new Date().getTime();
             
             let final_items=[];
@@ -143,6 +146,8 @@ export default {
             }
             localStorage.setItem('budgeting_finish',JSON.stringify(time));
             localStorage.setItem('final_items',JSON.stringify(final_items));
+
+            await this.$parent.addExperiment();
             this.$router.push("/Consistency");
 
         }
@@ -194,6 +199,7 @@ export default {
             float: left;
             width: 100%;
             padding: 10px;
+            margin-left: 400px;
         }
         .apexchart{
             position:relative;

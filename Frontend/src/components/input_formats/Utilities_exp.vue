@@ -12,7 +12,7 @@
                 <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                     <u><b> What you need to do</b></u>
                     <br>
-                    <a> You need to distribute {{(budget).toLocaleString({ style: 'currency'})}} pounds among the projects. The more money you assign to a project, the more important it is to build.</a>
+                    <a> You need to distribute {{(budget).toLocaleString({ style: 'currency'})}} among the projects. The more money you assign to a project, the more important it is to build.</a>
                     <br><br>
                     <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
                 </div>
@@ -41,11 +41,11 @@
                         </b-card>
                     </template>
                 </b-table>
-                <b-alert style="text-align:center" v-if="!goodSum" show variant="danger">Please make sure the values add to {{(budget).toLocaleString({ style: 'currency'})}} </b-alert>
+                <b-alert style="text-align:center" v-if="!goodSum" show variant="danger">Please make sure the values add to a {{(budget).toLocaleString({ style: 'currency'})}} </b-alert>
                 <div style="float: right">
-                    <b-button variant="outline-primary" @click="resetTable">reset</b-button>
-                    <b-button variant="outline-primary" @click="normalize">Normalize</b-button>
-                    <b-button variant="outline-primary" @click="submit">Submit</b-button>
+                    <b-button variant="outline-primary" @click="resetTable" style="width: 100px;">Reset</b-button>
+                    <b-button variant="outline-primary" @click="normalize" style="margin-left:10px;width: 100px;">Normalize</b-button>
+                    <b-button variant="outline-primary" @click="submit" style="margin-left:10px;width: 100px;">Submit</b-button>
                 </div>
             </div>
             <div class='column3'>
@@ -61,6 +61,8 @@ import Map from '../Map.vue';
 import FilterGroup from '../FilterGroup.vue';
 import Instructions from '../Instructions.vue';
 
+const config = require("../../config.js");
+
 export default {
     components: { Map,apexchart:VueApexCharts,FilterGroup,Instructions },
     data(){
@@ -71,8 +73,8 @@ export default {
             items: JSON.parse(localStorage.getItem('items')).map(v => ({...v, given_value: 0})),
             fields: [ 
                 {key: "arrow", label: ''},
-                {key: "group", label: ''},
-                {key: "item_name", label: 'Item',sortable: true ,class:"text-center"},
+                {key: "group", label: 'Category'},
+                {key: "item_name", label: 'Project',sortable: true ,class:"text-center"},
                 {key: "range", label: ''},
                 {key: "given_value", label: 'value',
                 formatter: (value, key, item) => {
@@ -149,11 +151,15 @@ export default {
             this.currSum=0;
             this.$refs.moneyLabel.style.color = 'black';
         },
-        submit(){
+        async submit(){
             if(this.currSum!=this.budget){
                 this.goodSum=false;
                 return;
             }
+
+            if (!confirm("Once you press OK you can't go back and change your choices"))
+                return;
+
             let time=new Date().getTime();
             localStorage.setItem('budgeting_finish',JSON.stringify(time));
             let final_items=[];
@@ -161,9 +167,11 @@ export default {
                 final_items.push({item_id:item.item_id,item_name:item.item_name,item_value:item.given_value,item_price:item.item_value});
             });
             localStorage.setItem('final_items',JSON.stringify(final_items));
+
+            await this.$parent.addExperiment();
             this.$router.push("/Consistency");
 
-        }
+        },
     }
 }
 </script>
@@ -207,6 +215,7 @@ export default {
             float: left;
             width: 100%;
             padding: 10px;
+            margin-left: 400px;
         }
         .apexchart{
             position:relative;

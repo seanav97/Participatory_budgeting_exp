@@ -27,22 +27,22 @@
     <div v-else-if="voting_method==`Knapsack`">
         <h3>What you need to do: </h3>
         <br>
-        You need to select which items to take based on your budget limit of 500,000 dollars.
+        You need to select which projects you would like to see funded given a budget limit of $500,000.
         <br><br>
-        <b>Below is an example</b> of the interface you will be using shown for an imaginary citizen called John.
-        The projects that John finds most useful are:
+        <b>Below is an example</b> of the interface you will be using for an imaginary citizen called Alex.
+        The projects that Alex prefers are:
         <ul>
             <li>24H public toilet</li>
             <li>Laundry Access in Public Schools</li>
             <li>Let's Rest: Picnic Tables & Benches for Our Parks</li>
         </ul>
-        In the left area, you can also see how much budget John already used.
+        On the left you can see the total cost of the selected projects.
         <br><br>
         <img src="../assets/knapsack_example.png" width="90%" style="margin:auto; display:block">
         <br><br>
         <b>Note:</b>
         <br>
-            John can no longer add another project even through he has not exhausted his entire budget.
+            Alex can no longer add another project even through he has not exhausted his entire budget.
     </div>
     <div v-else-if="voting_method==`k_approval`">
         <h3>What you need to do: </h3>
@@ -106,8 +106,7 @@
         <b>Note:</b>
         <br>
             The interface you will use won’t include the columns “utility for John” and “Value for money”. 
-            You need to think independently about what is the utility for each project and compute the “value for money” for each project. 
-            Feel free to use a calculator or paper / pencil.
+            You need to think independently about what is the utility for each project and compute the “value for money” for each project.
 
     </div>
 

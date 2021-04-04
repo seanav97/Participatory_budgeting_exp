@@ -46,8 +46,8 @@
                     </b-table>
                     <b-alert style="text-align:center" v-if="!somethingSelected" show variant="danger">You must select some projects.</b-alert>
                     <div style="float: right">
-                        <b-button variant="outline-primary" @click="resetTable">reset</b-button>
-                        <b-button variant="outline-primary" @click="submit">Submit</b-button>
+                        <b-button variant="outline-primary" @click="resetTable" style="width: 70px;">Reset</b-button>
+                        <b-button variant="outline-primary" @click="submit" style="margin-left:10px;width: 70px;">Submit</b-button>
                     </div>
                 </div>
                 <div class='column3'>
@@ -74,7 +74,7 @@ export default {
             fields: [ 
                 {key: "arrow", label: ''},
                 {key: "group", label: ''},
-                {key: "item_name", label: 'Item',sortable: true ,class:"text-center"},
+                {key: "item_name", label: 'Project',sortable: true ,class:"text-center"},
                 { key: "info",label:'' },
                 { key: "select",label:'',class:"text-center" }
             ],
@@ -145,7 +145,10 @@ export default {
             });
             this.numberSelected=0;
         },
-        submit(){
+        async submit(){    
+            if (!confirm("Once you press OK you can't go back and change your choices"))
+                return;
+                        
             let time=new Date().getTime();
             let final_items=[];
             let itemsSelected=0;
@@ -165,6 +168,8 @@ export default {
     
             localStorage.setItem('budgeting_finish',JSON.stringify(time));
             localStorage.setItem('final_items',JSON.stringify(final_items));
+
+            await this.$parent.addExperiment();
             this.$router.push("/Consistency");
 
         }
@@ -215,6 +220,7 @@ export default {
             float: left;
             width: 100%;
             padding: 10px;
+            margin-left: 400px;
         }
         .apexchart{
             position:relative;

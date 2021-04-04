@@ -7,14 +7,14 @@
                 <div class='column1'>
                     <div class="apexchart"><apexchart type="pie" width="300" :options="chartOptions" :series="series[0].data"></apexchart></div>
                     <p style="position:relative;left:5%;" >
-                       <b>Money spent:</b> {{money_spent.toLocaleString({ style: 'currency'})}}
+                       <b>Money spent:</b> {{money_spent.toLocaleString('ja-JP',{ style: 'currency',currency: 'USD',maximumFractionDigits:0})}}
                        <br><br>
-                       <span ref="moneyLabel"><b>Budget left:</b> {{(budget-money_spent).toLocaleString({ style: 'currency'})}}</span>
+                       <span ref="moneyLabel"><b>Budget left:</b> {{(budget-money_spent).toLocaleString('ja-JP',{ style: 'currency',currency: 'USD',maximumFractionDigits:0})}}</span>
                     </p>
                     <div class="instruction">
                         <u><b> What you need to do</b></u>
                         <br>
-                        <a> You need to select which projects to build based on the budget of {{(budget).toLocaleString({ style: 'currency'})}} pounds.</a>
+                        <a> You need to select which projects to build based on the budget of {{(budget).toLocaleString('ja-JP',{ style: 'currency',currency: 'USD',maximumFractionDigits:0})}}.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
                     </div>
@@ -44,8 +44,8 @@
                     </b-table>
                     <b-alert style="text-align:center" v-if="!somethingSelected" show variant="danger">You must select some projects.</b-alert>
                     <div style="float: right">
-                        <b-button variant="outline-primary" @click="resetTable">reset</b-button>
-                        <b-button variant="outline-primary" @click="submit">Submit</b-button>
+                        <b-button variant="outline-primary" @click="resetTable" style="width: 70px;">Reset</b-button>
+                        <b-button variant="outline-primary" @click="submit" style="margin-left:10px;width: 70px;">Submit</b-button>
                     </div>
                 </div>
                 <div class="column3">
@@ -78,11 +78,11 @@ export default {
         //for table
         fields: [ 
             {key: "arrow", label: ''},
-            {key: "group", label: ''},
-            {key: "item_name", label: 'Item',sortable: true ,class:"text-center"},
-            { key: "item_value", label: 'Price (pounds)',sortable: true,class:"text-center",
+            {key: "group", label: 'Category'},
+            {key: "item_name", label: 'Project',sortable: true ,class:"text-center"},
+            { key: "item_value", label: 'Price',sortable: true,class:"text-center",
                 formatter: (value, key, item) => {
-                    return value.toLocaleString({ style: 'currency'});
+                    return value.toLocaleString('ja-JP',{ style: 'currency',currency: 'USD',maximumFractionDigits:0});
                 }
             },
             // { key: "info",label:'' },
@@ -97,7 +97,8 @@ export default {
             legend: {
                   position: 'top'
                 },
-            colors: ['#EAEAEA', '#BFC0C2']
+            // colors: ['#EAEAEA', '#BFC0C2']
+            colors: ['#87E778', '#EE6259']
         },
         series: [{data:[500000,0]}] ,
         somethingSelected:true
@@ -155,7 +156,10 @@ export default {
             this.$refs.map.changeOpacity(item.item_name,0.3);
         });
     },
-    submit(){
+    async submit(){
+        if (!confirm("Once you press OK you can't go back and change your choices"))
+                return;
+                
         let final_items=[];
         let itemsSelected=0;
         this.items.forEach(item => {
@@ -175,6 +179,8 @@ export default {
         let time=new Date().getTime();
         localStorage.setItem('budgeting_finish',JSON.stringify(time));
         localStorage.setItem('final_items',JSON.stringify(final_items));
+
+        await this.$parent.addExperiment();
         this.$router.push("/Consistency");
 
     }
@@ -248,6 +254,7 @@ export default {
             float: left;
             width: 100%;
             padding: 10px;
+            margin-left: 400px;
         }
         .apexchart{
             position:relative;

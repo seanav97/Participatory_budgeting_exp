@@ -10,14 +10,14 @@
                     <b-card style="background-color:#e8e8e8;">
                         <h4 class="q-title" >Question 1</h4>
                         <div class="q-body" >
-                            <h4>{{questions.q1.q}}</h4>
+                            <h4 style="white-space: pre">{{questions.q1.q}}</h4>
                             <br>
                             <el-form-item prop="q1">
                                 <el-radio-group v-model="formInline.question1">
-                                    <el-radio :label="1">{{questions.q1.ans1}}</el-radio><br>
-                                    <el-radio :label="2">{{questions.q1.ans2}}</el-radio><br>
-                                    <el-radio :label="3">{{questions.q1.ans3}}</el-radio><br>
-                                    <el-radio :label="4">{{questions.q1.ans4}}</el-radio><br>
+                                    <el-radio style="white-space: pre" :label="1">{{questions.q1.ans1}}</el-radio><br>
+                                    <el-radio style="white-space: pre" :label="2">{{questions.q1.ans2}}</el-radio><br>
+                                    <el-radio style="white-space: pre" :label="3">{{questions.q1.ans3}}</el-radio><br>
+                                    <el-radio style="white-space: pre" :label="4">{{questions.q1.ans4}}</el-radio><br>
                                 </el-radio-group>
                             </el-form-item>
                         </div>
@@ -26,14 +26,14 @@
                     <b-card style="background-color: #e8e8e8;">
                         <h4 class="q-title">Question 2</h4>
                         <div class="q-body">
-                            <h4> {{questions.q2.q}}</h4>
+                            <h4 style="white-space: pre"> {{questions.q2.q}}</h4>
                             <br>
                             <el-form-item prop="q2">
                                 <el-radio-group v-model="formInline.question2" type="vertical">
-                                    <el-radio :label="1">{{questions.q2.ans1}}</el-radio><br>
-                                    <el-radio :label="2">{{questions.q2.ans2}}</el-radio><br>
-                                    <el-radio :label="3">{{questions.q2.ans3}}</el-radio><br>
-                                    <el-radio :label="4">{{questions.q2.ans4}}</el-radio><br>
+                                    <el-radio style="white-space: pre" :label="1">{{questions.q2.ans1}}</el-radio><br>
+                                    <el-radio style="white-space: pre" :label="2">{{questions.q2.ans2}}</el-radio><br>
+                                    <el-radio style="white-space: pre" :label="3">{{questions.q2.ans3}}</el-radio><br>
+                                    <el-radio style="white-space: pre" :label="4">{{questions.q2.ans4}}</el-radio><br>
                                 </el-radio-group>
                             </el-form-item>
                         </div>
@@ -43,16 +43,16 @@
                     <b-card style="background-color: #e8e8e8;">
                         <h4 class="q-title">Question 3</h4>
                         <div class="q-body">
-                            <h4> {{questions.q3.q}}</h4>
+                            <h4 style="white-space: pre"> {{questions.q3.q}}</h4>
                             <br>
                             <!-- <img class="quizimage" src="../assets/‏‏knapsack_example.png" > -->
                             <img class="quizimage" :src="getImageURL(this.voting_method+'1')" >
                             <el-form-item prop="q3" style="float:left;position:relative">
                                 <el-radio-group v-model="formInline.question3" type="vertical">
-                                    <el-radio style="margin-top:50px" :label="1">{{questions.q3.ans1}}</el-radio><br>
-                                    <el-radio style="margin-top:70px" :label="2">{{questions.q3.ans2}}</el-radio><br>
-                                    <el-radio style="margin-top:70px" :label="3">{{questions.q3.ans3}}</el-radio><br>
-                                    <el-radio style="margin-top:70px" :label="4">{{questions.q3.ans4}}</el-radio><br>
+                                    <el-radio style="margin-top:50px;white-space: pre" :label="1">{{questions.q3.ans1}}</el-radio><br>
+                                    <el-radio style="margin-top:70px;white-space: pre" :label="2">{{questions.q3.ans2}}</el-radio><br>
+                                    <el-radio style="margin-top:70px;white-space: pre" :label="3">{{questions.q3.ans3}}</el-radio><br>
+                                    <el-radio style="margin-top:70px;white-space: pre" :label="4">{{questions.q3.ans4}}</el-radio><br>
                                 </el-radio-group>
                             </el-form-item>
                         </div>
@@ -61,16 +61,16 @@
                     <b-card style="background-color: #e8e8e8;">
                         <h4 class="q-title">Question 4</h4>
                         <div class="q-body">
-                            <h4> {{questions.q4.q}}</h4>
+                            <h4 style="white-space: pre"> {{questions.q4.q}}</h4>
                             <br>
                             <!-- <img class="quizimage" src="../assets/‏‏knapsack_empty_example.png"> -->
                             <img class="quizimage" :src="getImageURL(this.voting_method+'2')">
                             <el-form-item prop="q4" style="float:left;position:relative">
                                 <el-radio-group v-model="formInline.question4" type="vertical">
-                                    <el-radio style="margin-top:50px" :label="1">{{questions.q4.ans1}}</el-radio><br>
-                                    <el-radio style="margin-top:70px" :label="2">{{questions.q4.ans2}}</el-radio><br>
-                                    <el-radio style="margin-top:70px" :label="3">{{questions.q4.ans3}}</el-radio><br>
-                                    <el-radio style="margin-top:70px" :label="4">{{questions.q4.ans4}}</el-radio><br>
+                                    <el-radio style="margin-top:50px;white-space: pre" :label="1">{{questions.q4.ans1}}</el-radio><br>
+                                    <el-radio style="margin-top:70px;white-space: pre" :label="2">{{questions.q4.ans2}}</el-radio><br>
+                                    <el-radio style="margin-top:70px;white-space: pre" :label="3">{{questions.q4.ans3}}</el-radio><br>
+                                    <el-radio style="margin-top:70px;white-space: pre" :label="4">{{questions.q4.ans4}}</el-radio><br>
                                 </el-radio-group>
                             </el-form-item>
                         </div>
@@ -120,8 +120,8 @@ export default {
             else return new Promise((resolve, reject) => {resolve(true)});
         },    
         getImageURL(img){
-        return require('../assets/quiz_examples/'+img+'.png');
-    },
+            return require('../assets/quiz_examples/'+img+'.png');
+        },
     }
 }
 </script>
@@ -139,6 +139,7 @@ export default {
     float: left;
     margin-top:65px;
     padding-right: 40px;
+    white-space: pre
 }
 .quizimage{
     margin-left:30px;
@@ -146,9 +147,9 @@ export default {
     width:650px;
 }
 
-.el-radio,h4{
-    white-space: normal
-}
+/* .el-radio,h4{
+    white-space: normal,
+} */
 
 @media (max-width:900px) {
     .q-body{

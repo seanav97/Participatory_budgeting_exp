@@ -89,13 +89,13 @@ export default {
                 {
                     q1:`Was "`+ random_items[0].item_name +`" one of your choices?`,
                     q2:`Was "`+random_items[1].item_name+`" one of your choices?`,
-                    q3:`Did you select any projects that cost 100,000 pounds or more?`
+                    q3:`Did you select any projects that cost $100,000 or more?`
                 },
                 Utilities:
                 {
                     q1:`Was "`+random_items[0].item_name+`" your highest rated choise?`,
                     q2:`Was "`+random_items[1].item_name+`" your lowest rated choice?`,
-                    q3:`Did you assign some project with 250,000 pounds or more?`
+                    q3:`Did you assign some project with 25 points or more?`
                 },
                 k_approval:
                 {
@@ -111,9 +111,9 @@ export default {
                 },
                 Ranking_value_money:
                 {
-                    q1:`Was "`+random_items[0].item_name+ `" higher in "value for money" in your ranking than "`+random_items[1].item_name+`"?`,
-                    q2:`Was "`+random_items[1].item_name+ `" higher in "value for money" in your ranking than "`+random_items[2].item_name+`"?`,
-                    q3:`Was "`+random_items[2].item_name+ `" higher in "value for money" in your ranking than "`+random_items[3].item_name+`"?`
+                    q1:`Did you rank "`+random_items[0].item_name+ `" higher than "`+random_items[1].item_name+`"?`,
+                    q2:`Did you rank "`+random_items[1].item_name+ `" higher than "`+random_items[2].item_name+`"?`,
+                    q3:`Did you rank "`+random_items[2].item_name+ `" higher than "`+random_items[3].item_name+`"?`
                 },
                 Threshold:
                 {
@@ -128,7 +128,10 @@ export default {
         qAll: async function(){
             if(this.form.question1 == 0 || this.form.question2 == 0 || this.form.question3 == 0){
                 this.$loading(false);
-                return new Promise((resolve, reject) => {reject(new Error('You must answer all questions'))});
+                // let html ="<html> <body> ##Name## </body> </html>";
+                // let ResultHtml = html.replace("##Name##","<b>blabla</b>");
+                // return new Promise((resolve, reject) => {reject(new Error(ResultHtml))});
+                return new Promise((resolve, reject) => {reject(new Error('<b>You must answer all questions</b>'))});
             }
             let q1=false;
             let q2=false;
@@ -146,7 +149,7 @@ export default {
             if(this.voting_method=='Utilities'){
                 q1_answer=this.selected.some(cell => cell.item_name === this.random_items[0].item_name);
                 q2_answer=this.selected.some(cell => cell.item_name === this.random_items[1].item_name);
-                q3_answer=Math.max.apply(Math, this.selected.map(function(o) { return o.item_value; })) > 250000;
+                q3_answer=Math.max.apply(Math, this.selected.map(function(o) { return o.item_value; })) > 25;
             }
             if(this.voting_method=='k_approval'){
                 q1_answer=this.selected.some(cell => cell.item_name === this.random_items[0].item_name);
@@ -206,28 +209,14 @@ export default {
                 });
             })
             .then(async (consistant_value)=>{
-                let participant_ID=localStorage.getItem("participant_ID");
-                let time=localStorage.getItem("startTime");
-                let tutorial_time=parseInt(localStorage.getItem("tutorial_finish"))-parseInt(localStorage.getItem("consent_finish"));
-                let quiz_time=parseInt(localStorage.getItem("quiz_finish"))-parseInt(localStorage.getItem("tutorial_finish"));
-                let response_time=parseInt(localStorage.getItem("budgeting_finish"))-parseInt(localStorage.getItem("budgeting_start"));
                 let consistant=consistant_value;
-                let items=JSON.parse(localStorage.getItem("final_items"));
-                let participant_info=JSON.parse(localStorage.getItem("participant_info"));
-                // let servername=localStorage.getItem('server');
+                let experiment_id=localStorage.getItem("experiment_id");
                 try {
-                    const experiment_id=await this.axios.post("http://"+config.data.server+"/addExperiment",{
-                        participant_ID:participant_ID,
-                        time:time,
-                        tutorial_time:tutorial_time,
-                        quiz_time:quiz_time,
-                        response_time:response_time,
-                        consistant:consistant,
-                        items:items,
-                        participant_info:participant_info
+                    await this.axios.post("http://"+config.data.server+"/addConsistency",{
+                        
+                        experiment_id:experiment_id,
+                        consistant:consistant
                     });
-                    localStorage.clear();
-                    localStorage.setItem('experiment_id',experiment_id.data.experiment_id);
                 } 
                 catch (error) {
                     console.log(error);
@@ -235,11 +224,8 @@ export default {
                 }
             })
             .then(()=>{
-                // this.finished=true;
                 this.$loading(false);
-                // this.$router.push("/Feedback_quiz");
                 this.$router.push({ name: 'Feedback_quiz', params: {isConsistent: this.isConsistent }});
-
             });
 
         }

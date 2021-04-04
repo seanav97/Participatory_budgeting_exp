@@ -4,32 +4,39 @@
         <h2 style="text-align: center"><u>Step 1: Consent</u></h2>
         <br>
         <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
-            <p>Please consider this information carefully before deciding whether to accept this task.</p>
+            <p>Please consider the following carefully before accepting the task.</p>
             <hr>
-            <p><strong>PURPOSE OF RESEARCH:</strong> To understand people’s preferences about what to take to a mission to a desert island.</p>
+            <p><strong>PURPOSE OF RESEARCH:</strong> To understand people’s preferences regarding the allocation of public budget and to evaluate the effectiveness of various decision-making algorithms.</p>
             <hr>
-            <p><strong>WHAT YOU WILL DO:</strong> {{this.getTodo()}}</p>
+            <!-- <p><strong>WHAT YOU WILL DO:</strong> {{this.getTodo()}}</p> -->
+            <p><strong>WHAT YOU WILL DO:</strong> You will provide your preferences regarding how to distribute a public budget in a hypothetical scenario. In such a scenario, you may be asked to evaluate how much you like a spending plan given your preferences, or how adequate you think a spending plan is given other people’s preferences.</p>
             <hr>
             <p><strong>TIME REQUIRED:</strong> Participation will take approximately 4 minutes.</p>
             <hr>
             <p><strong>RISKS:</strong> There are no anticipated risks associated with participating in this study. The effects of participating should be comparable to those you would experience from viewing a computer monitor for 4 minutes and using a mouse.</p>
             <hr>
-            <p><strong>COMPENSATION:</strong> Upon completion of this task, you will receive a code to enter on the Amazon Mechanical Turk task page, and you will receive the amount that was indicated on the task page.</p>
+            <p><strong>COMPENSATION:</strong> Upon completion of this task, you will receive a base payment of $0.5. Furthermore, you can win a bonus payment of $0.5.</p>
             <hr>
-            <p><strong>CONFIDENTIALITY:</strong> Your participation in this study will remain confidential. Your responses will be assigned a code number. You will NOT be asked to provide your name. You will be asked to provide your age and gender. Throughout the experiment, we may collect data such as browser type, operating system version, mouse movements, and error rates.</p>
+            <p><strong>CONFIDENTIALITY:</strong> You will be asked to provide your age and gender.</p>
             <hr>
-            <p><strong>PARTICIPATION AND WITHDRAWAL:</strong> Your participation in this study is voluntary, and you may withdraw and return the task to Amazon Mechanical Turk at any time. You will receive a compensation only if you complete the task. You may withdraw at any time by closing the web page of the task.</p>
+            <p><strong>PARTICIPATION AND WITHDRAWAL:</strong> our participation in this study is voluntary, and you may withdraw and return the task to Amazon Mechanical Turk at any time by closing the web page of the task. You will receive a compensation only if you complete the task.</p>
+            <hr>
+            <p><strong>CONTACT:</strong> If you have any questions, concerns or complaints about this research study, please contact the researcher for this study at blahBLAHblah@gmail.com.<br> Additionally, if you have any questions about your rights as participants in this experiment, please contact the Research Oversight and Compliance Office - Human Research Ethics Program at the University of Toronto (ethics.review@utoronto.ca, 416-946-3273).</p>
             <hr>
             <p><strong>AGREEMENT:</strong> The nature and purpose of this research have been sufficiently explained and I agree to participate in this study. I understand that I am free to withdraw at any time.</p>
         </b-card>
     </fieldset>
     <div style="text-align: center">
-        <el-form :inline="true" :model="formInline" class="demo-form-inline" :rules="rules" ref="ruleForm">
-            <el-form-item label="temp" prop="agree">
-                <span slot="label"><b>Do you agree and will participate in this study?</b></span>
+        <el-form :inline="true" :model="formInline" class="demo-form-inline" :rules="rules" ref="ruleForm" >
+            <!-- <el-form-item label="temp" prop="agree">
+                <span slot="label"><b>Do you agree to participate in this study?</b></span>
                 <el-select v-model="formInline.agree" placeholder=" ">
                     <el-option label="Yes" value="Yes"></el-option>
                 </el-select>
+            </el-form-item> -->
+            <el-form-item label="temp" prop="check_agree">
+                <span slot="label"><b>Do you agree to participate in this study?</b></span>
+                <el-checkbox v-model="formInline.check_agree"></el-checkbox>
             </el-form-item>
         </el-form>
     </div>
@@ -43,14 +50,16 @@ export default {
     data() {
         return {
             formInline: {
-                agree: ''
+                // agree: '',
+                check_agree:false
             },
             rules: {
-                agree: {
-                    required: true,
-                    message: 'You must agree to participate',
-                    trigger: 'change'
-                },
+                check_agree:[{ validator: this.validateAgreement,trigger: 'blur'}],
+                // agree: {
+                //     required: true,
+                //     message: 'You must agree to participate',
+                //     trigger: 'change'
+                // },
             }
         }
     },
@@ -58,7 +67,7 @@ export default {
         getTodo(){
             let voting_method=localStorage.getItem('voting_method');
             if(voting_method=='Knapsack')
-                return 'You will select  how to distribute a budget of 500,000 pound, by selecting from a list of items.';
+                return 'You will select how to distribute a budget of $500,000, by selecting from a list of items.';
             else if(voting_method=='k_approval')
                 return 'You need to select up to 5 projects from a list of 10. There are no right or wrong answers to this task.';
             else if(voting_method=='Ranking_value')
@@ -66,9 +75,16 @@ export default {
             else if(voting_method=='Ranking_value_money')
                 return 'Rank the projects by "value for money" according to your best judgement.';
             else if(voting_method=='Threshold')
-                return 'If 500,000 pounds are divided among the projects based on their importance, which projects do you think should get at least 50,000?';
+                return 'If $500,000 are divided among the projects based on their importance, which projects do you think should get at least 50,000?';
             else if(voting_method=='Utilities')
-                return 'You will be asked to distribute 500,000 pounds among 10 projects.';
+                return 'You will be asked to distribute $500,000 among 10 projects.';
+        },
+        validateAgreement: async function(){
+            if (this.formInline.check_agree==false) 
+            {
+                return new Promise((resolve, reject) => {reject(new Error('You must agree to participate'))});
+            }
+            else return new Promise((resolve, reject) => {resolve(true)});
         }
     }
 }   

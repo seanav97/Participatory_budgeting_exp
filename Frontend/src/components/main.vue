@@ -68,4 +68,12 @@ export default {
 </script>
 
 <style>
-
+#map
+    {
+        background-image: url('../assets/city_digital1.png');
+        background-size:cover;
+        /* background-repeat: no-repeat; */
+        width: 600px;
+        height: 600px;
+    }
+</style>

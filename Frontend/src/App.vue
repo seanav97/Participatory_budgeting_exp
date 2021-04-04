@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!-- <router-view></router-view> -->
     <div v-if="!server_error" id="connection good">
         <router-view v-if='!userBlacklisted && !userAllreadyExists'></router-view>
         <div v-else-if='userBlacklisted' style="width:80%;padding-left: 25%;font-size: 50px;">
@@ -108,7 +109,45 @@ export default {
         this.server_error=true;
       }
       
-    }
+    },
+
+    async addExperiment(){
+            this.$loading(true);
+
+            new Promise((resolve, reject) => {
+                resolve(0);
+            })
+            .then(async ()=>{
+                let participant_ID=localStorage.getItem("participant_ID");
+                let time=localStorage.getItem("startTime");
+                let tutorial_time=parseInt(localStorage.getItem("tutorial_finish"))-parseInt(localStorage.getItem("consent_finish"));
+                let quiz_time=parseInt(localStorage.getItem("quiz_finish"))-parseInt(localStorage.getItem("tutorial_finish"));
+                let response_time=parseInt(localStorage.getItem("budgeting_finish"))-parseInt(localStorage.getItem("budgeting_start"));
+                let items=JSON.parse(localStorage.getItem("final_items"));
+                let participant_info=JSON.parse(localStorage.getItem("participant_info"));
+                // let servername=localStorage.getItem('server');
+                try {
+                    const experiment_id=await this.axios.post("http://"+config.data.server+"/addExperiment",{
+                        participant_ID:participant_ID,
+                        time:time,
+                        tutorial_time:tutorial_time,
+                        quiz_time:quiz_time,
+                        response_time:response_time,
+                        items:items,
+                        participant_info:participant_info
+                    });
+                    localStorage.clear();
+                    localStorage.setItem('experiment_id',experiment_id.data.experiment_id);
+                } 
+                catch (error) {
+                    console.log(error);
+                    this.server_error=true;
+                }
+            })
+            .then(()=>{
+                this.$loading(false);
+            });
+        }
   }
 };
 </script>

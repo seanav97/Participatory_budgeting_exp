@@ -1,5 +1,5 @@
 <template>
-  <b-dropdown text="Filter different categories" variant="primary" class="m-2">
+  <b-dropdown text="Filter categories" variant="primary" class="m-2">
         <!-- <b-dropdown-form> -->
             <b-form-checkbox v-model="select_all" @change="checkAll($event)" style="display: inline;margin-left:5px">Select all</b-form-checkbox>
             <hr>

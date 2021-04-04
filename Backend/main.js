@@ -101,7 +101,7 @@ app.post("/addExperiment", async (req, res, next) => {
     const tutorial_time=req.body.tutorial_time;
     const quiz_time=req.body.quiz_time;
     const response_time=req.body.response_time;
-    const consistant=req.body.consistant;
+    const consistant=0;
     const items=req.body.items;
     const participant_info=req.body.participant_info;
 
@@ -122,6 +122,19 @@ app.post("/addExperiment", async (req, res, next) => {
 
 
     res.status(201).send({ experiment_id: exp_id[0]["max"]});
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post("/addConsistency", async (req, res, next) => {
+  try {
+    const experiment_id=req.body.experiment_id;
+    const consistant=req.body.consistant;
+    await DButils.executeQuery(`UPDATE EXPERIMMENTS SET ISCONSISTENT = '${consistant}'
+                                WHERE EXP_ID = '${experiment_id}';`);
+
+    res.status(201).send({ message: "consistency added"});
   } catch (error) {
     next(error);
   }

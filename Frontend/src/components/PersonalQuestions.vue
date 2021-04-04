@@ -1,6 +1,6 @@
 <template>
     <div >
-        <h2 style="text-align: center">Step 4: Just a few questions</h2>
+        <h2 style="text-align: center">Step 4: Demographic Questions</h2>
         <br><br>
         <el-form :inline="true" :model="form" class="demo-form-inline" :rules="rules" ref="ruleForm" >
             <b-card style="background-color: #e8e8e8;max-width:550px;margin:auto">
@@ -60,8 +60,8 @@ export default {
                 gender:'',
                 education:'',
             },
-            genders:[{value:'Male'},{value:'Female'}],
-            educations:[{value: 'Less that High School'},{value: 'High School/GED'},{value: 'College'},{value: 'Graduate degree'}]
+            genders:[{value:'Male'},{value:'Female'},{value:'Other'}],
+            educations:[{value: 'Less than High School'},{value: 'High School/GED'},{value: 'College'},{value: 'Graduate degree'}]
         }
     }
 }

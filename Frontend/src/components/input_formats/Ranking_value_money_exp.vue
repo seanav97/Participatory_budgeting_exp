@@ -64,9 +64,9 @@ export default {
                 {key: "group", label: '',class: 'text-right'},
 
                 // {key: "item_name", label: 'Project',class: 'text-left'},
-                { key: "item_value", label: 'Price (dollars)',sortable: true,class:"text-right",
+                { key: "item_value", label: 'Price',sortable: true,class:"text-right",
                     formatter: (value, key, item) => {
-                        return value.toLocaleString({ style: 'currency'});
+                        return value.toLocaleString('ja-JP',{ style: 'currency',currency: 'USD',maximumFractionDigits:0});
                     },
                     
                 },
@@ -123,7 +123,10 @@ export default {
         rowUnHovered(item){
             this.$refs.map.changeOpacity(item.item_name,0.6);
         },
-        submit(){
+        async submit(){
+            if (!confirm("Once you press OK you can't go back and change your choices"))
+                return;
+                
             let time=new Date().getTime();
             localStorage.setItem('budgeting_finish',JSON.stringify(time));
             let final_items=[];
@@ -133,6 +136,8 @@ export default {
                 final_items.push({item_id:item[0].item_id,item_name:item[0].item_name,item_value:value});
             });
             localStorage.setItem('final_items',JSON.stringify(final_items));
+
+            await this.$parent.addExperiment();
             this.$router.push("/Consistency");
 
         }
@@ -176,6 +181,7 @@ export default {
             float: left;
             width: 100%;
             padding: 10px;
+            margin-left: 400px;
         }
         .apexchart{
             position:relative;

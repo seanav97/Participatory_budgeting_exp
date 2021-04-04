@@ -30,19 +30,6 @@ async function dbQuery(databaseQuery) {
     console.log("Error", e.name);
     console.log("Error", e.message);
   }
-  // const conProm= await mysqlssh.connect(
-  //   {
-  //       host: '3.9.16.135',
-  //       user: 'ubuntu',
-  //       privateKey: fs.readFileSync('LightsailDefaultKey-eu-west-2.pem')
-  //   },
-  //   {
-  //       host: '127.0.0.1',
-  //       user: 'root',
-  //       password: 'mkmHAD20/',
-  //       database: 'expKobi'
-  //   }
-  // );
   
   return new Promise(data => {
     conProm.query(databaseQuery, function (error, result) {
@@ -66,52 +53,62 @@ async function dbQuery(databaseQuery) {
 
 }
 
+async function getDatabase(){
+  const Json2csvParser = require('json2csv').Parser;
+  const fastcsv = require("fast-csv");
+  const fs = require("fs");
 
-// exports.execQuery = async function (query) {
-//   let res;
-//   const conProm= await mysqlssh.connect(
-//     {
-//         host: '3.9.16.135',
-//         user: 'ubuntu',
-//         privateKey: fs.readFileSync('LightsailDefaultKey-eu-west-2.pem')
-//     },
-//     {
-//         host: '127.0.0.1',
-//         user: 'root',
-//         password: 'mkmHAD20/',
-//         database: 'expKobi'
-//     }
-//   );
+  let experiments= await dbQuery('select * from EXPERIMMENTS');
+  let arranged_items= await dbQuery('select * from ARRANGED_ITEMS');
+  let blacklist= await dbQuery('select * from BLACKLIST');
+  let exp_items= await dbQuery('select * from EXP_ITEMS');
+  let items= await dbQuery('select * from ITEMS');
+  let participants= await dbQuery('select * from PARTICIPANTS');
+  const experiments_json = JSON.parse(JSON.stringify(experiments));
+  // const experimentsFields = ['id', 'name', 'address', 'age'];
+  const arranged_items_json = JSON.parse(JSON.stringify(arranged_items));
+  const blacklist_json = JSON.parse(JSON.stringify(blacklist));
+  const exp_items_json = JSON.parse(JSON.stringify(exp_items));
+  const items_json = JSON.parse(JSON.stringify(items));
+  const participants_json = JSON.parse(JSON.stringify(participants));
 
-//   return await new Promise((res, rej) => {
-//     conProm.query(query, function (err, results, fields) {
-//           if (err) throw err
-//           mysqlssh.close();
-//           // Promise.resolve(results);
-//           // return res;
-//       });
-//   });
-//   let dd=0;
+  fastcsv
+      .write(experiments_json, { headers: true })
+      .on("finish", function() {
+        console.log("Write to experiments.csv successfully!");
+      })
+      .pipe(fs.createWriteStream("csv/experiments.csv"));
+  fastcsv
+      .write(arranged_items_json, { headers: true })
+      .on("finish", function() {
+        console.log("Write to arranged_items.csv successfully!");
+      })
+      .pipe(fs.createWriteStream("csv/arranged_items.csv")); 
+  fastcsv
+      .write(blacklist_json, { headers: true })
+      .on("finish", function() {
+        console.log("Write to blacklist.csv successfully!");
+      })
+      .pipe(fs.createWriteStream("csv/blacklist.csv"));
+  fastcsv
+      .write(exp_items_json, { headers: true })
+      .on("finish", function() {
+        console.log("Write to exp_items.csv successfully!");
+      })
+      .pipe(fs.createWriteStream("csv/exp_items.csv"));
+  fastcsv
+      .write(items_json, { headers: true })
+      .on("finish", function() {
+        console.log("Write to items.csv successfully!");
+      })
+      .pipe(fs.createWriteStream("csv/items.csv"));
+  fastcsv
+      .write(participants_json, { headers: true })
+      .on("finish", function() {
+        console.log("Write to participants.csv successfully!");
+      })
+      .pipe(fs.createWriteStream("csv/participants.csv"));
 
+}
 
-
-  // const queryProm=await conProm.then(client => {
-  //   res=client.query(query, function (err, results, fields) {
-  //       if (err) throw err
-  //       res=results;
-  //       mysqlssh.close();
-  //       Promise.resolve(results);
-  //       // return res;
-  //   })
-  // });
-
-  // queryProm.then((res)=>{
-  //   return res;
-  // });
-  // return queryPromp;
-  // let x=0;
-  // return res;
-  // .catch(err => {
-  //   console.log(err)
-  // })
-// };
+getDatabase();
