@@ -60,8 +60,8 @@ export default {
       let blacklistedResponse = null;
       let existsResponse = null;
       try {
-        blacklistedResponse = await this.axios.get("http://"+config.data.server+"/isBlacklisted/participant_ID/"+participant_ID);
-        existsResponse = await this.axios.get("http://"+config.data.server+"/userExists/participant_ID/"+participant_ID);
+        blacklistedResponse = await this.axios.get("https://"+config.data.server+"/isBlacklisted/participant_ID/"+participant_ID);
+        existsResponse = await this.axios.get("https://"+config.data.server+"/userExists/participant_ID/"+participant_ID);
       } 
       catch (error) {
         this.server_error=true;
@@ -83,7 +83,7 @@ export default {
       let configs=null;
       try 
       {
-        configs = await this.axios.get("http://"+config.data.server+"/config");
+        configs = await this.axios.get("https://"+config.data.server+"/config");
       } 
       catch (error) {
         console.log(error);
@@ -100,7 +100,7 @@ export default {
     async blacklistUser(){
       const participant_ID=JSON.parse(localStorage.getItem('participant_ID'));
       try {
-        await this.axios.post("http://"+config.data.server+"/insertToBlacklist",{
+        await this.axios.post("https://"+config.data.server+"/insertToBlacklist",{
           partisipant_ID:participant_ID
         });
       } 
@@ -127,7 +127,7 @@ export default {
                 let participant_info=JSON.parse(localStorage.getItem("participant_info"));
                 // let servername=localStorage.getItem('server');
                 try {
-                    const experiment_id=await this.axios.post("http://"+config.data.server+"/addExperiment",{
+                    const experiment_id=await this.axios.post("https://"+config.data.server+"/addExperiment",{
                         participant_ID:participant_ID,
                         time:time,
                         tutorial_time:tutorial_time,

@@ -212,7 +212,7 @@ export default {
                 let consistant=consistant_value;
                 let experiment_id=localStorage.getItem("experiment_id");
                 try {
-                    await this.axios.post("http://"+config.data.server+"/addConsistency",{
+                    await this.axios.post("https://"+config.data.server+"/addConsistency",{
                         
                         experiment_id:experiment_id,
                         consistant:consistant

@@ -106,7 +106,7 @@ export default {
             let interface_ans=answers.interface_ans;
             this.$loading(true);
             let experiment_id=localStorage.getItem("experiment_id");
-            await this.axios.post("http://"+config.data.server+"/addFeedback",{
+            await this.axios.post("https://"+config.data.server+"/addFeedback",{
                 experiment_id:experiment_id,
                 q_ease:ease_ans,
                 q_interface:interface_ans,
