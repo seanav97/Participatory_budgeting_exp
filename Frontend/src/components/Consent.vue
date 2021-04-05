@@ -36,7 +36,7 @@
             </el-form-item> -->
             <el-form-item label="temp" prop="check_agree">
                 <span slot="label"><b>Do you agree to participate in this study?</b></span>
-                <el-checkbox v-model="formInline.check_agree"></el-checkbox>
+                <el-checkbox size="big" v-model="formInline.check_agree"></el-checkbox>
             </el-form-item>
         </el-form>
     </div>

@@ -64,7 +64,7 @@ export default {
             initial_items: this.getArrayItems(),
             fields: [ 
                 {key: "details", label: 'Project',class: 'text-center'},
-                {key: "group", label: '',class: 'text-right'},
+                {key: "group", label: 'Category',class: 'text-right'},
                 // {key: "item_name", label: 'Project',class: 'text-center'},
             ]
         }

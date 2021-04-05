@@ -5,6 +5,6 @@ module.exports = {
   devServer: {
     host: "localhost"
   },
-  publicPath: '/participitory_budgeting/'
+  // publicPath: '/participitory_budgeting/'
   // publicPath: process.env.NODE_ENV === "production" ? "/dist/" : "/"};
 };

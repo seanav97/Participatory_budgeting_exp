@@ -13,7 +13,7 @@ async function dbQuery(databaseQuery) {
   try {
     conProm= await mysqlssh.connect(
       {
-          host: '18.168.12.179',
+          host: '3.8.178.219',
           user: 'ubuntu',
           privateKey: fs.readFileSync('LightsailDefaultKey-eu-west-2.pem')
       },

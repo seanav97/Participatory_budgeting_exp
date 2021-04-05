@@ -17,7 +17,7 @@
                     <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                         <u><b> What you need to do</b></u>
                         <br>
-                        <a> Select each of the following projects ONLY if the answer to the following question is YES: If {{(budget).toLocaleString('ja-JP',{ style: 'currency',currency: 'USD',maximumFractionDigits:0})}} are divided among the projects based on their importance, should this project get AT LEAST {{(budget/10).toLocaleString('ja-JP',{ style: 'currency',currency: 'USD',maximumFractionDigits:0})}} ? Use your best judgement.</a>
+                        <a> Select each of the following projects ONLY if the answer to the following question is YES: If 100 points are divided among the projects based on their importance, should this project get AT LEAST 10 points? Use your best judgement.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal1')" variant="outline-primary">Show instructions</b-button>
                     </div>
@@ -75,7 +75,7 @@ export default {
             //for table
             fields: [ 
                 {key: "arrow", label: ''},
-                {key: "group", label: ''},
+                {key: "group", label: 'Category'},
                 {key: "item_name", label: 'Project',sortable: true ,class:"text-center"},
                 { key: "info",label:'' },
                 { key: "select",label:'',class:"text-center" }

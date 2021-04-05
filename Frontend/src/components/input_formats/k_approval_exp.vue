@@ -73,7 +73,7 @@ export default {
             //for table
             fields: [ 
                 {key: "arrow", label: ''},
-                {key: "group", label: ''},
+                {key: "group", label: 'Category'},
                 {key: "item_name", label: 'Project',sortable: true ,class:"text-center"},
                 { key: "info",label:'' },
                 { key: "select",label:'',class:"text-center" }

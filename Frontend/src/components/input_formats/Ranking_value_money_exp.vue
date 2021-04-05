@@ -60,8 +60,8 @@ export default {
             items: this.getArrayItems(),
             initial_items: this.getArrayItems(),
             fields: [ 
+                // {key: "group", label: 'Category',class: 'text-right'},
                 {key: "details", label: 'Project',class: 'text-left'},
-                {key: "group", label: '',class: 'text-right'},
 
                 // {key: "item_name", label: 'Project',class: 'text-left'},
                 { key: "item_value", label: 'Price',sortable: true,class:"text-right",
@@ -70,6 +70,8 @@ export default {
                     },
                     
                 },
+                // {key: "utility", label: 'Utility',class: 'text-right'},
+                // {key: "rank", label: 'Ranking',class: 'text-right'},
             ],
         }
     },

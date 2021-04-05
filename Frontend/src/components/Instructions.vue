@@ -13,7 +13,7 @@
     </b-card>
     
     <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
-      <insturcionsTodo></insturcionsTodo>
+      <insturcionsTodo ref="todo"></insturcionsTodo>
     </b-card>
     <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
       <h3>Your payment:</h3>

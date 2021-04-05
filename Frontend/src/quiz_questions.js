@@ -6,7 +6,7 @@ export const data={
             q:"What is the main goal of this task?",
             ans1:"To think like Alex",
             ans2:"To distribute 100 items among 10 points according to how important you think each point is",
-            ans3:"To distribute 100 points among 10 items according to how important you think each item is",
+            ans3:"To distribute 100 points among 10 projects according to how important you think each project is",
             ans4:"To have fun"
         },
         q2:{
@@ -36,7 +36,7 @@ export const data={
             q:"What is the main goal of this task?",
             ans1:"To think like Alex",
             ans2:"To select what to take within a carrying capacity of 10 pounds from a list of 65 items.",
-            ans3:"To select what to take within a carrying capacity of 65 pounds from a list of 10 items.",
+            ans3:"To select from a list of 10 projects what projects to build based on a budget.",
             ans4:"To have fun"
         },
         q2:{
@@ -65,8 +65,8 @@ export const data={
         q1:{
             q:"What is the main goal of this task?",
             ans1:"To think like Alex",
-            ans2:"To select up to 10 items from a list of 5 items",
-            ans3:"To select up to 5 items from a list of 10 items",
+            ans2:"To select up to 10 projects from a list of 5 projects",
+            ans3:"To select up to 5 projects from a list of 10 projects",
             ans4:"To have fun"
         },
         q2:{
@@ -94,9 +94,9 @@ export const data={
     Ranking_value:{
         q1:{
             q:"Please select the correct answer:",
-            ans1:"Items at the TOP of the list are LESS important than items on the BOTTOM of the list.",
-            ans2:"Items at the BOTTOM of the list are MORE important than items on the TOP of the list.",
-            ans3:"Items at the TOP of the list are MORE important than items on the BOTTOM of the list.",
+            ans1:"Projects at the TOP of the list are LESS important than projects on the BOTTOM of the list.",
+            ans2:"Projects at the BOTTOM of the list are MORE important than projects on the TOP of the list.",
+            ans3:"Projects at the TOP of the list are MORE important than projects on the BOTTOM of the list.",
             ans4:"There are no differences"
         },
         q2:{
@@ -125,8 +125,8 @@ export const data={
         q1:{
             q:"What is the main goal of this task?",
             ans1:"To think like Alex",
-            ans2:"To select the items that I think should receive at least 100 points, given that 10 points are to be distributed among the items based on their importance.",
-            ans3:"To select the items that I think should receive at least 10 points, given that 100 points are to be distributed among the items based on their importance.",
+            ans2:"To select the projects that I think should receive at least 100 points, given that 10 points are to be distributed among the projects based on their importance.",
+            ans3:"To select the projects that I think should receive at least 10 points, given that 100 points are to be distributed among the projects based on their importance.",
             ans4:"To have fun"
         },
         q2:{
@@ -154,9 +154,9 @@ export const data={
     Ranking_value_money:{
         q1:{
             q:"Please select the correct answer:",
-            ans1:'Items at the TOP of the list are LOWER in "value for money" than items on the BOTTOM of the list',
-            ans2:'Items at the BOTTOM of the list are HIGHER in "value for money" than items on the TOP of the list',
-            ans3:'Items at the TOP of the list are HIGHER in "value for money" than items on the BOTTOM of the list',
+            ans1:'Projects at the TOP of the list are LOWER in "value for money" than projects on the BOTTOM of the list',
+            ans2:'Projects at the BOTTOM of the list are HIGHER in "value for money" than projects on the TOP of the list',
+            ans3:'Projects at the TOP of the list are HIGHER in "value for money" than projects on the BOTTOM of the list',
             ans4:'There are no differences'
         },
         q2:{

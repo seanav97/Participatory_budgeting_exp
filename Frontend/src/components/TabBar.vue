@@ -21,11 +21,11 @@
         <tab-content title="Consent" :before-change="validateFirstStep">
           <consent todo="You will select  how to distribute a budget of 500,000 pound, by selecting from a list of items." ref="consentComp"/>
         </tab-content>
-        <tab-content title="Demographic Questions" :before-change="scrollToTop">
+        <tab-content title="Demographic Questions" :before-change="validateDemografic">
           <personal-questions ref="persQuestions"/>
         </tab-content>
         <tab-content title="Instructions" :before-change="validateInstructions">
-          <instructions/>
+          <instructions ref="inst"/>
         </tab-content>
       <tab-content title="Quiz" :before-change="validateQuiz">
           <quizz ref="quizComp"/>
@@ -71,19 +71,8 @@ export default {
     methods: {
         onComplete: function(){
           return new Promise((resolve, reject) => {
-             this.$refs.persQuestions.$refs.ruleForm.validate((valid) => {
-               if(valid){
-                  let time=new Date().getTime();
-                  localStorage.setItem('budgeting_start',JSON.stringify(time));
-                  let participant_info={age:this.$refs.persQuestions.form.age,gender:this.$refs.persQuestions.form.gender,education:this.$refs.persQuestions.form.education,};
-                  localStorage.setItem('participant_info',JSON.stringify(participant_info));
-                  
-                  let voting_method=localStorage.getItem('voting_method');
-                  this.$router.push("/"+voting_method+"_exp");
-                  // this.$router.push("/Knapsack_exp");
-                 } 
-               resolve(valid);
-             });
+             let voting_method=localStorage.getItem('voting_method');
+              this.$router.push("/"+voting_method+"_exp");
            })
             
         },
@@ -94,6 +83,11 @@ export default {
                   let time=new Date().getTime();
                   localStorage.setItem('consent_finish',JSON.stringify(time));
                   this.scrollToTop();
+
+                  this.$refs.inst.$refs.todo.voting_method=localStorage.getItem('voting_method');
+                  this.$refs.quizComp.voting_method=localStorage.getItem('voting_method');
+                  this.$refs.quizComp.questions=require("../quiz_questions.js").data[localStorage.getItem('voting_method')];
+
                 } 
                resolve(valid);
              });
@@ -106,7 +100,27 @@ export default {
             this.scrollToTop();
             resolve(true);
           });
-          
+        },
+        validateDemografic:function(){
+          return new Promise((resolve, reject) => {
+             this.$refs.persQuestions.$refs.ruleForm.validate((valid) => {
+               if(valid){
+                  let time=new Date().getTime();
+                  localStorage.setItem('budgeting_start',JSON.stringify(time));
+                  let participant_info={age:this.$refs.persQuestions.form.age,gender:this.$refs.persQuestions.form.gender,education:this.$refs.persQuestions.form.education,};
+                  localStorage.setItem('participant_info',JSON.stringify(participant_info));
+                  
+
+                  this.scrollToTop();
+                  
+                  // let voting_method=localStorage.getItem('voting_method');
+                  // this.$router.push("/"+voting_method+"_exp");
+                  // this.$router.push("/Knapsack_exp");
+                 } 
+               resolve(valid);
+             });
+           })
+
         },
         validateQuiz:function() {
           return new Promise((resolve, reject) => {
@@ -114,13 +128,15 @@ export default {
                if(valid){
                 let time=new Date().getTime();
                 localStorage.setItem('quiz_finish',JSON.stringify(time));
-                this.scrollToTop();
+                // this.scrollToTop();
                }
                else{
                  this.$parent.blacklistUser();
                  this.$parent.$data.userBlacklisted=true;
                  localStorage.removeItem('participant_ID');
                }
+
+              
                resolve(valid);
              });
            })

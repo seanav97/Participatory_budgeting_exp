@@ -107,10 +107,16 @@ export default {
                 allQuestions: [{ validator: this.q1Vall,trigger: 'blur'}],
             },
             questions:questions.data[voting_method],
-            voting_method: localStorage.getItem('voting_method')
+            // voting_method: localStorage.getItem('voting_method')
+            voting_method: voting_method
         }
         
     },
+    mounted(){
+        this.voting_method= localStorage.getItem('voting_method');
+        this.questions=require("../quiz_questions.js").data[this.voting_method];
+    },
+
     methods:{
         q1Vall: async function(){
             if (this.formInline.question1 != 3 || this.formInline.question2 != 2 || this.formInline.question3 != 1 || this.formInline.question4 != 4) 
