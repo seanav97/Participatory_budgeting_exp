@@ -11,7 +11,7 @@
             <!-- <p><strong>WHAT YOU WILL DO:</strong> {{this.getTodo()}}</p> -->
             <p><strong>WHAT YOU WILL DO:</strong> You will provide your preferences regarding how to distribute a public budget in a hypothetical scenario. In such a scenario, you may be asked to evaluate how much you like a spending plan given your preferences, or how adequate you think a spending plan is given other people’s preferences.</p>
             <hr>
-            <p><strong>TIME REQUIRED:</strong> Participation will take approximately 4 minutes.</p>
+            <p><strong>TIME REQUIRED:</strong> Participation will take approximately 10-15 minutes.</p>
             <hr>
             <p><strong>RISKS:</strong> There are no anticipated risks associated with participating in this study. The effects of participating should be comparable to those you would experience from viewing a computer monitor for 4 minutes and using a mouse.</p>
             <hr>

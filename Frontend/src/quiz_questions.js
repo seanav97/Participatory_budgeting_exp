@@ -21,7 +21,7 @@ export const data={
             ans1:"Current total not equal to Target.\n      NORMALIZE button will fix it",
             ans2:"Some items are assigned 0 points",
             ans3:"Target is larger than the current total",
-            ans4:"Everything is normal, I can click on the CONTINUE \n      button and finish the task"
+            ans4:"Nothing is wrong, I can click on the CONTINUE \n      button and finish the task"
         },
         q4:{
             q:"Suppose Alex's ratings for the items are as shown below, which statement is true?",
@@ -48,14 +48,14 @@ export const data={
         },
         q3:{
             q:"What's wrong with clicking SUBMIT in the image below?",
-            ans1:"Everything is normal",
+            ans1:"Nothing is wrong",
             ans2:"Some items are unselected",
             ans3:"Current total is lower than the limit",
             ans4:"None of the items are selected"
         },
         q4:{
             q:"What's wrong with clicking SUBMIT in the image below?",
-            ans1:"Everything is normal",
+            ans1:"Nothing is wrong",
             ans2:"Some items are unselected",
             ans3:"Total is lower than the limit",
             ans4:"None of the items are selected"
@@ -78,14 +78,14 @@ export const data={
         },
         q3:{
             q:"What's wrong with clicking SUBMIT in the image below?",
-            ans1:"Everything is normal",
+            ans1:"Nothing is wrong",
             ans2:"Some items are unselected",
             ans3:"Current total is lower than the limit",
             ans4:"None of the items are selected"
         },
         q4:{
             q:"What's wrong with clicking SUBMIT in the image below?",
-            ans1:"Everything is normal",
+            ans1:"Nothing is wrong",
             ans2:"Some items are unselected",
             ans3:"Total number of items is lower than the limit",
             ans4:"None of the items are selected"
@@ -138,14 +138,14 @@ export const data={
         },
         q3:{
             q:"What's wrong with clicking SUBMIT in the image below?",
-            ans1:"Everything is normal",
+            ans1:"Nothing is wrong",
             ans2:"Some items are unselected",
             ans3:"Current total is lower than the limit",
             ans4:"None of the items are selected"
         },
         q4:{
             q:"What's wrong with clicking SUBMIT in the image below?",
-            ans1:"Everything is normal",
+            ans1:"Nothing is wrong",
             ans2:"Some items are unselected",
             ans3:"Total number of items is lower than the limit",
             ans4:"None of the items are selected"

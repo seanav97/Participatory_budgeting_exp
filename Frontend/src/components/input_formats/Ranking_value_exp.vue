@@ -17,15 +17,15 @@
                     </b-modal>
                 </div>
                 <div class='column2'>
+                    (click on a project to show more details)
                     <b-table head-variant="dark" :fields="fields" thead-class=""> </b-table>
-                    <draggable :forceFallback="true" v-model="items" @start="startDrag" @end="finishDrag" style="overflow-y:scroll; height:540px;margin-top:-15px">
+                    <draggable :forceFallback="true" v-model="items" @start="startDrag" @end="finishDrag" style="margin-top:-15px">
                         <div v-for="(item,index) in items" :key="index">
                             <br v-if="index==0">
-                            <b-table style="cursor: all-scroll;margin-top:-20px" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
-                                        ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
+                            <b-table @row-clicked="details" style="cursor: all-scroll;margin-top:-20px" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
+                                        ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered" class="table-">
                                 <template #cell(details)="row">
-                                    <img style="cursor: pointer;float: left;margin-right:10px" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
-                                    <!-- <b-button size="sm" disabled variant="primary" style="float: left;margin-left:10px;margin-top:0px;border-radius: 25px;">{{index+1}} )</b-button> -->
+                                    <!-- <img style="cursor: pointer;float: left;margin-right:10px" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails"> -->
                                     {{row.item.item_name}}
                                 </template>
                                 <template #row-details="row">
@@ -63,13 +63,16 @@ export default {
             items: this.getArrayItems(),
             initial_items: this.getArrayItems(),
             fields: [ 
-                {key: "details", label: 'Project',class: 'text-center'},
+                {key: "details", label: 'Project',class: 'text-left'},
                 {key: "group", label: 'Category',class: 'text-right'},
                 // {key: "item_name", label: 'Project',class: 'text-center'},
             ]
         }
     },
     methods:{
+        details (item, index, event) {
+            item._showDetails = !item._showDetails;
+        },
         getImageURL(img){
             return require('../../assets/'+img+'.png');
         },
@@ -94,7 +97,7 @@ export default {
             }
         },
         getArrayItems(){
-            let items=JSON.parse(localStorage.getItem('items'));
+            let items=JSON.parse(localStorage.getItem('items')).map(v => ({...v,_showDetails:false}));
             let arrayItems=[];
             items.forEach(item => {
                 let itemArray=[];
@@ -153,6 +156,9 @@ export default {
         content: "";
         display: table;
         clear: both;  
+    }
+    tr{
+        height: 50px;
     }
     @media (max-width:1300px){
         .column1 {

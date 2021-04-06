@@ -28,11 +28,11 @@
                 </div>
                 <div class='column2'>
                     <filter-group/>
-                    <b-table sticky-header="500px" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
-                             :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
-                        <template #cell(arrow)="row">
+                    <b-table  @row-clicked="details" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
+                             :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered" class="table-sm">
+                        <!-- <template #cell(arrow)="row">
                             <img style="cursor: pointer;" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
-                        </template>
+                        </template> -->
                         <template #cell(group)="row">
                             <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                         </template>
@@ -71,7 +71,7 @@ export default {
             budget:500000,
             numberSelected:0,
             somethingSelected:true,
-            items: JSON.parse(localStorage.getItem('items')),
+            items: JSON.parse(localStorage.getItem('items')).map(v => ({...v,_showDetails:false})),
             //for table
             fields: [ 
                 {key: "arrow", label: ''},
@@ -90,6 +90,9 @@ export default {
         },
     },
     methods:{
+        details (item, index, event) {
+            item._showDetails = !item._showDetails;
+        },
         update(e,row) {
             let currBudget=this.budget;
             if(e){
@@ -173,8 +176,11 @@ export default {
     }
     .row {
         content: "";
-    display: table;
-    clear: both;  
+        display: table;
+        clear: both;  
+    }
+    tr{
+        height: 45px;
     }
     @keyframes change {
         /* from { color: red; font-size: 140%; }

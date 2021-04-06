@@ -23,11 +23,11 @@
             </div>
             <div class='column2'>
                 <filter-group/>
-                <b-table sticky-header="500px" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
-                            ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
-                    <template #cell(arrow)="row">
+                <b-table @row-clicked="details" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
+                            ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered" class="table-sm">
+                    <!-- <template #cell(arrow)="row">
                         <img style="cursor: pointer;" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
-                    </template>
+                    </template> -->
                     <template #cell(group)="row">
                         <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                     </template>
@@ -70,7 +70,7 @@ export default {
             currSum:0,
             budget: 100,
             goodSum:true,
-            items: JSON.parse(localStorage.getItem('items')).map(v => ({...v, given_value: 0})),
+            items: JSON.parse(localStorage.getItem('items')).map(v => ({...v, given_value: 0,_showDetails:false})),
             fields: [ 
                 {key: "arrow", label: ''},
                 {key: "group", label: 'Category'},
@@ -95,6 +95,9 @@ export default {
 
     },
     methods:{
+        details (item, index, event) {
+            item._showDetails = !item._showDetails;
+        },
         calc(row){
             let arr=[];
             this.currSum=0;
@@ -199,6 +202,9 @@ export default {
         content: "";
         display: table;
         clear: both;  
+    }
+    tr{
+        height: 45px;
     }
     @media (max-width:1300px){
         .column1 {

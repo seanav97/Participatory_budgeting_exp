@@ -16,14 +16,15 @@
                     </b-modal>
                 </div>
                 <div class='column2'>
+                    (click on a project to show more details)
                     <b-table head-variant="dark" :fields="fields" thead-class=""> </b-table>
-                    <draggable v-model="items" :forceFallback="true" @start="startDrag" @end="finishDrag" style="overflow-y:scroll; height:540px;margin-top:-15px">
+                    <draggable v-model="items" :forceFallback="true" @start="startDrag" @end="finishDrag" style="margin-top:-15px">
                         <div v-for="(item,index) in items" :key="item.item_name">
                             <br v-if="index==0">
-                            <b-table style="cursor: all-scroll;margin-top:-20px" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
-                                        ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
+                            <b-table @row-clicked="details" style="cursor: all-scroll;margin-top:-20px" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
+                                        ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered" >
                                 <template #cell(details)="row">
-                                    <img style="cursor: pointer;float: left;margin-right:10px" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
+                                    <!-- <img style="cursor: pointer;float: left;margin-right:10px" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails"> -->
                                     <img style="float: left;margin-right:20px" :src="getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                                     <!-- <b-button size="sm" disabled variant="primary" style="float: left;margin-left:10px;margin-top:0px;border-radius: 25px;">{{index+1}} )</b-button> -->
                                     {{row.item.item_name}}
@@ -76,6 +77,9 @@ export default {
         }
     },
     methods:{
+        details (item, index, event) {
+            item._showDetails = !item._showDetails;
+        },
         getImageURL(img){
             return require('../../assets/'+img+'.png');
         },
@@ -109,7 +113,7 @@ export default {
           }
         },
         getArrayItems(){
-            let items=JSON.parse(localStorage.getItem('items'));
+            let items=JSON.parse(localStorage.getItem('items')).map(v => ({...v,_showDetails:false}));
             let arrayItems=[];
             items.forEach(item => {
                 let itemArray=[];
@@ -167,6 +171,9 @@ export default {
         content: "";
         display: table;
         clear: both;  
+    }
+    tr{
+        height: 45px;
     }
     @media (max-width:1300px){
         .column1 {

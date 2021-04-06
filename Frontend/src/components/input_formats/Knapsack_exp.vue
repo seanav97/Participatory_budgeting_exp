@@ -3,7 +3,7 @@
     <div id='app'>
         <div v-if='this.id!=null'>
             <div class='row'>
-            <h1 style="font-family: 'Courier New', monospace;text-align:center;">Building our city</h1>
+                <h1 style="font-family: 'Courier New', monospace;text-align:center;">Building our city</h1>
                 <div class='column1'>
                     <div class="apexchart"><apexchart type="pie" width="300" :options="chartOptions" :series="series[0].data"></apexchart></div>
                     <p style="position:relative;left:5%;" >
@@ -25,11 +25,12 @@
                 </div>
                 <div class='column2'>
                     <filter-group/>
-                    <b-table sticky-header="500px" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
-                            ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
-                        <template #cell(arrow)="row">
+                    <b-table striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
+                            ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered"
+                            @row-clicked="details" style="" class="table-sm">
+                        <!-- <template #cell(arrow)="row">
                             <img style="cursor: pointer;display: inline;float:left;" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails" >
-                        </template>
+                        </template> -->
                         <template #cell(group)="row">
                             <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                         </template>
@@ -74,7 +75,7 @@ export default {
         id:JSON.parse(localStorage.getItem("participant_ID")),
         budget: 500000,
         money_spent: 0,
-        items: JSON.parse(localStorage.getItem('items')).map(v => ({...v, selected: false})),
+        items: JSON.parse(localStorage.getItem('items')).map(v => ({...v, selected: false,_showDetails: false})),
         //for table
         fields: [ 
             {key: "arrow", label: ''},
@@ -107,6 +108,9 @@ export default {
   mounted(){
     },
   methods: {
+    details (item, index, event) {
+        item._showDetails = !item._showDetails;
+    },
     update(e,row) {
         if(e){
             if(row.item.item_value>this.budget-this.money_spent){
@@ -196,7 +200,7 @@ export default {
     }
     .column2 {
         float: left;
-        width: 40%;
+        width: 43%;
         padding: 10px;
     }
     .column3 {
@@ -229,6 +233,9 @@ export default {
     .apexchart{
         position:relative;
         left:-25%;
+    }
+    tr{
+        height: 45px;
     }
 
     @keyframes change {

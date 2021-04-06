@@ -59,7 +59,7 @@ export default {
                             "expression": "MyTextValidator({feedback})"
                         }
                     ],
-                    columns: [{value: 1,text: "Not at all"},{value: 2,text: "Not much"},{value: 3,text: "Neutral"},{value: 4,text: "Very"},{value: 5,text: "Extremely"}],
+                    columns: [{value: 1,text: "least"},{value: 2,text: "2"},{value: 3,text: "3"},{value: 4,text: "4"},{value: 5,text: "most"}],
                     rows: [
                         {
                         value: "ease_ans",

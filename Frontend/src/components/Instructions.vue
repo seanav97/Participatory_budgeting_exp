@@ -4,7 +4,7 @@
     <br>
     <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
       <h3>The task:</h3>
-        <div  style="float:right; margin-left:20px"><img src="../assets/‏‏map_example.png" width="350px"></div>
+        <!-- <div  style="float:right; margin-left:20px"></div> -->
         You are a resident in Utopia City and the city council has decided to spend a portion of the city budget
         on improving the residents’ quality of life. Several types of infrastructure upgrades, located across the city, 
         have been proposed.<br> Unfortunately, the budget is not sufficient to implement all the suggestions, so you have 
@@ -15,12 +15,17 @@
     <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
       <insturcionsTodo ref="todo"></insturcionsTodo>
     </b-card>
+    <!-- <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
+      <h3>City map:</h3>
+      <div  style="float:right; margin-left:20px"><img src="../assets/‏‏map_example.png" width="500px"></div>
+      <br><br>
+       You will be shown a map with the projects scattered around your city, take the placements of the project into account when making your choice.
+    </b-card> -->
     <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
       <h3>Your payment:</h3>
         <ul>
-            <li>20 cent payment for the task contingent on passing a quiz and doing the task. </li>
-            <li>10 cent bonus for correctly answering a survey after submitting the task.</li>
-            <li>10 cent bonus for answering a feedback survey about the experiment.</li>
+            <li>50 cent payment for the task contingent on passing a quiz and doing the task. </li>
+            <li>50 cent bonus for correctly answering a consistency test after submitting the task.</li>
         </ul>
     </b-card>
   </fieldset>
