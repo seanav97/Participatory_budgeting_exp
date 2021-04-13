@@ -31,22 +31,6 @@ app.use(express.urlencoded({ extended: false })); // parse application/x-www-for
 app.use(express.static(path.join(__dirname, "public"))); //To serve static files such as images, CSS files, and JavaScript files
 var port = process.env.PORT || "3000";
 
-//#region cookie middleware
-// app.use(function (req, res, next) {
-//   if (req.session && req.session.username) {
-//     DButils.execQuery("SELECT username FROM users")
-//       .then((users) => {
-//         if (users.find((x) => x.username === req.session.username)) {
-//           req.username = req.session.username;
-//         }
-//         next();
-//       })
-//       .catch((error) => next());
-//   } else {
-//     next();
-//   }
-// });
-//#endregion
 
 app.get("/userExists/participant_ID/:participant_ID", async (req, res, next) => {
   try {
@@ -104,12 +88,13 @@ app.post("/addExperiment", async (req, res, next) => {
     const consistant=0;
     const items=req.body.items;
     const participant_info=req.body.participant_info;
+    const input_format=req.body.input_format;
 
     await DButils.executeQuery(`INSERT INTO PARTICIPANTS (PARTICIPANT_ID,AGE,EDUCATION,GENDER)
                                 VALUE ('${participant_ID}','${participant_info.age}','${participant_info.education}','${participant_info.gender}')`);
 
-    await DButils.executeQuery(`INSERT INTO EXPERIMMENTS (PARTICIPANT_ID,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT)
-                               VALUE ('${participant_ID}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}')`);
+    await DButils.executeQuery(`INSERT INTO EXPERIMMENTS (PARTICIPANT_ID,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT,INPUT_FORMAT)
+                               VALUE ('${participant_ID}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}','${input_format}')`);
     
     const exp_id=await DButils.executeQuery(`SELECT max(EXP_ID) as max FROM EXPERIMMENTS`);
     console.log("epx id: "+exp_id[0]["max"]);
@@ -119,6 +104,18 @@ app.post("/addExperiment", async (req, res, next) => {
       await DButils.executeQuery(`INSERT INTO EXP_ITEMS (EXP_ID,ITEM_ID,VALUE)
                                   VALUE ('${exp_id[0]["max"]}','${item.item_id}','${item.item_value}')`);
     });
+
+    // for(const item of items){
+    //   await DButils.executeQuery(`INSERT INTO EXP_ITEMS (EXP_ID,ITEM_ID,VALUE)
+    //                               VALUE ('${exp_id[0]["max"]}','${item.item_id}','${item.item_value}')`);
+    // }
+    // const promises = items.map(async item => {
+    //   var elt=await DButils.executeQuery(`INSERT INTO EXP_ITEMS (EXP_ID,ITEM_ID,VALUE)
+    //                               VALUE ('${exp_id[0]["max"]}','${item.item_id}','${item.item_value}')`);
+    //   return elt;
+    // })
+    
+    // const aa=await Promise.all(promises);
 
 
     res.status(201).send({ experiment_id: exp_id[0]["max"]});
@@ -165,10 +162,10 @@ app.get("/config", async (req, res, next) => {
 
     let num_of_senarios=await DButils.executeQuery('SELECT count(distinct(SENARIO)) as count from ARRANGED_ITEMS');
     let senario_number=Math.floor(Math.random() * (num_of_senarios[0].count)) + 1
-    let items = await DButils.executeQuery(`SELECT ITEMS.ITEM_ID,ITEM_NAME,GROUP_NAME,VALUE,URL,X_COORD,Y_COORD,COORDS,DESCRIPTION from ARRANGED_ITEMS JOIN ITEMS ON ITEMS.ITEM_ID=ARRANGED_ITEMS.ITEM_ID where SENARIO='${senario_number}'`);
+    let items = await DButils.executeQuery(`SELECT ITEMS.ITEM_ID,ITEM_NAME,GROUP_NAME,VALUE,URL,COORDS,DESCRIPTION from ARRANGED_ITEMS JOIN ITEMS ON ITEMS.ITEM_ID=ARRANGED_ITEMS.ITEM_ID where SENARIO='${senario_number}' ORDER BY RAND ( ) `);
     
     items.forEach(row => {
-      return_items.push({'item_id':row.ITEM_ID,'item_name':row.ITEM_NAME,'item_value':row.VALUE,'item_group':row.GROUP_NAME,'item_desc':row.DESCRIPTION,'url':row.URL,'x_coord':row.X_COORD,'y_coord':row.Y_COORD,'coords':row.COORDS});
+      return_items.push({'item_id':row.ITEM_ID,'item_name':row.ITEM_NAME,'item_value':row.VALUE,'item_group':row.GROUP_NAME,'item_desc':row.DESCRIPTION,'url':row.URL,'coords':row.COORDS});
     });
     // groups=[]
     // items.forEach(row => {

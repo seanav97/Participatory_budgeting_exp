@@ -111,4 +111,4 @@ async function getDatabase(){
 
 }
 
-getDatabase();
+// getDatabase();
