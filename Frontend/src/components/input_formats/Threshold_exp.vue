@@ -1,6 +1,6 @@
 <template>
     <div id='app'>
-        <h1 style="font-family: 'Courier New', monospace;text-align:center">Building our city</h1>
+        <h1 style="margin-top:20px;font-family: 'Courier New', monospace;text-align:center;">Improving Utopia City</h1>
             <div class='row'>
                 <div class='column1'>
                       <vue-ellipse-progress :progress="tasksDonePercent" :legend-value="numberSelected" color="blue" emptyColor="#8ec5fc" :size="250"
@@ -30,9 +30,9 @@
                     <filter-group/>
                     <b-table  @row-clicked="details" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                              :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered" class="table-sm">
-                        <!-- <template #cell(arrow)="row">
-                            <img style="cursor: pointer;" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
-                        </template> -->
+                        <template #cell(arrow)="row">
+                            <img :style='row.item._showDetails ? "margin-top:5px" : "transform: rotate(270deg); margin-top:5px"' src="../../assets/arrow.png" width="20" height="10">
+                        </template>
                         <template #cell(group)="row">
                             <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                         </template>
@@ -158,7 +158,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
     .column1 {
         float: left;
         width: 20%;
@@ -182,6 +182,10 @@ export default {
     tr{
         height: 45px;
     }
+    .card-body{
+        max-width: 400px;
+    }
+    
     @keyframes change {
         /* from { color: red; font-size: 140%; }
         to   { color: black } */

@@ -17,11 +17,11 @@
             <hr>
             <p><strong>COMPENSATION:</strong> Upon completion of this task, you will receive a base payment of $0.5. Furthermore, you can win a bonus payment of $0.5.</p>
             <hr>
-            <p><strong>CONFIDENTIALITY:</strong> You will be asked to provide your age and gender.</p>
+            <p><strong>CONFIDENTIALITY:</strong> You will be asked to provide your age and gender, no other personally identifiable information will be collected..</p>
             <hr>
-            <p><strong>PARTICIPATION AND WITHDRAWAL:</strong> our participation in this study is voluntary, and you may withdraw and return the task to Amazon Mechanical Turk at any time by closing the web page of the task. You will receive a compensation only if you complete the task.</p>
+            <p><strong>PARTICIPATION AND WITHDRAWAL:</strong> Your participation in this study is voluntary, and you may withdraw and return the task to Amazon Mechanical Turk at any time by closing the web page of the task. You will receive a compensation only if you complete the task.</p>
             <hr>
-            <p><strong>CONTACT:</strong> If you have any questions, concerns or complaints about this research study, please contact the researcher for this study at blahBLAHblah@gmail.com.<br> Additionally, if you have any questions about your rights as participants in this experiment, please contact the Research Oversight and Compliance Office - Human Research Ethics Program at the University of Toronto (ethics.review@utoronto.ca, 416-946-3273).</p>
+            <p><strong>CONTACT:</strong> If you have any questions, concerns or complaints about this research study, please contact the researcherד for this study at improve.pb@gmail.com.<br> Additionally, if you have any questions about your rights as participants in this experiment, please contact the Research Oversight and Compliance Office - Human Research Ethics Program at the University of Toronto (ethics.review@utoronto.ca, 416-946-3273).</p>
             <hr>
             <p><strong>AGREEMENT:</strong> The nature and purpose of this research have been sufficiently explained and I agree to participate in this study. I understand that I am free to withdraw at any time.</p>
         </b-card>

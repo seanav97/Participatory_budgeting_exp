@@ -35,16 +35,16 @@ export const data={
         q1:{
             q:"What is the main goal of this task?",
             ans1:"To think like Alex",
-            ans2:"To select what to take within a carrying capacity of 10 pounds from a list of 65 items.",
-            ans3:"To select from a list of 10 projects what projects to build based on a budget.",
+            ans2:"To select exactly 3 projects out of a list of 10 projects.",
+            ans3:"To select my preferred projects from a list of 10 projects given a budget limit.",
             ans4:"To have fun"
         },
         q2:{
-            q:"You get a 10 cent bonus ...",
-            ans1:"for passing the quiz",
-            ans2:"for correctly answering a consistency test after submitting the task",
-            ans3:"for doing the task",
-            ans4:"for nothing"
+            q:"You get a 50 cent bonus ...",
+            ans1:"For passing this quiz",
+            ans2:"For correctly answering a consistency test after submitting the task",
+            ans3:"For doing the task",
+            ans4:"For nothing"
         },
         q3:{
             q:"What's wrong with clicking SUBMIT in the image below?",
@@ -70,11 +70,11 @@ export const data={
             ans4:"To have fun"
         },
         q2:{
-            q:"You get a 10 cent bonus ...",
-            ans1:"for passing the quiz",
-            ans2:"for correctly answering a survey after submitting the task",
-            ans3:"for doing the task",
-            ans4:"for nothing"
+            q:"You get a 50 cent bonus ...",
+            ans1:"For passing the quiz",
+            ans2:"For correctly answering a survey after submitting the task",
+            ans3:"For doing the task",
+            ans4:"For nothing"
         },
         q3:{
             q:"What's wrong with clicking SUBMIT in the image below?",
@@ -100,11 +100,11 @@ export const data={
             ans4:"There are no differences"
         },
         q2:{
-            q:"You get a 10 cent bonus ...",
-            ans1:"for passing the quiz",
-            ans2:"for correctly answering a survey after submitting the task",
-            ans3:"for doing the task",
-            ans4:"for nothing"
+            q:"You get a 50 cent bonus ...",
+            ans1:"For passing the quiz",
+            ans2:"For correctly answering a survey after submitting the task",
+            ans3:"For doing the task",
+            ans4:"For nothing"
         },
         q3:{
             q:"In the ranking below, which item is the most important?",
@@ -130,11 +130,11 @@ export const data={
             ans4:"To have fun"
         },
         q2:{
-            q:"You get a 10 cent bonus ...",
-            ans1:"for passing the quiz",
-            ans2:"for correctly answering a survey after submitting the task",
-            ans3:"for doing the task",
-            ans4:"for nothing"
+            q:"You get a 50 cent bonus ...",
+            ans1:"For passing the quiz",
+            ans2:"For correctly answering a survey after submitting the task",
+            ans3:"For doing the task",
+            ans4:"For nothing"
         },
         q3:{
             q:"What's wrong with clicking SUBMIT in the image below?",

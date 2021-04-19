@@ -1,6 +1,6 @@
 <template>
     <div >
-        <h2 style="text-align: center">Step 4: Demographic Questions</h2>
+        <h2 style="text-align: center">Step 2: Demographic Questions</h2>
         <br><br>
         <el-form :inline="true" :model="form" class="demo-form-inline" :rules="rules" ref="ruleForm" >
             <b-card style="background-color: #e8e8e8;max-width:550px;margin:auto">

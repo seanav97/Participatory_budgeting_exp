@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 style="font-family: 'Courier New', monospace;text-align:center">Building our city</h1>
+        <h1 style="margin-top:20px;font-family: 'Courier New', monospace;text-align:center;">Improving Utopia City</h1>
             <div class='row'>
                 <div class='column1'>
                     <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
@@ -24,8 +24,8 @@
                             <b-table @row-clicked="details" style="cursor: all-scroll;margin-top:-20px" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
                                         ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered" >
                                 <template #cell(details)="row">
-                                    <!-- <img style="cursor: pointer;float: left;margin-right:10px" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails"> -->
-                                    <img style="float: left;margin-right:20px" :src="getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
+                                    <img :style='row.item._showDetails ? "margin-top:5px" : "transform: rotate(270deg); margin-top:5px"' src="../../assets/arrow.png" width="20" height="10">
+                                    <img style="margin-left:10px;margin-right:20px" :src="getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                                     <!-- <b-button size="sm" disabled variant="primary" style="float: left;margin-left:10px;margin-top:0px;border-radius: 25px;">{{index+1}} )</b-button> -->
                                     {{row.item.item_name}}
                                 </template>
@@ -138,7 +138,7 @@ export default {
             let final_items=[];
             this.items.forEach((item,i) => {
                 let prevPos = this.initial_items.map(function(e) { return e[0].item_id; }).indexOf(item[0].item_id);
-                let value = prevPos +"-"+i;
+                let value = prevPos +"->"+i;
                 final_items.push({item_id:item[0].item_id,item_name:item[0].item_name,item_value:value});
             });
             localStorage.setItem('final_items',JSON.stringify(final_items));
@@ -154,12 +154,12 @@ export default {
 <style scoped>
     .column1 {
         float: left;
-        width: 20%;
+        width: 25%;
         padding: 10px;
     }
     .column2 {
         float: left;
-        width: 40%;
+        width: 50%;
         padding: 10px;
     }
     .column3 {
@@ -175,6 +175,10 @@ export default {
     tr{
         height: 45px;
     }
+    .card-body{
+        max-width: 400px;
+    }
+    
     @media (max-width:1300px){
         .column1 {
             float: left;

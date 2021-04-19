@@ -3,18 +3,18 @@
     <div v-if="voting_method==`Utilities`">
         <h3>What you need to do: </h3>
         <br>
-        You will be asked to distribute 100 points among 10 projects. The more points you assign to an item, the more important you think the item is to your city.
+        You will be asked to distribute 100 points among {{num_of_projects}} projects. The more points you assign to an item, the more important you think the item is to your city.
         <br><br>
         <b>Below is an example</b> of the interface you will be using shown for an imaginary citizen called Alex.
         The projects that Alex finds most useful (in decreasing order of importance) are:
         <ul>
-            <li>Laudry Access in Public Schools</li>
+            <li>Soak Up the Solar Power</li>
             <li>Security Cameras</li>
-            <li>The Sustainable Energy Pilot</li>
+            <li>Building an amphitheater in the public park</li>
         </ul>
         For example, in the following image, you can see a <b>possible rating</b> by Alex:
         <br><br>
-        <img src="../assets/utilities_example.png" width="70%" style="margin:auto; display:block">
+        <img src="../assets/instructions/Utilities.png" width="70%" style="margin:auto; display:block">
         <br><br>
         Your ratings tell us how much you like groups of items in addition to how much you like individual items.
         For example, according to the ratings above, Alex prefers the bundle of 
@@ -27,18 +27,19 @@
     <div v-else-if="voting_method==`Knapsack`">
         <h3>What you need to do: </h3>
         <br>
-        You need to select which projects you would like to see funded given a budget limit of $500,000.
+        The city council has reserved a budget of $500,000 to fund infrastructure projects this year. 
+        You need to select the projects that you would personally like to see funded given this budget limit.
         <br><br>
-        <b>Below is an example</b> of the interface you will be using for an imaginary citizen called Alex.
+        <b>Below is an example</b> of the interface you will be using, filled out by an imaginary resident named Alex.
         The projects that Alex prefers are:
         <ul>
-            <li>24H public toilet</li>
-            <li>Laundry Access in Public Schools</li>
-            <li>Let's Rest: Picnic Tables & Benches for Our Parks</li>
+            <li>We Need More Crosswalks</li>
+            <li>Soak Up the Solar Power</li>
+            <li>Remodel the Kitchen at the Youth Center</li>
         </ul>
-        On the left you can see the total cost of the selected projects.
+        On the left you can see the total cost of the selected projects and the unused portion of the budget.
         <br><br>
-        <img src="../assets/knapsack_example.png" width="90%" style="margin:auto; display:block">
+        <img src="../assets/instructions/Knapsack.png" width="90%" style="margin:auto; display:block">
         <br><br>
         <b>Note:</b>
         <br>
@@ -47,29 +48,30 @@
     <div v-else-if="voting_method==`k_approval`">
         <h3>What you need to do: </h3>
         <br>
-        You need to select up to 5 projects from a list of 10 projects according to your best judgment.
+        You will be presented with {{num_of_projects}} projects and asked to select up to 5 projects that you would most like to see funded
         <br><br>
-        <b>Below is an example</b> of the interface you will be using shown for an imaginary citizen called Alex. <br>
-        The projects that Alex finds most useful are:
+        <b>Below is an example</b> of the interface you will be using, filled out by an imaginary resident named Alex. <br>
+        The projects that Alex would like to see funded are:
         <ul>
-            <li>Laundry Access in Public Schools</li>
-            <li>24H public toilet</li>
-            <li>Dog Park</li>
+            <li>We Need More Crosswalks</li>
+            <li>Security Cameras</li>
+            <li>Interactive Technology for the Main Library</li>
         </ul>
         In the following image, you can see the choices of Alex and the number of projects selected.
+        Up to two additional projects can be selected.
         <br><br>
-        <img src="../assets/approval_example.png" width="90%" style="margin:auto; display:block">
+        <img src="../assets/instructions/k_approval.png" width="90%" style="margin:auto; display:block">
     </div>
     <div v-else-if="voting_method==`Ranking_value`">
         <h3>What you need to do: </h3>
         <br>
-        You need to rank the items from the most important to the least important according to your best judgement.
+        Rank the suggested projects from most to least important according to your preferences.
         <br><br>
-        <b>Below is an example</b> of the interface you will be using shown for an imaginary citizen called Alex. <br>
-        Rank the items from MOST important (top of the list) to the LEAST important (bottom of the list). <br>
-        CLICK and DRAG on the item to change its ranking in the list.
+        <b>Below is an example</b> of the interface you will be using. <br>
+        You will be asked to rank the items from MOST important (at the top) to the LEAST important (bottom). <br>
+        You can CLICK and DRAG on an item to change its ranking in the list.
         <br><br>
-        <img src="../assets/ranking_value_example.gif" width="60%" style="margin:auto; display:block">
+        <img src="../assets/instructions/Ranking_value.gif" width="60%" style="margin:auto; display:block">
 
     </div>
     <div v-else-if="voting_method==`Threshold`">
@@ -82,13 +84,13 @@
         <b>Below is an example</b> of the interface you will be using shown for an imaginary citizen called Alex. <br>
         The projects that Alex finds worth at least 10 out of 100 points are:
         <ul>
-            <li>Laundry Access in Public Schools</li>
-            <li>24H public toilet</li>
-            <li>Dog Park</li>
+            <li>We Nedd More Crosswalks</li>
+            <li>Security Cameras</li>
+            <li>Nursing Pod for Mothers and Infants</li>
         </ul>
         In the following image, you can see the choices of Alex and the number of selected proejcts.
         <br><br>
-        <img src="../assets/Threshold_example.png" width="90%" style="margin:auto; display:block">
+        <img src="../assets/instructions/Threshold.png" width="90%" style="margin:auto; display:block">
     </div>
     <div v-else-if="voting_method==`Ranking_value_money`">
         <h3>What you need to do: </h3>
@@ -102,7 +104,7 @@
         CLICK and DRAG on the project to change its ranking in the list. <br>
         You need to sort the list in DECREASING order of “value for money” (from the highest value to the lowest value).
         <br><br>
-        <img src="../assets/ranking_value_money_example.gif" width="60%" style="margin:auto; display:block">
+        <img src="../assets/instructions/Ranking_value_money.gif" width="60%" style="margin:auto; display:block">
         <br><br>
         <b>Note:</b>
         <br>
@@ -119,7 +121,8 @@
 export default {
     data(){
         return{
-            voting_method:localStorage.getItem('voting_method')
+            voting_method:localStorage.getItem('voting_method'),
+            num_of_projects: localStorage.getItem('num_of_projects')
         }
     }
 }

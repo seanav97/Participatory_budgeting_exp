@@ -96,6 +96,7 @@ export default {
 
       if(JSON.parse(localStorage.getItem('voting_method'))==null)
         localStorage.setItem('voting_method',voting_method);
+      localStorage.setItem('num_of_projects',items.length);
     },
 
     async blacklistUser(){
@@ -126,6 +127,7 @@ export default {
                 let response_time=parseInt(localStorage.getItem("budgeting_finish"))-parseInt(localStorage.getItem("budgeting_start"));
                 let items=JSON.parse(localStorage.getItem("final_items"));
                 let participant_info=JSON.parse(localStorage.getItem("participant_info"));
+                let input_format=localStorage.getItem("voting_method");
                 // let servername=localStorage.getItem('server');
                 try {
                     const experiment_id=await this.axios.post("http://"+config.data.server+"/addExperiment",{
@@ -135,9 +137,10 @@ export default {
                         quiz_time:quiz_time,
                         response_time:response_time,
                         items:items,
-                        participant_info:participant_info
+                        participant_info:participant_info,
+                        input_format:input_format
                     });
-                    localStorage.clear();
+                    // localStorage.clear();
                     localStorage.setItem('experiment_id',experiment_id.data.experiment_id);
                 } 
                 catch (error) {

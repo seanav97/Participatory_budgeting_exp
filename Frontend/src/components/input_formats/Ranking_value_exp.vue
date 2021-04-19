@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 style="font-family: 'Courier New', monospace;text-align:center">Building our city</h1>
+        <h1 style="margin-top:20px;font-family: 'Courier New', monospace;text-align:center;">Improving Utopia City</h1>
             <div class='row'>
                 <div class='column1'>
                     
@@ -25,6 +25,7 @@
                             <b-table @row-clicked="details" style="cursor: all-scroll;margin-top:-20px" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
                                         ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered" class="table-">
                                 <template #cell(details)="row">
+                                    <img :style='row.item._showDetails ? "margin-top:5px" : "transform: rotate(270deg); margin-top:5px"' src="../../assets/arrow.png" width="20" height="10">
                                     <!-- <img style="cursor: pointer;float: left;margin-right:10px" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails"> -->
                                     {{row.item.item_name}}
                                 </template>
@@ -122,7 +123,7 @@ export default {
             let final_items=[];
             this.items.forEach((item,i) => {
                 let prevPos = this.initial_items.map(function(e) { return e[0].item_id; }).indexOf(item[0].item_id);
-                let value = prevPos +"-"+i;
+                let value = prevPos +"->"+i;
                 final_items.push({item_id:item[0].item_id,item_name:item[0].item_name,item_value:value});
             });
             console.log(final_items);
@@ -159,6 +160,9 @@ export default {
     }
     tr{
         height: 50px;
+    }
+    .card-body{
+        max-width: 400px;
     }
     @media (max-width:1300px){
         .column1 {

@@ -1,7 +1,7 @@
 <template>
     <div>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=yes">
-        <h2 style="text-align: center">Step 3: Quiz</h2>
+        <h2 style="text-align: center">Step 4: Quiz</h2>
         <br>
         <div style="padding-left: 10%;">
             
@@ -81,8 +81,8 @@
             <br>
 
         </div>
-            <b-alert style="text-align:center;font-size: 200%;" show variant="warning">Double check yourself, you have only one chance! <br>
-                            If you fail this quiz you can't continue to the next step. <br>
+            <b-alert style="text-align:center;font-size: 130%;" show variant="warning">Double check yourself as you have only one chance! <br>
+                            If you fail this quiz, you will not be able to participate in this study. <br>
                             If you need, you can click on the 'Back' button to read the instructions again.
             </b-alert>
     </div>

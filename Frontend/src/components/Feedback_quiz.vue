@@ -8,7 +8,7 @@
             <br>
         </div>
         <h2 style="text-align:center">Feedback quiz  (fill to finish the experiment)</h2>
-        <survey :survey="survey"></survey>
+        <survey :survey="survey" style="width:100%"></survey>
         <b-alert v-if="!filled_all" show variant="warning" style="width:30%;margin-left: 30%;font-size: 30px; text-align:center">
             Please answer all 3 questions
       </b-alert>
@@ -114,6 +114,8 @@ export default {
             });
             this.finished=true;
             this.$loading(false);
+            localStorage.clear();
+
         }
     }
 }

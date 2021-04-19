@@ -1,14 +1,16 @@
 <template>
   <fieldset>
-    <h2 style="text-align: center">Step 2: Instructions</h2>
+    <h2 style="text-align: center">Step 3: Instructions</h2>
     <br>
     <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
       <h3>The task:</h3>
         <!-- <div  style="float:right; margin-left:20px"></div> -->
-        You are a resident in Utopia City and the city council has decided to spend a portion of the city budget
-        on improving the residents’ quality of life. Several types of infrastructure upgrades, located across the city, 
-        have been proposed.<br> Unfortunately, the budget is not sufficient to implement all the suggestions, so you have 
-        the opportunity to help decide which projects should be prioritized.
+        You are a resident in Utopia City and the city council has decided to spend a portion 
+        of the city budget this year on improving the residents’ quality of life. 
+        Several types of infrastructure upgrades, located across the city, have been proposed. 
+        Based on earlier discussions with the residents, the list has been narrowed down to 10 projects. 
+        Unfortunately, the budget is not sufficient to implement all 10 projects, so you have the opportunity to 
+        help decide which projects should be prioritized.
         
     </b-card>
     

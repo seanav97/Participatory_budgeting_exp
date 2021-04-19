@@ -1,6 +1,6 @@
 <template>
     <div id='app'>
-        <h1 style="font-family: 'Courier New', monospace;text-align:center">Building our city</h1>
+        <h1 style="margin-top:20px;font-family: 'Courier New', monospace;text-align:center;">Improving Utopia City</h1>
             <div class='row'>
                 <div class='column1'>
                       <vue-ellipse-progress :progress="tasksDonePercent" :legend-value="numberSelected" color="blue" emptyColor="#8ec5fc" :size="250"
@@ -16,7 +16,7 @@
                     <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
                         <u><b> What you need to do</b></u>
                         <br>
-                        <a> You need to select up to 5 projects from the list, according to your best judgement.</a>
+                        <a> Select up to 5 projects that you most want to see funded.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
                     </div>
@@ -29,9 +29,9 @@
                     <filter-group/>
                     <b-table @row-clicked="details" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                              :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered" class="table-sm">
-                        <!-- <template #cell(arrow)="row">
-                            <img style="cursor: pointer;" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails">
-                        </template> -->
+                        <template #cell(arrow)="row">
+                            <img :style='row.item._showDetails ? "margin-top:5px" : "transform: rotate(270deg); margin-top:5px"' src="../../assets/arrow.png" width="20" height="10">
+                        </template>
                         <template #cell(group)="row">
                             <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                         </template>
@@ -180,7 +180,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
     .column1 {
         float: left;
         width: 20%;
@@ -203,6 +203,9 @@ export default {
     }
     tr{
         height: 45px;
+    }
+    .card-body{
+        max-width: 500px;
     }
     @keyframes change {
         /* from { color: red; font-size: 140%; }

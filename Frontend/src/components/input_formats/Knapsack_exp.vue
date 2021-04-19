@@ -1,9 +1,9 @@
 <template>
 
-    <div id='app'>
+    <div id='app' >
         <div v-if='this.id!=null'>
             <div class='row'>
-                <h1 style="font-family: 'Courier New', monospace;text-align:center;">Building our city</h1>
+                <h1 style="margin-top:20px;font-family: 'Courier New', monospace;text-align:center;">Improving Utopia City</h1>
                 <div class='column1'>
                     <div class="apexchart"><apexchart type="pie" width="300" :options="chartOptions" :series="series[0].data"></apexchart></div>
                     <p style="position:relative;left:5%;" >
@@ -14,7 +14,7 @@
                     <div class="instruction">
                         <u><b> What you need to do</b></u>
                         <br>
-                        <a> You need to select which projects to build based on the budget of {{(budget).toLocaleString('ja-JP',{ style: 'currency',currency: 'USD',maximumFractionDigits:0})}}.</a>
+                        <a> You need to select your preferred projects given the budget limit of {{(budget).toLocaleString('ja-JP',{ style: 'currency',currency: 'USD',maximumFractionDigits:0})}}.</a>
                         <br><br>
                         <b-button @click="$bvModal.show('instructions_modal')" variant="outline-primary">Show instructions</b-button>
                     </div>
@@ -28,9 +28,9 @@
                     <b-table striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                             ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered"
                             @row-clicked="details" style="" class="table-sm">
-                        <!-- <template #cell(arrow)="row">
-                            <img style="cursor: pointer;display: inline;float:left;" src="../../assets/arrow.png" width="20" height="10" @click="row.toggleDetails" >
-                        </template> -->
+                        <template #cell(arrow)="row">
+                            <img :style='row.item._showDetails ? "margin-top:5px" : "transform: rotate(270deg); margin-top:5px"' src="../../assets/arrow.png" width="20" height="10">
+                        </template>
                         <template #cell(group)="row">
                             <img :src="$parent.getImageURL(row.item.item_group)" alt="" width="30" height="30" v-b-tooltip.hover :title="row.item.item_group"/>
                         </template>
@@ -46,7 +46,7 @@
                     <b-alert style="text-align:center" v-if="!somethingSelected" show variant="danger">You must select some projects.</b-alert>
                     <div style="float: right">
                         <b-button variant="outline-primary" @click="resetTable" style="width: 70px;">Reset</b-button>
-                        <b-button variant="outline-primary" @click="submit" style="margin-left:10px;width: 70px;">Submit</b-button>
+                        <b-button variant="outline-primary" @click="submit" style="margin-left:10px;width: 70px;text-align: center;">Submit</b-button>
                     </div>
                 </div>
                 <div class="column3">
@@ -192,7 +192,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
     .column1 {
         float: left;
         width: 15%;
@@ -236,6 +236,9 @@ export default {
     }
     tr{
         height: 45px;
+    }
+    .card-body{
+        max-width: 600px;
     }
 
     @keyframes change {
