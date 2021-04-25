@@ -25,7 +25,7 @@
                 </div>
                 <div class='column2'>
                     <filter-group/>
-                    <b-table striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
+                    <b-table sticky-header="500px" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                             ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered"
                             @row-clicked="details" style="" class="table-sm">
                         <template #cell(arrow)="row">

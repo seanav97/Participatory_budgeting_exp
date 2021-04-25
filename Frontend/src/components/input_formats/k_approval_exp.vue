@@ -27,7 +27,7 @@
                 </div>
                 <div class='column2'>
                     <filter-group/>
-                    <b-table @row-clicked="details" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
+                    <b-table sticky-header="500px" @row-clicked="details" striped hover table-variant='light' head-variant="dark" :items="items" :fields="fields"
                              :select-mode="selectMode" ref="selectableTable" responsive="sm" @row-hovered="rowHovered" @row-unhovered="rowUnHovered" class="table-sm">
                         <template #cell(arrow)="row">
                             <img :style='row.item._showDetails ? "margin-top:5px" : "transform: rotate(270deg); margin-top:5px"' src="../../assets/arrow.png" width="20" height="10">

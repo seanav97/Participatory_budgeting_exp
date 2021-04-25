@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h1 style="margin-top:20px;font-family: 'Courier New', monospace;text-align:center;">Improving Utopia City</h1>
+        <br>
+        <h1 style="font-family: 'Courier New', monospace;text-align:center;">Improving Utopia City</h1>
             <div class='row'>
                 <div class='column1'>
                     <div style="text-align:center;position:absolute;border-radius: 25px; border: 3px solid #555; background-color:lightblue; width:250px; margin-left:10px; margin-top:40px;padding:10px">
@@ -18,7 +19,7 @@
                 <div class='column2'>
                     (click on a project to show more details)
                     <b-table head-variant="dark" :fields="fields" thead-class=""> </b-table>
-                    <draggable v-model="items" :forceFallback="true" @start="startDrag" @end="finishDrag" style="margin-top:-15px">
+                    <draggable v-model="items" :forceFallback="true" @start="startDrag" @end="finishDrag" style="margin-top:-15px;overflow: scroll;height:530px">
                         <div v-for="(item,index) in items" :key="item.item_name">
                             <br v-if="index==0">
                             <b-table @row-clicked="details" style="cursor: all-scroll;margin-top:-20px" striped hover table-variant='light' head-variant="dark" :items="item" :fields="fields" thead-class="d-none"
