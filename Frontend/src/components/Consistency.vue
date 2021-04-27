@@ -201,13 +201,16 @@ export default {
             })
             .then(async (consistant_value)=>{
                 let consistant=this.db_track;
-                console.log(consistant);
+                let consistency_time=new Date().getTime()-parseInt(localStorage.getItem("budgeting_finish"));
+                // console.log(parseInt(localStorage.getItem("consistency_finish")));
+                console.log(consistency_time);
                 let experiment_id=localStorage.getItem("experiment_id");
                 try {
                     await this.axios.post("http://"+config.data.server+"/addConsistency",{
                         
                         experiment_id:experiment_id,
-                        consistant:consistant
+                        consistant:consistant,
+                        consistency_time:consistency_time
                     });
                 } 
                 catch (error) {
@@ -217,6 +220,8 @@ export default {
             })
             .then(()=>{
                 this.$loading(false);
+                let time=new Date().getTime();
+                localStorage.setItem('consistency_finish',JSON.stringify(time));
                 this.$router.push({ name: 'Feedback_quiz', params: {isConsistent: this.isConsistent }});
             });
 

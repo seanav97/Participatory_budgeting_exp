@@ -57,6 +57,7 @@ export default {
     },
     async checkParticipant(){
       const participant_ID=JSON.parse(localStorage.getItem('participant_ID'));
+      console.log("bkabka");
       // if(partisipant_ID==null) return;
       let blacklistedResponse = null;
       let existsResponse = null;
@@ -76,6 +77,7 @@ export default {
     },
 
     async setConfigurations(){
+      console.log("bkasdsdsdfwerbka");
       if(JSON.parse(localStorage.getItem('items'))!=null){
         this.itemsPutFinish=true;
         return;
@@ -92,11 +94,13 @@ export default {
       }
       let items= configs.data.items_from_groups;
       let voting_method= configs.data.voting_method;
+      let election_num= configs.data.election_num;
       localStorage.setItem('items',JSON.stringify(items));
 
       if(JSON.parse(localStorage.getItem('voting_method'))==null)
         localStorage.setItem('voting_method',voting_method);
       localStorage.setItem('num_of_projects',items.length);
+      localStorage.setItem('election_num',election_num);
     },
 
     async blacklistUser(){
@@ -128,6 +132,7 @@ export default {
                 let items=JSON.parse(localStorage.getItem("final_items"));
                 let participant_info=JSON.parse(localStorage.getItem("participant_info"));
                 let input_format=localStorage.getItem("voting_method");
+                let election_num=localStorage.getItem("election_num");
                 // let servername=localStorage.getItem('server');
                 try {
                     const experiment_id=await this.axios.post("http://"+config.data.server+"/addExperiment",{
@@ -138,7 +143,8 @@ export default {
                         response_time:response_time,
                         items:items,
                         participant_info:participant_info,
-                        input_format:input_format
+                        input_format:input_format,
+                        election_num:election_num
                     });
                     // localStorage.clear();
                     localStorage.setItem('experiment_id',experiment_id.data.experiment_id);

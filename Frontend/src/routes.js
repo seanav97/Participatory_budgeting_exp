@@ -5,6 +5,11 @@ const routes = [
     component: () => import("./components/main")
   },
   {
+    path: "/random",
+    name: "randomUser",
+    component: () => import("./components/main_random")
+  },
+  {
     path: "/participant_ID/:participant_ID",
     name: "main",
     beforeEnter: (to, from, next) => {

@@ -3,8 +3,8 @@
     <div v-if="!finished">
         <div style="text-align:center">
 
-            <b-alert dismissible style v-if="isConsistent" show variant="success">You passed the consistency check and you will recieve a 10 cent bonus</b-alert>
-            <b-alert dismissible style v-else show variant="warning">You FAILED the consistency check and you will not recieve a 10 cent bonus</b-alert>
+            <b-alert dismissible style v-if="isConsistent" show variant="success">You passed the consistency check and you will recieve a $0.5 bonus</b-alert>
+            <b-alert dismissible style v-else show variant="warning">You FAILED the consistency check and you will not recieve a $0.5 bonus</b-alert>
             <br>
         </div>
         <h2 style="text-align:center">Feedback quiz  (fill to finish the experiment)</h2>
@@ -106,11 +106,13 @@ export default {
             let interface_ans=answers.interface_ans;
             this.$loading(true);
             let experiment_id=localStorage.getItem("experiment_id");
+            let total_time=new Date().getTime()-parseInt(localStorage.getItem("startTime"));
             await this.axios.post("http://"+config.data.server+"/addFeedback",{
                 experiment_id:experiment_id,
                 q_ease:ease_ans,
                 q_interface:interface_ans,
-                q_capture:capture_ans
+                q_capture:capture_ans,
+                total_time:total_time
             });
             this.finished=true;
             this.$loading(false);

@@ -90,11 +90,13 @@ app.post("/addExperiment", async (req, res, next) => {
     const participant_info=req.body.participant_info;
     const input_format=req.body.input_format;
 
+    const election_num=req.body.election_num;
+
     await DButils.executeQuery(`INSERT INTO PARTICIPANTS (PARTICIPANT_ID,AGE,EDUCATION,GENDER)
                                 VALUE ('${participant_ID}','${participant_info.age}','${participant_info.education}','${participant_info.gender}')`);
 
-    await DButils.executeQuery(`INSERT INTO EXPERIMMENTS (PARTICIPANT_ID,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT,INPUT_FORMAT)
-                               VALUE ('${participant_ID}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}','${input_format}')`);
+    await DButils.executeQuery(`INSERT INTO EXPERIMMENTS (PARTICIPANT_ID,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT,INPUT_FORMAT,ELECTION_NUM)
+                               VALUE ('${participant_ID}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}','${input_format}','${election_num}')`);
     
     const exp_id=await DButils.executeQuery(`SELECT max(EXP_ID) as max FROM EXPERIMMENTS`);
     console.log("epx id: "+exp_id[0]["max"]);
@@ -128,7 +130,8 @@ app.post("/addConsistency", async (req, res, next) => {
   try {
     const experiment_id=req.body.experiment_id;
     const consistant=req.body.consistant;
-    await DButils.executeQuery(`UPDATE EXPERIMMENTS SET ISCONSISTENT = '${consistant}'
+    const consistency_time=req.body.consistency_time;
+    await DButils.executeQuery(`UPDATE EXPERIMMENTS SET ISCONSISTENT = '${consistant}', CONSISTENCY_TIME='${consistency_time}'
                                 WHERE EXP_ID = '${experiment_id}';`);
 
     res.status(201).send({ message: "consistency added"});
@@ -143,8 +146,9 @@ app.post("/addFeedback", async (req, res, next) => {
     const q_ease=req.body.q_ease;
     const q_interface=req.body.q_interface;
     const q_capture=req.body.q_capture;
+    const total_time=req.body.total_time;
     await DButils.executeQuery(`UPDATE EXPERIMMENTS SET FEEDBACK_EASE = '${q_ease}',
-                                FEEDBACK_INTERFACE ='${q_interface}', FEEDBACK_CAPTURE = '${q_capture}'
+                                FEEDBACK_INTERFACE ='${q_interface}', FEEDBACK_CAPTURE = '${q_capture}', TOTAL_TIME = '${total_time}'
                                 WHERE EXP_ID = '${experiment_id}';`);
 
     res.status(201).send({ message: "feedback added"});
@@ -182,7 +186,7 @@ app.get("/config", async (req, res, next) => {
     //   }
     //   });
 
-    res.status(200).send({'items_from_groups':return_items,'voting_method':chosen_method});
+    res.status(200).send({'items_from_groups':return_items,'voting_method':chosen_method,'election_num':senario_number});
   } catch (error) {
     next(error);
   }
