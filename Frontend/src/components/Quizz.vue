@@ -97,10 +97,10 @@ export default {
     data(){
         return{
             formInline:{
-                question1:3,
-                question2:2,
-                question3:1,
-                question4:4     
+                question1:0,
+                question2:0,
+                question3:0,
+                question4:0     
             },
             // voting_method:localStorage.getItem('voting_method'),
             rules: {
