@@ -101,11 +101,20 @@ app.post("/addExperiment", async (req, res, next) => {
     const exp_id=await DButils.executeQuery(`SELECT max(EXP_ID) as max FROM EXPERIMMENTS`);
     console.log("epx id: "+exp_id[0]["max"]);
 
+    let good_items=await DButils.executeQuery(`SELECT COUNT(*) FROM EXP_ITEMS WHERE EXP_ID = '${exp_id[0]["max"]}'`);
+    let test=good_items[0]["COUNT(*)"];
+    while(good_items[0]["COUNT(*)"] !=items.length){
+      await DButils.executeQuery(`DELETE FROM EXP_ITEMS WHERE EXP_ID = '${exp_id[0]["max"]}'`);
 
-    items.forEach(async function(item) {
-      await DButils.executeQuery(`INSERT INTO EXP_ITEMS (EXP_ID,ITEM_ID,VALUE)
-                                  VALUE ('${exp_id[0]["max"]}','${item.item_id}','${item.item_value}')`);
-    });
+      items.forEach(async function(item) {
+        await DButils.executeQuery(`INSERT INTO EXP_ITEMS (EXP_ID,ITEM_ID,VALUE)
+                                    VALUE ('${exp_id[0]["max"]}','${item.item_id}','${item.item_value}')`);
+      });
+
+      good_items=await DButils.executeQuery(`SELECT COUNT(*) FROM EXP_ITEMS WHERE EXP_ID = '${exp_id[0]["max"]}'`);
+      
+    }
+    
 
     // for(const item of items){
     //   await DButils.executeQuery(`INSERT INTO EXP_ITEMS (EXP_ID,ITEM_ID,VALUE)
