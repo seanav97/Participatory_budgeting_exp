@@ -46,7 +46,9 @@
                             <h4 style="white-space: pre"> {{questions.q3.q}}</h4>
                             <br>
                             <!-- <img class="quizimage" src="../assets/‏‏knapsack_example.png" > -->
-                            <img class="quizimage" :src="getImageURL(this.voting_method+'1')" >
+                            <img v-if="this.voting_method.includes('Rank')" class="quizimage2" :src="getImageURL(this.voting_method+'2')">
+                            <img v-else class="quizimage1" :src="getImageURL(this.voting_method+'2')">
+                            
                             <el-form-item prop="q3" style="float:left;position:relative">
                                 <el-radio-group v-model="formInline.question3" type="vertical">
                                     <el-radio style="margin-top:50px;white-space: pre" :label="1">{{questions.q3.ans1}}</el-radio><br>
@@ -64,7 +66,9 @@
                             <h4 style="white-space: pre"> {{questions.q4.q}}</h4>
                             <br>
                             <!-- <img class="quizimage" src="../assets/‏‏knapsack_empty_example.png"> -->
-                            <img class="quizimage" :src="getImageURL(this.voting_method+'2')">
+                            <img v-if="this.voting_method.includes('Rank')" class="quizimage2" :src="getImageURL(this.voting_method+'2')">
+                            <img v-else class="quizimage1" :src="getImageURL(this.voting_method+'2')">
+
                             <el-form-item prop="q4" style="float:left;position:relative">
                                 <el-radio-group v-model="formInline.question4" type="vertical">
                                     <el-radio style="margin-top:50px;white-space: pre" :label="1">{{questions.q4.ans1}}</el-radio><br>
@@ -147,10 +151,15 @@ export default {
     padding-right: 40px;
     white-space: pre
 }
-.quizimage{
+.quizimage1{
     margin-left:30px;
     border: 5px solid #555;
     width:650px;
+}
+.quizimage2{
+    margin-left:30px;
+    border: 5px solid #555;
+    width:500px;
 }
 
 /* .el-radio,h4{
