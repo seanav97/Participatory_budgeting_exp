@@ -46,8 +46,8 @@
                             <h4 style="white-space: pre"> {{questions.q3.q}}</h4>
                             <br>
                             <!-- <img class="quizimage" src="../assets/‏‏knapsack_example.png" > -->
-                            <img v-if="this.voting_method.includes('Rank')" class="quizimage2" :src="getImageURL(this.voting_method+'2')">
-                            <img v-else class="quizimage1" :src="getImageURL(this.voting_method+'2')">
+                            <img v-if="this.voting_method.includes('Rank')" class="quizimage2" :src="getImageURL(this.voting_method+'1')">
+                            <img v-else class="quizimage1" :src="getImageURL(this.voting_method+'1')">
                             
                             <el-form-item prop="q3" style="float:left;position:relative">
                                 <el-radio-group v-model="formInline.question3" type="vertical">
