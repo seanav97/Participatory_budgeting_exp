@@ -21,7 +21,7 @@
             <hr>
             <p><strong>PARTICIPATION AND WITHDRAWAL:</strong> Your participation in this study is voluntary, and you may withdraw and return the task to Amazon Mechanical Turk at any time by closing the web page of the task. You will receive a compensation only if you complete the task.</p>
             <hr>
-            <p><strong>CONTACT:</strong> If you have any questions, concerns or complaints about this research study, please contact the researcherד for this study at improve.pb@gmail.com.<br> Additionally, if you have any questions about your rights as participants in this experiment, please contact the Research Oversight and Compliance Office - Human Research Ethics Program at the University of Toronto (ethics.review@utoronto.ca, 416-946-3273).</p>
+            <p><strong>CONTACT:</strong> If you have any questions, concerns or complaints about this research study, please contact the researcher for this study at improve.pb@gmail.com.<br> Additionally, if you have any questions about your rights as participants in this experiment, please contact the Research Oversight and Compliance Office - Human Research Ethics Program at the University of Toronto (ethics.review@utoronto.ca, 416-946-3273).</p>
             <hr>
             <p><strong>AGREEMENT:</strong> The nature and purpose of this research have been sufficiently explained and I agree to participate in this study. I understand that I am free to withdraw at any time.</p>
         </b-card>
@@ -35,9 +35,10 @@
                 </el-select>
             </el-form-item> -->
             <el-form-item label="temp" prop="check_agree">
-                <span slot="label"><b>Do you agree to participate in this study?</b></span>
-                <el-checkbox size="big" v-model="formInline.check_agree"></el-checkbox>
+                <span style="font-size: 20px;" slot="label"><b>Do you agree to participate in this study?</b></span>
+                <el-checkbox size="medium" v-model="formInline.check_agree"></el-checkbox>
             </el-form-item>
+        <b-alert style="text-align:center" v-if="!formInline.check_agree" show variant="danger">You must agree to participate.</b-alert>
         </el-form>
     </div>
 </div>
@@ -82,7 +83,7 @@ export default {
         validateAgreement: async function(){
             if (this.formInline.check_agree==false) 
             {
-                return new Promise((resolve, reject) => {reject(new Error('You must agree to participate'))});
+                return new Promise((resolve, reject) => {reject(new Error(' '))});
             }
             else return new Promise((resolve, reject) => {resolve(true)});
         }

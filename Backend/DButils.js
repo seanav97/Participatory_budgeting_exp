@@ -6,6 +6,11 @@ exports.executeQuery = async function(query){
   
   return result;
 };
+exports.executeQueries = async function(queries){
+  let result= await mul_dbQuery(queries);
+  
+  return result;
+};
 
 async function dbQuery(databaseQuery) {
 
@@ -31,6 +36,7 @@ async function dbQuery(databaseQuery) {
     console.log("Error", e.message);
   }
   
+  
   return new Promise(data => {
     conProm.query(databaseQuery, function (error, result) {
           if (error) {
@@ -50,6 +56,59 @@ async function dbQuery(databaseQuery) {
       });
     // conProm.end();
   });
+
+}
+
+async function mul_dbQuery(queries) {
+
+  let conProm=null;
+  try {
+    conProm= await mysqlssh.connect(
+      {
+          host: '3.8.178.219',
+          user: 'ubuntu',
+          privateKey: fs.readFileSync('LightsailDefaultKey-eu-west-2.pem')
+      },
+      {
+          host: '127.0.0.1',
+          user: 'root',
+          password: 'mkmHAD20/',
+          database: 'expKobi'
+      }
+    );
+  } 
+  catch (e) {
+    console.log("Error", e.stack);
+    console.log("Error", e.name);
+    console.log("Error", e.message);
+  }
+  
+  let promises=[];
+
+  for (let index = 0; index < queries.length; index++) {
+    prom=new Promise(data => {
+      console.log(queries[index]);
+      conProm.query(queries[index], function (error, result) {
+            if (error) {
+                console.log(error);
+                throw error;
+            }
+            try {                
+                data(result);
+  
+            } catch (error) {
+                data({});
+                throw error;
+            }
+  
+        });
+    });
+    let result=await Promise.resolve(prom);
+    promises.push(result);
+  }
+
+  return promises;
+
 
 }
 

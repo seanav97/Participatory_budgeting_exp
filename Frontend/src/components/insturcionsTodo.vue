@@ -8,16 +8,13 @@
         <b>Below is an example</b> of the interface you will be using shown for an imaginary citizen called Alex.
         The projects that Alex finds most useful (in decreasing order of importance) are:
         <ul>
+            <li>Building an amphitheater in the public park</li>
             <li>Soak Up the Solar Power</li>
             <li>Security Cameras</li>
-            <li>Building an amphitheater in the public park</li>
         </ul>
         For example, in the following image, you can see a <b>possible rating</b> by Alex:
         <br><br>
         <img src="../assets/instructions/Utilities.png" width="70%" style="margin:auto; display:block">
-        <br><br>
-        Your ratings tell us how much you like groups of items in addition to how much you like individual items.
-        For example, according to the ratings above, Alex prefers the bundle of 
         <br><br>
         <b>Note:</b>
         <br>

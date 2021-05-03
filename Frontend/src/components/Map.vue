@@ -1,7 +1,7 @@
 <template>
   <div id="map" ref="map" style="margin-left:1%;width: 600px;height: 600px; position:relative">
         <transition name="fade" appear>
-            <img :src="getImageURL('userHome')" height="45" width="65" ref="homeImage">
+            <img :src="getImageURL('userHome3')" height="85" width="85" ref="homeImage">
         </transition>
         <div v-for="item in this.our_items" :key='item'>
             <img v-if="item.coords.length==1" :src="getImageURL(item.item_group)" :height="image_size" :width="image_size" :ref="item.item_name" v-b-tooltip.hover :title="item.item_name">
@@ -14,7 +14,7 @@
 export default {
     data(){
         return{
-            url:'../assets/userHome.png',
+            url:'../assets/userHome3.png',
             // our_items:JSON.parse(localStorage.getItem('items')),
             our_items:this.getAllItems(),
             image_size:"50",

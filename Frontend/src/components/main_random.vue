@@ -14,7 +14,9 @@ export default {
     },
     mounted(){
         localStorage.clear();
-        //localStorage.removeItem('participant_ID');
+        let time=new Date().getTime();
+        localStorage.setItem('startTime',JSON.stringify(time));
+        // localStorage.removeItem('participant_ID');
         this.Start();
 
     },
