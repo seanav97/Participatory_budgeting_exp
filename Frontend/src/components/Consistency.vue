@@ -28,10 +28,10 @@
                         <br>
                         <el-form-item prop="question2">
                             <el-radio-group v-model="form.question2" type="vertical">
-                                <el-radio :label="1">{{questions.q2.ans1}}</el-radio><br>
-                                <el-radio :label="2">{{questions.q2.ans2}}</el-radio><br>
-                                <el-radio :label="3">{{questions.q2.ans3}}</el-radio><br>
-                                <el-radio :label="4">{{questions.q2.ans4}}</el-radio><br>
+                                <el-radio :label="1">{{items[0].item_name}}</el-radio><br>
+                                <el-radio :label="2">Improving parking at the airport</el-radio><br>
+                                <el-radio :label="3">{{items[3].item_name}}</el-radio><br>
+                                <el-radio :label="4">{{items[6].item_name}}</el-radio><br>
                             </el-radio-group>
                         </el-form-item>
                     </div>

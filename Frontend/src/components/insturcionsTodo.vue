@@ -1,7 +1,6 @@
 <template>
   <div>
     <div v-if="voting_method==`Utilities`">
-        <h3>What you need to do: </h3>
         <br>
         You will be asked to distribute 100 points among {{num_of_projects}} projects. The more points you assign to an item, the more important you think the item is to your city.
         <br><br>
@@ -22,7 +21,6 @@
             You will only be able to press the SUBMIT button if the values add up to 100.
     </div>
     <div v-else-if="voting_method==`Knapsack`">
-        <h3>What you need to do: </h3>
         <br>
         The city council has reserved a budget of $500,000 to fund infrastructure projects this year. 
         You need to select the projects that you would personally like to see funded given this budget limit.
@@ -43,7 +41,6 @@
             Alex can no longer add another project even through he has not exhausted his entire budget.
     </div>
     <div v-else-if="voting_method==`k_approval`">
-        <h3>What you need to do: </h3>
         <br>
         You will be presented with {{num_of_projects}} projects and asked to select up to 5 projects that you would most like to see funded
         <br><br>
@@ -60,7 +57,6 @@
         <img src="../assets/instructions/k_approval.png" width="90%" style="margin:auto; display:block">
     </div>
     <div v-else-if="voting_method==`Ranking_value`">
-        <h3>What you need to do: </h3>
         <br>
         Rank the suggested projects from most to least important according to your preferences.
         <br><br>
@@ -72,7 +68,6 @@
 
     </div>
     <div v-else-if="voting_method==`Threshold`">
-        <h3>What you need to do: </h3>
         <br>
         Select each of the following projects ONLY if the answer to the following question is YES. <br>
         If 100 points are divided among the projects based on their importance, should this project get AT LEAST 10 points?
@@ -90,7 +85,6 @@
         <img src="../assets/instructions/Threshold.png" width="90%" style="margin:auto; display:block">
     </div>
     <div v-else-if="voting_method==`Ranking_value_money`">
-        <h3>What you need to do: </h3>
         <br>
         You need to rank the projects by “value for money”, which measures the project's importance to you relative to the cost of the project.
         <br><br>
@@ -107,7 +101,6 @@
         <br>
             The interface you will use won’t include the columns “utility for Alex” and “Value for money”. 
             You need to think independently about what is the utility for each project and compute the “value for money” for each project.
-
     </div>
 
     <div v-else> no todo</div>

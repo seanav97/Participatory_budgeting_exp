@@ -84,7 +84,7 @@ export default {
                   localStorage.setItem('consent_finish',JSON.stringify(time));
                   this.scrollToTop();
 
-                  this.$refs.inst.$refs.todo.voting_method=localStorage.getItem('voting_method');
+                  this.$refs.inst.voting_method=localStorage.getItem('voting_method');
                   this.$refs.quizComp.voting_method=localStorage.getItem('voting_method');
                   this.$refs.quizComp.questions=require("../quiz_questions.js").data[localStorage.getItem('voting_method')];
 

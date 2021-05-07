@@ -98,6 +98,7 @@ app.post("/addExperiment", async (req, res, next) => {
 
     const election_num=req.body.election_num;
 
+
     let queries=[];
     queries.push(`INSERT INTO PARTICIPANTS (PARTICIPANT_ID,AGE,EDUCATION,GENDER) VALUE ('${participant_ID}','${participant_info.age}','${participant_info.education}','${participant_info.gender}')`);
     queries.push(`INSERT INTO EXPERIMMENTS (PARTICIPANT_ID,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT,INPUT_FORMAT,ELECTION_NUM) VALUE ('${participant_ID}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}','${input_format}','${election_num}')`);
@@ -122,6 +123,8 @@ app.post("/addExperiment", async (req, res, next) => {
     // await DButils.executeQuery(items_query);
     queries.push(items_query);
     await DButils.executeQueries(queries);
+
+    
 
 
     res.status(201).send({ experiment_id: exp_id[0]["max"]});
@@ -150,12 +153,18 @@ app.post("/addFeedback", async (req, res, next) => {
     const q_ease=req.body.q_ease;
     const q_interface=req.body.q_interface;
     const q_capture=req.body.q_capture;
+    const q_map=req.body.q_map;
+    const q_cat=req.body.q_cat;
     const total_time=req.body.total_time;
+
+    const token=Math.floor(100000 + Math.random() * 900000);
+
     await DButils.executeQuery(`UPDATE EXPERIMMENTS SET FEEDBACK_EASE = '${q_ease}',
-                                FEEDBACK_INTERFACE ='${q_interface}', FEEDBACK_CAPTURE = '${q_capture}', TOTAL_TIME = '${total_time}'
+                                FEEDBACK_INTERFACE ='${q_interface}', FEEDBACK_CAPTURE = '${q_capture}',FEEDBACK_MAP = '${q_map}',
+                                FEEDBACK_CATEGORIES = '${q_cat}', TOTAL_TIME = '${total_time}', TOKEN = '${token}'
                                 WHERE EXP_ID = '${experiment_id}';`);
 
-    res.status(201).send({ message: "feedback added"});
+    res.status(201).send({ token: token});
   } catch (error) {
     next(error);
   }
@@ -165,8 +174,14 @@ app.get("/config", async (req, res, next) => {
   try {
     let return_items=[];
     
-    voting_methods=['Knapsack','Ranking_value','Ranking_value_money','Threshold','k_approval','Utilities']
-    chosen_method=voting_methods[Math.floor(Math.random() * voting_methods.length)];
+    const voting_methods=['Knapsack','Ranking_value','Ranking_value_money','Threshold','k_approval','Utilities']
+
+    let last_method=await DButils.executeQuery('SELECT INPUT_FORMAT FROM EXPERIMMENTS ORDER BY EXP_ID DESC LIMIT 1');
+    let index=voting_methods.indexOf(last_method[0].INPUT_FORMAT);
+    if(index<5) chosen_method=voting_methods[index+1];
+    else chosen_method=voting_methods[0];
+
+    // chosen_method=voting_methods[Math.floor(Math.random() * voting_methods.length)];
 
     let num_of_senarios=await DButils.executeQuery('SELECT count(distinct(SENARIO)) as count from ARRANGED_ITEMS');
     let senario_number=Math.floor(Math.random() * (num_of_senarios[0].count)) + 1

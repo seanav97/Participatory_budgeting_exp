@@ -10,11 +10,7 @@ export const data={
             ans4:"To rank the projects so projects at the TOP of the list are MORE important than projects on the BOTTOM of the list."
         },
         q2:{
-            q:"Which of the following places did not exist in the map?",
-            ans1:"A river",
-            ans2:"An amusement park",
-            ans3:"A park",
-            ans4:"Streets"
+            q:"Which of the following projects did not appear in the list?",
         },
         q3:{
             q:"To which of the following projects did appoint the most points?"
@@ -29,11 +25,7 @@ export const data={
             ans4:"To rank the projects so projects at the TOP of the list are MORE important than projects on the BOTTOM of the list."
         },
         q2:{
-            q:"Which of the following places did not exist in the map?",
-            ans1:"A river",
-            ans2:"An amusement park",
-            ans3:"A park",
-            ans4:"Streets"
+            q:"Which of the following projects did not appear in the list?",
         },
         q3:{
             q:"Which of the following projects did you select?"
@@ -48,11 +40,7 @@ export const data={
             ans4:"To rank the projects so projects at the TOP of the list are MORE important than projects on the BOTTOM of the list."
         },
         q2:{
-            q:"Which of the following places did not exist in the map?",
-            ans1:"A river",
-            ans2:"An amusement park",
-            ans3:"A park",
-            ans4:"Streets"
+            q:"Which of the following projects did not appear in the list?",
         },
         q3:{
             q:"Which of the following projects did you select?"
@@ -67,11 +55,7 @@ export const data={
             ans4:"To distribute 100 points among 10 projects according to how important you think each project is."
         },
         q2:{
-            q:"Which of the following places did not exist in the map?",
-            ans1:"A river",
-            ans2:"An amusement park",
-            ans3:"A park",
-            ans4:"Streets"
+            q:"Which of the following projects did not appear in the list?",
         },
         q3:{
             q:"Which of the following projects did you rank the highest?"
@@ -86,11 +70,7 @@ export const data={
             ans4:"To rank the projects so projects at the TOP of the list are MORE important than projects on the BOTTOM of the list."
         },
         q2:{
-            q:"Which of the following places did not exist in the map?",
-            ans1:"A river",
-            ans2:"An amusement park",
-            ans3:"A park",
-            ans4:"Streets"
+            q:"Which of the following projects did not appear in the list?",
         },
         q3:{
             q:"Which of the following projects did you select?"
@@ -105,11 +85,7 @@ export const data={
             ans4:"To distribute 100 points among 10 projects according to how important you think each project is."
         },
         q2:{
-            q:"Which of the following places did not exist in the map?",
-            ans1:"A river",
-            ans2:"An amusement park",
-            ans3:"A park",
-            ans4:"Streets"
+            q:"Which of the following projects did not appear in the list?",
         },
         q3:{
             q:"Which of the following projects did you rank the highest?"

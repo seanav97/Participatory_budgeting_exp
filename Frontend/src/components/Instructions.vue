@@ -8,26 +8,40 @@
         You are a resident in Utopia City and the city council has decided to spend a portion 
         of the city budget this year on improving the residents’ quality of life. 
         Several types of infrastructure upgrades, located across the city, have been proposed. 
-        Based on earlier discussions with the residents, the list has been narrowed down to 10 projects. 
-        Unfortunately, the budget is not sufficient to implement all 10 projects, so you have the opportunity to 
+        Based on earlier discussions with the residents, the list has been narrowed down to {{num_of_projects}} projects. 
+        Unfortunately, the budget is not sufficient to implement all {{num_of_projects}} projects, so you have the opportunity to 
         help decide which projects should be prioritized.
         
     </b-card>
     
     <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
-      <insturcionsTodo ref="todo"></insturcionsTodo>
+      <h3>What you need to do: </h3>
+      <br>
+      <p>(If the video is blured you can double click on it to see it on full screen, or you can improve the quality)</p>
+      <!-- <iframe src="https://drive.google.com/file/d/12d6RFFXi6tIfJxodV9EjujNuoGq9_YWc/preview?vq=large" width="850" height="395" allowfullscreen></iframe> -->
+      <iframe :src="getVideo()" width="850" height="395" allowfullscreen></iframe>
+      <!-- <insturcionsTodo ref="todo"></insturcionsTodo> -->
     </b-card>
-    <!-- <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
-      <h3>City map:</h3>
-      <div  style="float:right; margin-left:20px"><img src="../assets/‏‏map_example.png" width="500px"></div>
+    <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
+      <h3>The next steps:</h3>
+      <br>
+      <h5>1) Quiz</h5>
+      You will answer a quiz based on the information you learned from this page.
       <br><br>
-       You will be shown a map with the projects scattered around your city, take the placements of the project into account when making your choice.
-    </b-card> -->
+      <h5>2) The Task</h5>
+      You will choose the projects you'd like to see funded as you were shown in the video.
+      <br><br>
+      <h5>3) Consistency check</h5>
+      You will be asked 3 simple questions about your choises, in order to make sure you didn't randomize the answers (answering this part correctly will grant you bonus payment)
+      <br><br>
+      <h5>4) Feedback</h5>
+      The final part is for you to give us feedback for your experience (you must complete this step to get your payment)
+    </b-card>
     <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
       <h3>Your payment:</h3>
         <ul>
-            <li>50 cent payment for the task contingent on passing a quiz and doing the task. </li>
-            <li>50 cent bonus for correctly answering a consistency test after submitting the task.</li>
+            <li>$0.5 payment for the task contingent on passing a quiz and doing the task. </li>
+            <li>$0.5 bonus for correctly answering a consistency test after submitting the task.</li>
         </ul>
     </b-card>
   </fieldset>
@@ -36,7 +50,29 @@
 <script>
 import insturcionsTodo from './insturcionsTodo.vue';
 export default {
-  components: { insturcionsTodo },
+  // components: { insturcionsTodo },
+  data(){
+        return{
+            voting_method:localStorage.getItem('voting_method'),
+            num_of_projects: localStorage.getItem('num_of_projects')
+        }
+  },
+  methods:{
+    getVideo(){
+      if(this.voting_method==`Utilities`) 
+        return "https://drive.google.com/file/d/1SLjAr3v55kvLrGNKH1CP0kmobBN9TDEa/preview";
+      if(this.voting_method==`Knapsack`) 
+        return "https://drive.google.com/file/d/14w7iHHImeV-WqFKBokdCfgHSf4pPWdOe/preview";
+      if(this.voting_method==`k_approval`) 
+        return "https://drive.google.com/file/d/1Vv9jacnlmmFGn7_xmrYTTGy_-KdpEeAh/preview";
+      if(this.voting_method==`Ranking_value`) 
+        return "https://drive.google.com/file/d/1pt25Mbwo7Ljn4qcg0XWVp3u052P-QRkd/preview";
+      if(this.voting_method==`Threshold`) 
+        return "https://drive.google.com/file/d/1PM2JXrbZkDfAfPbH92sXbc5w6SSxrGHd/preview";
+      if(this.voting_method==`Ranking_value_money`) 
+        return "https://drive.google.com/file/d/14ZYZHtBEmeb17j--E1QYz-Qk-Qx5v-yv/preview";
+    }
+  }
 
 }
 </script>

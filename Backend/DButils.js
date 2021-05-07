@@ -87,7 +87,7 @@ async function mul_dbQuery(queries) {
 
   for (let index = 0; index < queries.length; index++) {
     prom=new Promise(data => {
-      console.log(queries[index]);
+      // console.log(queries[index]);
       conProm.query(queries[index], function (error, result) {
             if (error) {
                 console.log(error);
