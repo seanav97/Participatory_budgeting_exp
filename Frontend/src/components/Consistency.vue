@@ -2,20 +2,20 @@
 <div>
     <h1 style="font-family: 'Courier New', monospace;text-align:center">Consistency check</h1>
     <br>
-    <div style="margin-left:20%; width:60%">
+    <div style="margin-left:20%; width:70%">
         <el-form :inline="true" :model="form" class="demo-form-inline" :rules="rules" ref="ruleForm">
             <el-form-item prop="allQuestions">
                 <b-card style="background-color:#e8e8e8;">
                     <h4 class="q-title" >Question 1</h4>
                     <div class="q-body" >
-                        <h4>{{questions.q1.q}}</h4>
+                        <h4 style="white-space: pre-line">{{questions.q1.q}}</h4>
                         <br>
                         <el-form-item prop="question1">
                             <el-radio-group v-model="form.question1">
-                                <el-radio :label="1">{{questions.q1.ans1}}</el-radio><br>
-                                <el-radio :label="2">{{questions.q1.ans2}}</el-radio><br>
-                                <el-radio :label="3">{{questions.q1.ans3}}</el-radio><br>
-                                <el-radio :label="4">{{questions.q1.ans4}}</el-radio><br>
+                                <el-radio style="white-space: pre-line" :label="1">{{questions.q1.ans1}}</el-radio><br>
+                                <el-radio style="white-space: pre-line" :label="2">{{questions.q1.ans2}}</el-radio><br>
+                                <el-radio style="white-space: pre-line" :label="3">{{questions.q1.ans3}}</el-radio><br>
+                                <el-radio style="white-space: pre-line" :label="4">{{questions.q1.ans4}}</el-radio><br>
                             </el-radio-group>
                         </el-form-item>
                     </div>
@@ -24,14 +24,14 @@
                 <b-card style="background-color:#e8e8e8;">
                     <h4 class="q-title" >Question 2</h4>
                     <div class="q-body" style="word-wrap: break-word;">
-                        <h4 >{{questions.q2.q}}</h4>
+                        <h4 style="white-space: pre-line">{{questions.q2.q}}</h4>
                         <br>
                         <el-form-item prop="question2">
                             <el-radio-group v-model="form.question2" type="vertical">
-                                <el-radio :label="1">{{items[0].item_name}}</el-radio><br>
-                                <el-radio :label="2">Improving parking at the airport</el-radio><br>
-                                <el-radio :label="3">{{items[3].item_name}}</el-radio><br>
-                                <el-radio :label="4">{{items[6].item_name}}</el-radio><br>
+                                <el-radio style="white-space: pre-line" :label="1">{{items[0].item_name}}</el-radio><br>
+                                <el-radio style="white-space: pre-line" :label="2">Improving parking at the airport</el-radio><br>
+                                <el-radio style="white-space: pre-line" :label="3">{{items[3].item_name}}</el-radio><br>
+                                <el-radio style="white-space: pre-line" :label="4">{{items[6].item_name}}</el-radio><br>
                             </el-radio-group>
                         </el-form-item>
                     </div>
@@ -41,14 +41,14 @@
                 <b-card style="background-color:#e8e8e8;">
                     <h4 class="q-title" >Question 3</h4>
                     <div class="q-body" >
-                        <h4>{{questions.q3.q}}</h4>
+                        <h4 style="white-space: pre-line">{{questions.q3.q}}</h4>
                         <br>
                         <el-form-item prop="question3">
                             <el-radio-group v-model="form.question3" type="vertical">
-                                <el-radio :label="1">{{not_selected[not_selected.length-1].item_name}}</el-radio><br>
-                                <el-radio :label="2">{{not_selected[not_selected.length-2].item_name}}</el-radio><br>
-                                <el-radio :label="3">{{not_selected[not_selected.length-3].item_name}}</el-radio><br>
-                                <el-radio :label="4">{{selected[0].item_name}}</el-radio><br>
+                                <el-radio style="white-space: pre-line" :label="1">{{not_selected[not_selected.length-1].item_name}}</el-radio><br>
+                                <el-radio style="white-space: pre-line" :label="2">{{not_selected[not_selected.length-2].item_name}}</el-radio><br>
+                                <el-radio style="white-space: pre-line" :label="3">{{not_selected[not_selected.length-3].item_name}}</el-radio><br>
+                                <el-radio style="white-space: pre-line" :label="4">{{selected[0].item_name}}</el-radio><br>
                             </el-radio-group>
                         </el-form-item>
                     </div>
