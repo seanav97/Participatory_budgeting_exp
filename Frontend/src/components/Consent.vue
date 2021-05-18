@@ -17,7 +17,7 @@
             <hr>
             <p><strong>COMPENSATION:</strong> Upon completion of this task, you will receive a base payment of $0.5. Furthermore, you can win a bonus payment of $0.5.</p>
             <hr>
-            <p><strong>CONFIDENTIALITY:</strong> You will be asked to provide your age and gender, no other personally identifiable information will be collected..</p>
+            <p><strong>CONFIDENTIALITY:</strong> You will be asked to provide your age, gender and education, no other personally identifiable information will be collected..</p>
             <hr>
             <p><strong>PARTICIPATION AND WITHDRAWAL:</strong> Your participation in this study is voluntary, and you may withdraw and return the task to Amazon Mechanical Turk at any time by closing the web page of the task. You will receive a compensation only if you complete the task.</p>
             <hr>

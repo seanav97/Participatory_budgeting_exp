@@ -133,11 +133,14 @@ export default {
             // });
             if(this.currSum!=this.budget && this.currSum>0 && this.currSum!=this.budget){
                 this.items.forEach(item => {
-                    item.given_value=Math.round((item.given_value/this.currSum)*this.budget);
+                    // item.given_value=Math.round((item.given_value/this.currSum)*this.budget);
+                    item.given_value=(item.given_value/this.currSum)*this.budget;
                 });
             }
-            this.currSum=this.budget;
-            this.goodSum=true;
+            if(this.currSum>0) {
+                this.currSum=this.budget;
+                this.goodSum=true;
+            }
             this.$refs.moneyLabel.style.color = 'black';
         },
         resetTable(){

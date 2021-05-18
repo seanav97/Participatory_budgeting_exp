@@ -1,12 +1,13 @@
 import { Html } from "survey-vue";
 
+const projectsNum=localStorage.getItem('num_of_projects');
 export const data={
     Utilities:{
         q1:{
             q:"What is the main goal of this task?",
-            ans1:"To think like Alex",
-            ans2:"To distribute 100 items among 10 points according to how important you think each point is",
-            ans3:"To distribute 100 points among 10 projects according to how important you think each project is",
+            ans1:"To learn about the city budget.",
+            ans2:"To distribute 100 projects among 10 points according to how important you think each point is",
+            ans3:"To distribute 100 points among "+projectsNum+" projects according to how important you think each project is",
             ans4:"To have fun"
         },
         q2:{
@@ -34,9 +35,9 @@ export const data={
     Knapsack:{
         q1:{
             q:"What is the main goal of this task?",
-            ans1:"To think like Alex",
-            ans2:"To select exactly 3 projects out of a list of 10 projects.",
-            ans3:"To select my preferred projects from a list of 10 projects given a budget limit.",
+            ans1:"To learn about the city budget.",
+            ans2:"To select exactly 3 projects out of a list of "+projectsNum+" projects.",
+            ans3:"To select my preferred projects from a list of "+projectsNum+" projects given a budget limit.",
             ans4:"To have fun"
         },
         q2:{
@@ -64,9 +65,9 @@ export const data={
     k_approval:{
         q1:{
             q:"What is the main goal of this task?",
-            ans1:"To think like Alex",
-            ans2:"To select up to 10 projects from a list of 5 projects",
-            ans3:"To select up to 5 projects from a list of 10 projects",
+            ans1:"To learn about the city budget.",
+            ans2:"To select up to "+projectsNum+" projects from a list of 5 projects",
+            ans3:"To select up to 5 projects from a list of "+projectsNum+" projects",
             ans4:"To have fun"
         },
         q2:{
@@ -124,7 +125,7 @@ export const data={
     Threshold:{
         q1:{
             q:"What is the main goal of this task?",
-            ans1:"To think like Alex",
+            ans1:"To learn about the city budget.",
             ans2:"To select the projects that I think should receive at least 100 points, given that 10 points are to be distributed among the projects based on their importance.",
             ans3:"To select the projects that I think should receive at least 10 points, given that 100 points are to be distributed among the projects based on their importance.",
             ans4:"To have fun"

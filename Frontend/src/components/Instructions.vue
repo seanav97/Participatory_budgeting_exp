@@ -17,7 +17,7 @@
     <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
       <h3>What you need to do: </h3>
       <br>
-      <p>(If the video is blured you can double click on it to see it on full screen, or you can improve the quality)</p>
+      <p>(If the video looks blurry, you can double-click on it to improve the quality and to see it in full screen)</p>
       <!-- <iframe src="https://drive.google.com/file/d/12d6RFFXi6tIfJxodV9EjujNuoGq9_YWc/preview?vq=large" width="850" height="395" allowfullscreen></iframe> -->
       <iframe :src="getVideo()" width="850" height="395" allowfullscreen></iframe>
       <!-- <insturcionsTodo ref="todo"></insturcionsTodo> -->
@@ -29,19 +29,19 @@
       You will answer a quiz based on the information you learned from this page.
       <br><br>
       <h5>2) The Task</h5>
-      You will choose the projects you'd like to see funded as you were shown in the video.
+      You will choose the projects you'd like to see funded.
       <br><br>
       <h5>3) Consistency check</h5>
-      You will be asked 3 simple questions about your choises, in order to make sure you didn't randomize the answers (answering this part correctly will grant you bonus payment)
+      You will be asked 3 simple questions about your choices, in order to make sure you paid attention (answering all three questions correctly will grant you the bonus payment).
       <br><br>
       <h5>4) Feedback</h5>
-      The final part is for you to give us feedback for your experience (you must complete this step to get your payment)
+      The final part is for you to give us feedback on your experience (you must complete this step to get your payment).
     </b-card>
     <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
       <h3>Your payment:</h3>
         <ul>
-            <li>$0.5 payment for the task contingent on passing a quiz and doing the task. </li>
-            <li>$0.5 bonus for correctly answering a consistency test after submitting the task.</li>
+            <li>50 cent payment for the task contingent on passing a quiz and finishing the subsequent steps. </li>
+            <li>50 cent bonus for correctly answering a consistency test after submitting the task.</li>
         </ul>
     </b-card>
   </fieldset>
