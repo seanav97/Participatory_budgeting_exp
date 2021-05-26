@@ -2,7 +2,7 @@
   <div id="app">
     <!-- <router-view></router-view> -->
     <div v-if="!server_error" id="connection good">
-        <router-view v-if='!userBlacklisted && !userAllreadyExists'></router-view>
+        <router-view v-if='!userBlacklisted && !userAllreadyExists && !capacity_filled'></router-view>
         <div v-else-if='userBlacklisted' style="width:80%;padding-left: 25%;font-size: 50px;">
           <br><br>
           <b-alert show variant="danger">User failed to answer the quiz correctly and is now forbidden from participating</b-alert>
@@ -11,10 +11,14 @@
           <br><br>
           <b-alert show variant="warning">User already participated in the experiment</b-alert>
         </div>
+        <div v-else-if='capacity_filled' style="width:80%;padding-left: 25%;font-size: 50px;">
+          <br><br>
+          <b-alert show variant="warning">Experiment is finished, stay tuned for the next phase</b-alert>
+        </div>
     </div>
     <div v-else id="connection error">
       <b-alert show variant="danger" style="width:80%;padding-left: 25%;font-size: 50px;">
-        A connection error accured, please contact the administrator.
+        A connection error accured, try refreshing the page.
       </b-alert>
     </div>
   </div>
@@ -39,12 +43,15 @@ export default {
       userBlacklisted: false,
       userCheckFinish: false,
       itemsPutFinish: false,
-      server_error:false
+      server_error:false,
+      capacity_filled:false
     }
   },
   mounted(){
-    asyncLoading(this.checkParticipant());
-    this.getCurrTime();
+    if(JSON.parse(localStorage.getItem('items'))==null && JSON.parse(localStorage.getItem('participant_ID'))!=null){
+      asyncLoading(this.checkParticipant());
+      this.getCurrTime();
+    }
 
   },
   methods:{
@@ -56,7 +63,7 @@ export default {
       localStorage.setItem('startTime',JSON.stringify(time));
     },
     async checkParticipant(){
-      const participant_ID=JSON.parse(localStorage.getItem('participant_ID'));
+      const participant_ID=localStorage.getItem('participant_ID');
       console.log("bkabka");
       // if(partisipant_ID==null) return;
       let blacklistedResponse = null;
@@ -77,7 +84,7 @@ export default {
     },
 
     async setConfigurations(){
-      console.log("bkasdsdsdfwerbka");
+      console.log('xx');
       if(JSON.parse(localStorage.getItem('items'))!=null){
         this.itemsPutFinish=true;
         return;
@@ -92,6 +99,7 @@ export default {
         console.log(error);
         this.server_error=true;
       }
+      this.capacity_filled=configs.data.finished;
       let items= configs.data.items_from_groups;
       let voting_method= configs.data.voting_method;
       let election_num= configs.data.election_num;
@@ -104,7 +112,7 @@ export default {
     },
 
     async blacklistUser(){
-      const participant_ID=JSON.parse(localStorage.getItem('participant_ID'));
+      const participant_ID=localStorage.getItem('participant_ID');
       try {
         await this.axios.post("http://"+config.data.server+"/insertToBlacklist",{
           partisipant_ID:participant_ID

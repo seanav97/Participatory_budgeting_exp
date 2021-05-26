@@ -40,8 +40,8 @@
     <b-card style="background-color:#e8e8e8; max-width:900px;margin: auto;">
       <h3>Your payment:</h3>
         <ul>
-            <li>50 cent payment for the task contingent on passing a quiz and finishing the subsequent steps. </li>
-            <li>50 cent bonus for correctly answering a consistency test after submitting the task.</li>
+            <li>40 cent payment for the task contingent on passing a quiz and finishing the subsequent steps. </li>
+            <li>30 cent bonus for correctly answering a consistency test after submitting the task.</li>
         </ul>
     </b-card>
   </fieldset>

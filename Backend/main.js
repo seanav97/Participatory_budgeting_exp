@@ -156,6 +156,9 @@ app.post("/addFeedback", async (req, res, next) => {
     const q_map=req.body.q_map;
     const q_cat=req.body.q_cat;
     const total_time=req.body.total_time;
+    const input_format=req.body.input_format;
+    const election=req.body.election;
+
 
     const token=Math.floor(100000 + Math.random() * 900000);
 
@@ -163,6 +166,10 @@ app.post("/addFeedback", async (req, res, next) => {
                                 FEEDBACK_INTERFACE ='${q_interface}', FEEDBACK_CAPTURE = '${q_capture}',FEEDBACK_MAP = '${q_map}',
                                 FEEDBACK_CATEGORIES = '${q_cat}', TOTAL_TIME = '${total_time}', TOKEN = '${token}'
                                 WHERE EXP_ID = '${experiment_id}';`);
+    let finishedByNow=await DButils.executeQuery(`SELECT FINISHED FROM ELECTIONS_INPUT_FORMATS
+                                            WHERE INPUT_FORMAT = '${input_format}' AND ELECTION = '${election}';`);
+  await DButils.executeQuery(`UPDATE ELECTIONS_INPUT_FORMATS SET FINISHED = '${finishedByNow[0].FINISHED+1}'
+                              WHERE INPUT_FORMAT = '${input_format}' AND ELECTION = '${election}';`);
 
     res.status(201).send({ token: token});
   } catch (error) {
@@ -174,24 +181,33 @@ app.get("/config", async (req, res, next) => {
   try {
     let return_items=[];
     
-    const voting_methods=['Knapsack','Ranking_value','Ranking_value_money','Threshold','k_approval','Utilities']
+    chosen_method="";
 
-    let last_method=await DButils.executeQuery('SELECT INPUT_FORMAT FROM EXPERIMMENTS ORDER BY EXP_ID DESC LIMIT 1');
-    let index=voting_methods.indexOf(last_method[0].INPUT_FORMAT);
-    if(index<5) chosen_method=voting_methods[index+1];
-    else chosen_method=voting_methods[0];
+    let combinations=await DButils.executeQuery('SELECT * FROM ELECTIONS_INPUT_FORMATS');
+    for (let i = 0; i < combinations.length; i++) {
+      if(combinations[i].STARTED!=5){
+        chosen_method=combinations[i].INPUT_FORMAT;
+        chosen_election=combinations[i].ELECTION;
+        old_time=combinations[i].TIMES;
+        new_time=combinations[i].TIMES+"#"+new Date().getTime();
+        await DButils.executeQuery(`UPDATE ELECTIONS_INPUT_FORMATS SET STARTED = '${combinations[i].STARTED+1}', TIMES = '${new_time}'
+                                    WHERE INPUT_FORMAT = '${chosen_method}' AND ELECTION = '${chosen_election}';`);
+        break;
+      }
+    }
 
-    // chosen_method=voting_methods[Math.floor(Math.random() * voting_methods.length)];
+    if(chosen_method==""){
+      res.status(200).send({'finished':true});
+    }
 
-    let num_of_senarios=await DButils.executeQuery('SELECT count(distinct(SENARIO)) as count from ARRANGED_ITEMS');
-    let senario_number=Math.floor(Math.random() * (num_of_senarios[0].count)) + 1
-    let items = await DButils.executeQuery(`SELECT ITEMS.ITEM_ID,ITEM_NAME,GROUP_NAME,VALUE,URL,COORDS,DESCRIPTION from ARRANGED_ITEMS JOIN ITEMS ON ITEMS.ITEM_ID=ARRANGED_ITEMS.ITEM_ID where SENARIO='${senario_number}' ORDER BY RAND ( ) `);
+
+    let items = await DButils.executeQuery(`SELECT ITEMS.ITEM_ID,ITEM_NAME,GROUP_NAME,VALUE,URL,COORDS,DESCRIPTION from ARRANGED_ITEMS JOIN ITEMS ON ITEMS.ITEM_ID=ARRANGED_ITEMS.ITEM_ID where SENARIO='${chosen_election}' ORDER BY RAND ( ) `);
     
     items.forEach(row => {
       return_items.push({'item_id':row.ITEM_ID,'item_name':row.ITEM_NAME,'item_value':row.VALUE,'item_group':row.GROUP_NAME,'item_desc':row.DESCRIPTION,'url':row.URL,'coords':row.COORDS});
     });
 
-    res.status(200).send({'items_from_groups':return_items,'voting_method':chosen_method,'election_num':senario_number});
+    res.status(200).send({'items_from_groups':return_items,'voting_method':chosen_method,'election_num':chosen_election,'finished':false});
   } catch (error) {
     next(error);
   }

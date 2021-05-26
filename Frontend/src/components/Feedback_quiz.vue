@@ -125,6 +125,8 @@ export default {
             let total_time=new Date().getTime()-parseInt(localStorage.getItem("startTime"));
             const token_data=await this.axios.post("http://"+config.data.server+"/addFeedback",{
                 experiment_id:experiment_id,
+                input_format:localStorage.getItem("voting_method"),
+                election:localStorage.getItem("election_num"),
                 q_ease:ease_ans,
                 q_interface:interface_ans,
                 q_capture:capture_ans,

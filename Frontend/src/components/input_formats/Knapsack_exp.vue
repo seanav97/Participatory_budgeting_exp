@@ -1,7 +1,5 @@
 <template>
-
     <div id='app' >
-        <div v-if='this.id!=null'>
             <div class='row'>
                 <h1 style="margin-top:20px;font-family: 'Courier New', monospace;text-align:center;">Improving Utopia City</h1>
                 <div class='column1'>
@@ -53,11 +51,6 @@
                     <Map ref="map"/>
                 </div>
             </div>
-        </div>
-        <div v-else style="width:80%;padding-left: 25%;font-size: 50px;">
-            <br><br>
-            <b-alert show variant="danger">Please complete all the necessary steps</b-alert>
-        </div>
         
     </div>
 </template>
@@ -72,7 +65,6 @@ export default {
     components: { apexchart:VueApexCharts,Map, FilterGroup, Instructions, },
   data() {
       return{
-        id:JSON.parse(localStorage.getItem("participant_ID")),
         budget: 500000,
         money_spent: 0,
         items: JSON.parse(localStorage.getItem('items')).map(v => ({...v, selected: false,_showDetails: false})),
@@ -106,6 +98,7 @@ export default {
       }
   },
   mounted(){
+    //   this.$router.go()
     },
   methods: {
     details (item, index, event) {

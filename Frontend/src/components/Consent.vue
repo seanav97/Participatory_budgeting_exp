@@ -15,7 +15,7 @@
             <hr>
             <p><strong>RISKS:</strong> There are no anticipated risks associated with participating in this study. The effects of participating should be comparable to those you would experience from viewing a computer monitor for 4 minutes and using a mouse.</p>
             <hr>
-            <p><strong>COMPENSATION:</strong> Upon completion of this task, you will receive a base payment of $0.5. Furthermore, you can win a bonus payment of $0.5.</p>
+            <p><strong>COMPENSATION:</strong> Upon completion of this task, you will receive a base payment of 40 cents. Furthermore, you can win a bonus payment of 30 cents.</p>
             <hr>
             <p><strong>CONFIDENTIALITY:</strong> You will be asked to provide your age, gender and education, no other personally identifiable information will be collected..</p>
             <hr>

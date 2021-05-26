@@ -43,6 +43,8 @@ import Consent from './Consent.vue';
 import Instructions from './Instructions.vue';
 import PersonalQuestions from './PersonalQuestions.vue';
 import Quizz from './Quizz.vue';
+import { asyncLoading } from 'vuejs-loading-plugin'
+
 
 
 export default {
@@ -62,11 +64,11 @@ export default {
         }
        },
     mounted(){
-      
-      // alert('dd');
-      // asyncLoading(this.$parent.checkParticipant(),this.$parent.setConfigurations()).then().catch();
-      // this.$parent.checkParticipant();
-      // this.$parent.setConfigurations();
+      if(JSON.parse(localStorage.getItem('items'))==null){
+        asyncLoading(this.$parent.setConfigurations());
+        let time=new Date().getTime();
+        localStorage.setItem('startTime',JSON.stringify(time));
+      }
     },
     methods: {
         onComplete: function(){
@@ -128,7 +130,6 @@ export default {
                if(valid){
                 let time=new Date().getTime();
                 localStorage.setItem('quiz_finish',JSON.stringify(time));
-                // this.scrollToTop();
                }
                else{
                  this.$parent.blacklistUser();
