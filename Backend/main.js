@@ -185,7 +185,7 @@ app.get("/config", async (req, res, next) => {
 
     let combinations=await DButils.executeQuery('SELECT * FROM ELECTIONS_INPUT_FORMATS');
     for (let i = 0; i < combinations.length; i++) {
-      if(combinations[i].STARTED!=5){
+      if(combinations[i].FINISHED<5){
         chosen_method=combinations[i].INPUT_FORMAT;
         chosen_election=combinations[i].ELECTION;
         old_time=combinations[i].TIMES;
