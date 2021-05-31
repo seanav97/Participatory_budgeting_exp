@@ -168,7 +168,7 @@ export const data={
             ans4:"The value for money a 'Dog Park' is equal to 10"
         },
         q3:{
-            q:"In the image below, suppose your utility for '24H public toilet' is 400,000 \n and for 'Laundry Access in Public Schools' is 50,000",
+            q:"In the image below, suppose your utility for '24H public toilet' is 400,000 \n and for 'Laundry Access in Public Schools' is 200,000",
             ans1:"I will rank 'Laundry Access in Public Schools' higher than '24H public toilet'",
             ans2:"I will rank '24H public toilet' higher than 'Laundry Access in Public Schools'",
             ans3:'There are no differences between the "value for money" of each item',
