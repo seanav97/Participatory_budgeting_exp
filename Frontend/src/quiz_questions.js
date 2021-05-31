@@ -175,7 +175,7 @@ export const data={
             ans4:"I don't know the utilities of Alex"
         },
         q4:{
-            q:"In the image below, suppose your utility for '24H public toilet' is 250,000, \n for 'Dog Park' is 200,000 and for 'The Sustainable Energy Pilot' is 10,000. \nWhat will be your ranking(from highest to lowest 'value for money')?",
+            q:"In the image below, suppose your utility for '24H public toilet' is 320,000, \n for 'Dog Park' is 200,000 and for 'The Sustainable Energy Pilot' is 100,000. \nWhat will be your ranking(from highest to lowest 'value for money')?",
             ans1:"'The Sustainable Energy Pilot' > 'Dog Park' > '24H public toilet'",
             ans2:"'24H public toilet' > 'The Sustainable Energy Pilot' > 'Dog Park'",
             ans3:"'Dog Park' > '24H public toilet' > 'The Sustainable Energy Pilot'",
