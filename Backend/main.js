@@ -76,8 +76,22 @@ app.get("/isBlacklisted/participant_ID/:participant_ID", async (req, res, next) 
 
 app.post("/insertToBlacklist", async (req, res, next) => {
   try {
-    const participant_ID=req.body.partisipant_ID;
+    const participant_ID=req.body.participant_ID;
+    const voting_method=req.body.voting_method;
+    const election_num=req.body.election_num;
     await DButils.executeQuery(`INSERT INTO BLACKLIST VALUE ('${participant_ID}')`);
+
+    // remove from counting
+    let data=await DButils.executeQuery(`SELECT * FROM ELECTIONS_INPUT_FORMATS WHERE INPUT_FORMAT='${voting_method}' AND ELECTION='${election_num}'`);
+    let timeArr=data[0].TIMES.split('#');
+    let updatedTimes='';
+    for(let i=2;i<timeArr.length;i++){
+      if(timeArr[i].length>0)
+        updatedTimes=updatedTimes+"#"+timeArr[i];
+    }
+    let started=data[0].STARTED-1;
+    await DButils.executeQuery(`UPDATE ELECTIONS_INPUT_FORMATS SET STARTED = '${started}', TIMES = '${updatedTimes}' WHERE INPUT_FORMAT = '${voting_method}' AND ELECTION = '${election_num}';`);
+
     res.status(201).send({ message: "user blacklisted"});
   } catch (error) {
     next(error);
@@ -95,13 +109,13 @@ app.post("/addExperiment", async (req, res, next) => {
     const items=req.body.items;
     const participant_info=req.body.participant_info;
     const input_format=req.body.input_format;
-
     const election_num=req.body.election_num;
+    const homePos=req.body.homePos;
 
 
     let queries=[];
     queries.push(`INSERT INTO PARTICIPANTS (PARTICIPANT_ID,AGE,EDUCATION,GENDER) VALUE ('${participant_ID}','${participant_info.age}','${participant_info.education}','${participant_info.gender}')`);
-    queries.push(`INSERT INTO EXPERIMMENTS (PARTICIPANT_ID,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT,INPUT_FORMAT,ELECTION_NUM) VALUE ('${participant_ID}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}','${input_format}','${election_num}')`);
+    queries.push(`INSERT INTO EXPERIMMENTS (PARTICIPANT_ID,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT,INPUT_FORMAT,ELECTION_NUM,LOCATION_MAP) VALUE ('${participant_ID}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}','${input_format}','${election_num}','${homePos}')`);
 
     // await DButils.executeQuery(`INSERT INTO PARTICIPANTS (PARTICIPANT_ID,AGE,EDUCATION,GENDER)
     //                             VALUE ('${participant_ID}','${participant_info.age}','${participant_info.education}','${participant_info.gender}')`);
@@ -155,6 +169,7 @@ app.post("/addFeedback", async (req, res, next) => {
     const q_capture=req.body.q_capture;
     const q_map=req.body.q_map;
     const q_cat=req.body.q_cat;
+    const q_map_access=req.body.q_map_access;
     const total_time=req.body.total_time;
     const input_format=req.body.input_format;
     const election=req.body.election;
@@ -164,7 +179,7 @@ app.post("/addFeedback", async (req, res, next) => {
 
     await DButils.executeQuery(`UPDATE EXPERIMMENTS SET FEEDBACK_EASE = '${q_ease}',
                                 FEEDBACK_INTERFACE ='${q_interface}', FEEDBACK_CAPTURE = '${q_capture}',FEEDBACK_MAP = '${q_map}',
-                                FEEDBACK_CATEGORIES = '${q_cat}', TOTAL_TIME = '${total_time}', TOKEN = '${token}'
+                                FEEDBACK_CATEGORIES = '${q_cat}', FEEDBACK_MAP_ACCESS = '${q_map_access}', TOTAL_TIME = '${total_time}', TOKEN = '${token}'
                                 WHERE EXP_ID = '${experiment_id}';`);
     let finishedByNow=await DButils.executeQuery(`SELECT FINISHED FROM ELECTIONS_INPUT_FORMATS
                                             WHERE INPUT_FORMAT = '${input_format}' AND ELECTION = '${election}';`);
@@ -185,7 +200,7 @@ app.get("/config", async (req, res, next) => {
 
     let combinations=await DButils.executeQuery('SELECT * FROM ELECTIONS_INPUT_FORMATS');
     for (let i = 0; i < combinations.length; i++) {
-      if(combinations[i].FINISHED<5){
+      if(combinations[i].STARTED<50 && combinations[i].FINISHED<50){
         chosen_method=combinations[i].INPUT_FORMAT;
         chosen_election=combinations[i].ELECTION;
         old_time=combinations[i].TIMES;
@@ -207,7 +222,10 @@ app.get("/config", async (req, res, next) => {
       return_items.push({'item_id':row.ITEM_ID,'item_name':row.ITEM_NAME,'item_value':row.VALUE,'item_group':row.GROUP_NAME,'item_desc':row.DESCRIPTION,'url':row.URL,'coords':row.COORDS});
     });
 
-    res.status(200).send({'items_from_groups':return_items,'voting_method':chosen_method,'election_num':chosen_election,'finished':false});
+    let homeArr=[{x:10,y:20},{x:60,y:50},{x:40,y:30},{x:20,y:80}];
+    let homePos=homeArr[Math.floor(Math.random() * homeArr.length)];
+
+    res.status(200).send({'items_from_groups':return_items,'voting_method':chosen_method,'election_num':chosen_election,'finished':false,'homePos':homePos});
   } catch (error) {
     next(error);
   }

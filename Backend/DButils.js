@@ -240,10 +240,14 @@ async function getDatabase2(){
     { header: 'FEEDBACK_EASE', key: 'FEEDBACK_EASE', width: 20},
     { header: 'FEEDBACK_INTERFACE', key: 'FEEDBACK_INTERFACE', width: 20},
     { header: 'FEEDBACK_CAPTURE', key: 'FEEDBACK_CAPTURE', width: 20},
+    { header: 'FEEDBACK_MAP', key: 'FEEDBACK_MAP', width: 20},
+    { header: 'FEEDBACK_CATEGORIES', key: 'FEEDBACK_CATEGORIES', width: 20},
     { header: 'INPUT_FORMAT', key: 'INPUT_FORMAT', width: 20},
     { header: 'ELECTION_NUM', key: 'ELECTION_NUM', width: 15},
     { header: 'CONSISTENCY_TIME', key: 'CONSISTENCY_TIME', width: 18},
     { header: 'TOTAL_TIME', key: 'TOTAL_TIME', width: 12},
+    { header: 'TOKEN', key: 'TOKEN', width: 12},
+    { header: 'LOCATION_MAP', key: 'LOCATION_MAP', width: 18},
   ];
   experiments_worksheet.addRows(experiments_json);
 
