@@ -86,6 +86,11 @@ export default {
                             value: "cat_ans",
                             text: "How much did the project categories affect your decisions?",
                             isRequired: true
+                        },
+                        {
+                            value: "map_access_ans",
+                            text: "How easy was it to access the map?",
+                            isRequired: true
                         }
                     ]
                 },
@@ -106,6 +111,7 @@ export default {
                 question3:0,
                 question4:0,
                 question5:0,
+                question6:0
             },
             finished:false,
             filled_all:true,
@@ -120,6 +126,7 @@ export default {
             let interface_ans=answers.interface_ans;
             let map_ans=answers.map_ans;
             let cat_ans=answers.cat_ans;
+            let map_access_ans=answers.map_access_ans;
             this.$loading(true);
             let experiment_id=localStorage.getItem("experiment_id");
             let total_time=new Date().getTime()-parseInt(localStorage.getItem("startTime"));
@@ -132,12 +139,14 @@ export default {
                 q_capture:capture_ans,
                 q_map:map_ans,
                 q_cat:cat_ans,
+                q_map_access:map_access_ans,
                 total_time:total_time
             });
             this.token=token_data.data.token;
             this.finished=true;
             this.$loading(false);
             localStorage.clear();
+            this.$parent.finished_exp=true;
 
         }
     }

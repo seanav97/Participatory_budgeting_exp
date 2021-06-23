@@ -41,7 +41,7 @@ export const data={
             ans4:"To have fun"
         },
         q2:{
-            q:"You get a 50 cent bonus ...",
+            q:"You get a 30 cent bonus ...",
             ans1:"For passing this quiz",
             ans2:"For correctly answering a consistency test after submitting the task",
             ans3:"For doing the task",
@@ -71,7 +71,7 @@ export const data={
             ans4:"To have fun"
         },
         q2:{
-            q:"You get a 50 cent bonus ...",
+            q:"You get a 30 cent bonus ...",
             ans1:"For passing the quiz",
             ans2:"For correctly answering a survey after submitting the task",
             ans3:"For doing the task",
@@ -101,7 +101,7 @@ export const data={
             ans4:"There are no differences"
         },
         q2:{
-            q:"You get a 50 cent bonus ...",
+            q:"You get a 30 cent bonus ...",
             ans1:"For passing the quiz",
             ans2:"For correctly answering a survey after submitting the task",
             ans3:"For doing the task",
@@ -131,7 +131,7 @@ export const data={
             ans4:"To have fun"
         },
         q2:{
-            q:"You get a 50 cent bonus ...",
+            q:"You get a 30 cent bonus ...",
             ans1:"For passing the quiz",
             ans2:"For correctly answering a survey after submitting the task",
             ans3:"For doing the task",

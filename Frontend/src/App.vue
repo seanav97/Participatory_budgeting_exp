@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <router-view></router-view> -->
     <div v-if="!server_error" id="connection good">
         <router-view v-if='!userBlacklisted && !userAllreadyExists && !capacity_filled'></router-view>
         <div v-else-if='userBlacklisted' style="width:80%;padding-left: 25%;font-size: 50px;">
@@ -44,11 +43,12 @@ export default {
       userCheckFinish: false,
       itemsPutFinish: false,
       server_error:false,
-      capacity_filled:false
+      capacity_filled:false,
+      finished_exp:false
     }
   },
   mounted(){
-    if(JSON.parse(localStorage.getItem('items'))==null && JSON.parse(localStorage.getItem('participant_ID'))!=null){
+    if(JSON.parse(localStorage.getItem('items'))==null && JSON.parse(localStorage.getItem('participant_ID'))!=null && this.finished_exp==false){
       asyncLoading(this.checkParticipant());
       this.getCurrTime();
     }
@@ -80,6 +80,7 @@ export default {
       this.userBlacklisted=blacklistedResponse.data.blacklisted;
       this.userAllreadyExists=existsResponse.data.exists;
       this.userCheckFinish=true;
+      console.log('user exists');
       await this.setConfigurations();
     },
 
@@ -103,19 +104,30 @@ export default {
       let items= configs.data.items_from_groups;
       let voting_method= configs.data.voting_method;
       let election_num= configs.data.election_num;
+      let homePos= configs.data.homePos;
       localStorage.setItem('items',JSON.stringify(items));
+      localStorage.setItem('homePos',JSON.stringify(homePos));
 
       if(JSON.parse(localStorage.getItem('voting_method'))==null)
         localStorage.setItem('voting_method',voting_method);
       localStorage.setItem('num_of_projects',items.length);
       localStorage.setItem('election_num',election_num);
+      console.log('user configed');
+
     },
 
     async blacklistUser(){
       const participant_ID=localStorage.getItem('participant_ID');
+      const voting_method=localStorage.getItem('voting_method');
+      const election_num=localStorage.getItem('election_num');
+      console.log(participant_ID);
+      console.log(voting_method);
+      console.log(election_num);
       try {
         await this.axios.post("http://"+config.data.server+"/insertToBlacklist",{
-          partisipant_ID:participant_ID
+          participant_ID:participant_ID,
+          voting_method:voting_method,
+          election_num:election_num
         });
       } 
       catch (error) {
@@ -141,6 +153,7 @@ export default {
                 let participant_info=JSON.parse(localStorage.getItem("participant_info"));
                 let input_format=localStorage.getItem("voting_method");
                 let election_num=localStorage.getItem("election_num");
+                let homePos=JSON.parse(localStorage.getItem('homePos'));
                 // let servername=localStorage.getItem('server');
                 try {
                     const experiment_id=await this.axios.post("http://"+config.data.server+"/addExperiment",{
@@ -152,7 +165,8 @@ export default {
                         items:items,
                         participant_info:participant_info,
                         input_format:input_format,
-                        election_num:election_num
+                        election_num:election_num,
+                        homePos:homePos.x+','+homePos.y
                     });
                     // localStorage.clear();
                     localStorage.setItem('experiment_id',experiment_id.data.experiment_id);

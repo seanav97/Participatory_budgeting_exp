@@ -31,13 +31,10 @@ export default {
             return require('../assets/'+img+".png");
         },
         drawImages(){
-            // console.log(2);
-            let homePos=this.home[Math.floor(Math.random() * this.home.length)];
+            // let homePos=this.home[Math.floor(Math.random() * this.home.length)];
+            let homePos=JSON.parse(localStorage.getItem('homePos'));
             console.log(homePos);
-            // console.log(this.home);
             this.$refs.homeImage.style.position='relative';
-            // this.$refs.homeImage.style.left='60%';
-            // this.$refs.homeImage.style.top='30%';
             this.$refs.homeImage.style.left=homePos.x+'%';
             this.$refs.homeImage.style.top=homePos.y+'%';
 
