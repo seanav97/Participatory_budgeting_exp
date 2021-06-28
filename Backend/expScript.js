@@ -2,7 +2,7 @@ const { format } = require("mysql2");
 const DButils = require("./DButils");
 
 
-  setInterval(run, 60 * 1000 * 30);
+  setInterval(run, 60 * 1000 * 40);
 
 async function run(){
     let data=await DButils.executeQuery(`SELECT * FROM ELECTIONS_INPUT_FORMATS;`);
@@ -27,7 +27,11 @@ async function run(){
             timeArr.forEach((ts)=>{
                 updatedTimes=updatedTimes+"#"+ts;
             })
+
             let started=row.STARTED-expired;
+
+            if(row.STARTED-expired<row.FINISHED)
+                started=row.FINISHED+row.STARTED-expired;
 
             let query=`UPDATE ELECTIONS_INPUT_FORMATS SET STARTED = '${started}', TIMES = '${updatedTimes}' WHERE INPUT_FORMAT = '${row.INPUT_FORMAT}' AND ELECTION = '${row.ELECTION}';`
             queries.push(query);
