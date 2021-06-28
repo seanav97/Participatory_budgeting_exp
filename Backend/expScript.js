@@ -28,10 +28,7 @@ async function run(){
                 updatedTimes=updatedTimes+"#"+ts;
             })
 
-            let started=row.STARTED-expired;
-
-            if(row.STARTED-expired<row.FINISHED)
-                started=row.FINISHED+row.STARTED-expired;
+            let started=Math.max(row.STARTED-expired,row.FINISHED);
 
             let query=`UPDATE ELECTIONS_INPUT_FORMATS SET STARTED = '${started}', TIMES = '${updatedTimes}' WHERE INPUT_FORMAT = '${row.INPUT_FORMAT}' AND ELECTION = '${row.ELECTION}';`
             queries.push(query);
