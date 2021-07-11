@@ -16,9 +16,12 @@
         </div>
     </div>
     <div v-else id="connection error">
-      <b-alert show variant="danger" style="width:80%;padding-left: 25%;font-size: 50px;">
-        A connection error accured, try refreshing the page.
+      <b-alert show variant="danger" style="width:80%;padding-left: 25%;font-size: 40px;">
+        A connection error accured, write your worker ID below and click 'update' in order to continue.
       </b-alert>
+      <el-input style="width:50%;padding-left: 25%;" v-model="worker_id"></el-input>
+      <button @click="updateID">update</button>
+      
     </div>
   </div>
 </template>
@@ -44,7 +47,8 @@ export default {
       itemsPutFinish: false,
       server_error:false,
       capacity_filled:false,
-      finished_exp:false
+      finished_exp:false,
+      worker_id:""
     }
   },
   mounted(){
@@ -52,9 +56,19 @@ export default {
       asyncLoading(this.checkParticipant());
       this.getCurrTime();
     }
+    if(JSON.parse(localStorage.getItem('final_items'))!=null && localStorage.getItem('experiment_id')==null && localStorage.getItem('participant_ID')==null){
+        this.server_error=true;
+      }
 
   },
   methods:{
+    async updateID(){
+      localStorage.setItem('participant_ID',this.worker_id);
+      if(JSON.parse(localStorage.getItem('final_items'))!=null && localStorage.getItem('experiment_id')==null){
+        await this.addExperiment();
+      }
+      this.server_error=false;
+    },
     getImageURL(img){
         return require('./assets/'+img+'.png');
     },
