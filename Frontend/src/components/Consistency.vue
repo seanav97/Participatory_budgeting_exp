@@ -120,44 +120,7 @@ export default {
                 this.$loading(false);
                 return new Promise((resolve, reject) => {reject(new Error('You must answer all questions'))});
             }
-            // let q1=false;
-            // let q2=false;
-            // let q3=false;
-
-            // let q1_answer=false;
-            // let q2_answer=false;
-            // let q3_answer=false;
-
-            // if(this.voting_method=='Knapsack'){
-            //     q1_answer=this.selected.some(cell => cell.item_name === this.random_items[0].item_name);
-            //     q2_answer=this.selected.some(cell => cell.item_name === this.random_items[1].item_name);
-            //     q3_answer=this.selected.filter(x => x.item_price>=100000).length>0;
-            // }
-            // if(this.voting_method=='Utilities'){
-            //     q1_answer=this.selected.some(cell => cell.item_name === this.random_items[0].item_name);
-            //     q2_answer=this.selected.some(cell => cell.item_name === this.random_items[1].item_name);
-            //     q3_answer=Math.max.apply(Math, this.selected.map(function(o) { return o.item_value; })) > 25;
-            // }
-            // if(this.voting_method=='k_approval'){
-            //     q1_answer=this.selected.some(cell => cell.item_name === this.random_items[0].item_name);
-            //     q2_answer=this.selected.some(cell => cell.item_name === this.random_items[1].item_name);
-            //     q3_answer=this.selected.length>=3;
-            // }
-            // if(this.voting_method=='Threshold'){
-            //     q1_answer=this.selected.some(cell => cell.item_name === this.random_items[0].item_name);
-            //     q2_answer=this.selected.some(cell => cell.item_name === this.random_items[1].item_name);
-            //     q3_answer=this.selected.length>=3;
-            // }
-            // if(this.voting_method=='Ranking_value' || this.voting_method=='Ranking_value_money'){
-            //     q1_answer=this.selected.filter(x => x.item_name==this.random_items[0].item_name)[0].item_value > 
-            //                 this.selected.filter(x => x.item_name==this.random_items[1].item_name)[0].item_value;
-            //     q2_answer=this.selected.filter(x => x.item_name==this.random_items[1].item_name)[0].item_value > 
-            //                 this.selected.filter(x => x.item_name==this.random_items[2].item_name)[0].item_value;
-            //     q3_answer=this.selected.filter(x => x.item_name==this.random_items[2].item_name)[0].item_value > 
-            //                 this.selected.filter(x => x.item_name==this.random_items[3].item_name)[0].item_value;
-            // }
             
-
             if(this.form.question1 == 3)
                 this.db_track+="1";
             else
@@ -181,6 +144,10 @@ export default {
 
         },
         submit:async function(){
+            if(new Date().getTime()-parseInt(localStorage.getItem("startTime"))>3600000){
+              this.$parent.time_expired=true;
+              return;
+            }
             
             this.$loading(true);
 

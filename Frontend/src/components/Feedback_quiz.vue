@@ -3,8 +3,8 @@
     <div v-if="!finished">
         <div style="text-align:center">
 
-            <b-alert dismissible style v-if="isConsistent" show variant="success">You passed the consistency check and you will recieve a $0.5 bonus</b-alert>
-            <b-alert dismissible style v-else show variant="warning">You FAILED the consistency check and you will not recieve a $0.5 bonus</b-alert>
+            <b-alert dismissible style v-if="isConsistent" show variant="success">You passed the consistency check and you will recieve a $0.3 bonus</b-alert>
+            <b-alert dismissible style v-else show variant="warning">You FAILED the consistency check and you will not recieve a $0.3 bonus</b-alert>
             <br>
         </div>
         <h2 style="text-align:center">Feedback quiz  (fill to finish the experiment)</h2>

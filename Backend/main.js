@@ -48,16 +48,6 @@ app.get("/userExists/participant_ID/:participant_ID", async (req, res, next) => 
   }
 });
 
-app.get("/dummy", async (req, res, next) => {
-  let queries=[];
-  queries.push('SELECT * from ARRANGED_ITEMS');
-  queries.push('SELECT * from PARTICIPANTS');
-  queries.push('SELECT * from EXP_ITEMS');
-  let answer=await DButils.executeQuery('SELECT * from ARRANGED_ITEMS');
-  let answers=await DButils.executeQueries(queries);
-  res.status(200).send({dummy:'works'});
-});
-
 app.get("/isBlacklisted/participant_ID/:participant_ID", async (req, res, next) => {
   try {
     const { participant_ID } = req.params;
@@ -116,7 +106,8 @@ app.post("/addExperiment", async (req, res, next) => {
     let queries=[];
     queries.push(`INSERT INTO PARTICIPANTS (PARTICIPANT_ID,AGE,EDUCATION,GENDER) VALUE ('${participant_ID}','${participant_info.age}','${participant_info.education}','${participant_info.gender}')`);
     queries.push(`INSERT INTO EXPERIMMENTS (PARTICIPANT_ID,CURTIME,TUTORIAL_TIME,QUIZ_TIME,RESPONSE_TIME,ISCONSISTENT,INPUT_FORMAT,ELECTION_NUM,LOCATION_MAP) VALUE ('${participant_ID}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}','${input_format}','${election_num}','${homePos}')`);
-
+    await DButils.executeQueries(queries);
+    queries=[];
     // await DButils.executeQuery(`INSERT INTO PARTICIPANTS (PARTICIPANT_ID,AGE,EDUCATION,GENDER)
     //                             VALUE ('${participant_ID}','${participant_info.age}','${participant_info.education}','${participant_info.gender}')`);
 
@@ -124,7 +115,7 @@ app.post("/addExperiment", async (req, res, next) => {
     //                            VALUE ('${participant_ID}','${time}','${tutorial_time}','${quiz_time}','${response_time}','${consistant}','${input_format}','${election_num}')`);
     
     let exp_id=await DButils.executeQuery(`SELECT max(EXP_ID) as max FROM EXPERIMMENTS`);
-    exp_id[0]["max"]=parseInt(exp_id[0]["max"])+1;
+    exp_id[0]["max"]=parseInt(exp_id[0]["max"]);
     // console.log("epx id: "+exp_id[0]["max"]);
 
 
@@ -177,13 +168,16 @@ app.post("/addFeedback", async (req, res, next) => {
 
     const token=Math.floor(100000 + Math.random() * 900000);
 
+    //update the Experiments table with the feedback
     await DButils.executeQuery(`UPDATE EXPERIMMENTS SET FEEDBACK_EASE = '${q_ease}',
                                 FEEDBACK_INTERFACE ='${q_interface}', FEEDBACK_CAPTURE = '${q_capture}',FEEDBACK_MAP = '${q_map}',
                                 FEEDBACK_CATEGORIES = '${q_cat}', FEEDBACK_MAP_ACCESS = '${q_map_access}', TOTAL_TIME = '${total_time}', TOKEN = '${token}'
                                 WHERE EXP_ID = '${experiment_id}';`);
     let finishedByNow=await DButils.executeQuery(`SELECT FINISHED FROM ELECTIONS_INPUT_FORMATS
                                             WHERE INPUT_FORMAT = '${input_format}' AND ELECTION = '${election}';`);
-  await DButils.executeQuery(`UPDATE ELECTIONS_INPUT_FORMATS SET FINISHED = '${finishedByNow[0].FINISHED+1}'
+    
+    //mark that the user complited the experiment
+    await DButils.executeQuery(`UPDATE ELECTIONS_INPUT_FORMATS SET FINISHED = '${finishedByNow[0].FINISHED+1}'
                               WHERE INPUT_FORMAT = '${input_format}' AND ELECTION = '${election}';`);
 
     res.status(201).send({ token: token});
@@ -195,33 +189,33 @@ app.post("/addFeedback", async (req, res, next) => {
 app.get("/config", async (req, res, next) => {
   try {
     let return_items=[];
-    
     chosen_method="";
-
+    //round robin - the user will get the senario with the minimum amout of people started
     let combinations=await DButils.executeQuery('SELECT * FROM ELECTIONS_INPUT_FORMATS');
+    let minStarted={index:0,started:combinations[0].STARTED};
     for (let i = 0; i < combinations.length; i++) {
-      if(combinations[i].STARTED<50 && combinations[i].FINISHED<50){
-        chosen_method=combinations[i].INPUT_FORMAT;
-        chosen_election=combinations[i].ELECTION;
-        old_time=combinations[i].TIMES;
-        new_time=combinations[i].TIMES+"#"+new Date().getTime();
-        await DButils.executeQuery(`UPDATE ELECTIONS_INPUT_FORMATS SET STARTED = '${combinations[i].STARTED+1}', TIMES = '${new_time}'
-                                    WHERE INPUT_FORMAT = '${chosen_method}' AND ELECTION = '${chosen_election}';`);
-        break;
+      if(combinations[i].STARTED<minStarted.started){
+        minStarted.started=combinations[i].STARTED;
+        minStarted.index=i;
       }
     }
-
-    if(chosen_method==""){
+    if(minStarted.started>=50){
       res.status(200).send({'finished':true});
     }
+    chosen_method=combinations[minStarted.index].INPUT_FORMAT;
+    chosen_election=combinations[minStarted.index].ELECTION;
+    old_time=combinations[minStarted.index].TIMES;
+    new_time=combinations[minStarted.index].TIMES+"#"+new Date().getTime();
+    await DButils.executeQuery(`UPDATE ELECTIONS_INPUT_FORMATS SET STARTED = '${combinations[minStarted.index].STARTED+1}', TIMES = '${new_time}'
+                                  WHERE INPUT_FORMAT = '${chosen_method}' AND ELECTION = '${chosen_election}';`);
 
-
+    //get the items of the election in randomized order
     let items = await DButils.executeQuery(`SELECT ITEMS.ITEM_ID,ITEM_NAME,GROUP_NAME,VALUE,URL,COORDS,DESCRIPTION from ARRANGED_ITEMS JOIN ITEMS ON ITEMS.ITEM_ID=ARRANGED_ITEMS.ITEM_ID where SENARIO='${chosen_election}' ORDER BY RAND ( ) `);
-    
     items.forEach(row => {
       return_items.push({'item_id':row.ITEM_ID,'item_name':row.ITEM_NAME,'item_value':row.VALUE,'item_group':row.GROUP_NAME,'item_desc':row.DESCRIPTION,'url':row.URL,'coords':row.COORDS});
     });
 
+    //get random position as the user's home 
     let homeArr=[{x:10,y:20},{x:60,y:50},{x:40,y:30},{x:20,y:80}];
     let homePos=homeArr[Math.floor(Math.random() * homeArr.length)];
 
@@ -234,7 +228,9 @@ app.get("/config", async (req, res, next) => {
 app.get("/", (req, res) => res.send("welcome"));
 
 app.use(function (err, req, res, next) {
-  console.error(err);
+  let errorStream = fs.createWriteStream(path.join("./", 'error.log'), {flags: 'a'});
+  fs.appendFileSync("./error.log",new Date(parseInt(new Date().getTime())).toString()+ ' - ERROR: ' + err.message + '\n');
+  // console.error(err);
   res.status(err.status || 500).send({ message: err.message, success: false });
 });
 

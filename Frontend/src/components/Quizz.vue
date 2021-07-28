@@ -118,7 +118,6 @@ export default {
         this.voting_method= localStorage.getItem('voting_method');
         this.questions=require("../quiz_questions.js").data[this.voting_method];
     },
-
     methods:{
         q1Vall: async function(){
             if (this.formInline.question1 != 3 || this.formInline.question2 != 2 || this.formInline.question3 != 1 || this.formInline.question4 != 4) 
@@ -141,7 +140,6 @@ export default {
     float: left;
     position:relative;
     /* border-spacing: 50px 50px 50px 50px; */
-
 }
 .q-title{
     float: left;
@@ -163,11 +161,9 @@ export default {
     /* width:100%; */
     height: auto;
 }
-
 /* .el-radio,h4{
     white-space: normal,
 } */
-
 @media (max-width:1300px) {
     .q-body{
         border-left: thick solid #3f9396;
@@ -185,7 +181,6 @@ export default {
         border: 5px solid #555;
         width:500px;
         margin-left:0px;
-
     }
     .quizimage2{
         margin-left:30px;

@@ -2,7 +2,7 @@ const { format } = require("mysql2");
 const DButils = require("./DButils");
 
 
-  setInterval(run, 60 * 1000 * 40);
+  setInterval(run, 60 * 1000);
 
 async function run(){
     let data=await DButils.executeQuery(`SELECT * FROM ELECTIONS_INPUT_FORMATS;`);

@@ -1,21 +1,5 @@
 <template>
 <scroll-fixed-header>
-    <!-- <form-wizard @on-complete="onComplete">
-        <h2 slot="title"></h2>   
-        <tab-content title="Consent" :before-change="validateFirstStep">
-          <consent todo="You will select  how to distribute a budget of 500,000 pound, by selecting from a list of items." ref="consentComp"/>
-        </tab-content>
-        <tab-content title="Instructions" :before-change="validateInstructions">
-          <instructions/>
-        </tab-content>
-      <tab-content title="Quiz" :before-change="validateQuiz">
-          <quizz ref="quizComp"/>
-        </tab-content>
-        <tab-content title="Demographic Questions" :before-change="scrollToTop">
-          <personal-questions ref="persQuestions"/>
-        </tab-content>
-
-    </form-wizard> -->
     <form-wizard @on-complete="onComplete" finish-button-text="Submit">
         <h2 slot="title"></h2>   
         <tab-content title="Consent" :before-change="validateFirstStep">
@@ -114,10 +98,7 @@ export default {
                   
 
                   this.scrollToTop();
-                  
-                  // let voting_method=localStorage.getItem('voting_method');
-                  // this.$router.push("/"+voting_method+"_exp");
-                  // this.$router.push("/Knapsack_exp");
+              
                  } 
                resolve(valid);
              });

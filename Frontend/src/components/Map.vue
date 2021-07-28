@@ -15,7 +15,6 @@ export default {
     data(){
         return{
             url:'../assets/userHome3.png',
-            // our_items:JSON.parse(localStorage.getItem('items')),
             our_items:this.getAllItems(),
             image_size:"50",
             home:[{x:10,y:20},{x:60,y:50},{x:40,y:30},{x:20,y:80}],
@@ -23,8 +22,6 @@ export default {
     },
     mounted(){
         this.drawImages();
-        console.log(this.$refs);
-        // this.getAllItems();
     },
     methods: {
         getImageURL(img){
@@ -33,7 +30,6 @@ export default {
         drawImages(){
             // let homePos=this.home[Math.floor(Math.random() * this.home.length)];
             let homePos=JSON.parse(localStorage.getItem('homePos'));
-            console.log(homePos);
             this.$refs.homeImage.style.position='relative';
             this.$refs.homeImage.style.left=homePos.x+'%';
             this.$refs.homeImage.style.top=homePos.y+'%';
@@ -62,16 +58,10 @@ export default {
                 });
             });
 
-            // console.log(allItems);
-            // allItems.forEach(item => {
-            //     console.log(this.$refs[item.item_name]);
-            // });
             return allItems;
         },
         changeOpacity(item_name,opacity){
-            // console.log(1);
             let items=this.$refs[item_name];
-            // console.log(items);
             items.forEach(item => {
                 item.style.opacity=opacity;
             });

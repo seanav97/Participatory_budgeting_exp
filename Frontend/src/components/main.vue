@@ -60,7 +60,6 @@ export default {
             }
             this.$loading(false);
             this.$router.push("/participant_ID/participant_ID?participant_ID="+id);
-            // this.$router.go(0);
         }
     }
 

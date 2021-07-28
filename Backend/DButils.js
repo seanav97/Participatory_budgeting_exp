@@ -1,5 +1,7 @@
 const mysqlssh = require('mysql-ssh');
 const fs = require('fs');
+var path = require("path");
+const { exception } = require('console');
 
 exports.executeQuery = async function(query){
   let result= await dbQuery(query);
@@ -40,8 +42,9 @@ async function dbQuery(databaseQuery) {
   return new Promise(data => {
     conProm.query(databaseQuery, function (error, result) {
           if (error) {
-              console.log(error);
-              throw error;
+            fs.createWriteStream(path.join("./", 'error.log'), {flags: 'a'});
+            fs.appendFileSync("./error.log",new Date(parseInt(new Date().getTime())).toString()+ ' - SQL ERROR: ' + error.sqlMessage + '\n');
+            throw exception(error);
           }
           try {
               // console.log(result);
@@ -50,7 +53,9 @@ async function dbQuery(databaseQuery) {
 
           } catch (error) {
               data({});
-              throw error;
+              fs.createWriteStream(path.join("./", 'error.log'), {flags: 'a'});
+              fs.appendFileSync("./error.log",new Date(parseInt(new Date().getTime())).toString()+ ' - SQL ERROR: ' + error.sqlMessage + '\n');
+              throw exception(error);
           }
 
       });
@@ -90,15 +95,18 @@ async function mul_dbQuery(queries) {
       // console.log(queries[index]);
       conProm.query(queries[index], function (error, result) {
             if (error) {
-                console.log(error);
-                throw error;
+                fs.createWriteStream(path.join("./", 'error.log'), {flags: 'a'});
+                fs.appendFileSync("./error.log",new Date(parseInt(new Date().getTime())).toString()+ ' - SQL ERROR: ' + error.sqlMessage + '\n');
+                throw exception(error);
             }
             try {                
                 data(result);
   
             } catch (error) {
                 data({});
-                throw error;
+                fs.createWriteStream(path.join("./", 'error.log'), {flags: 'a'});
+                fs.appendFileSync("./error.log",new Date(parseInt(new Date().getTime())).toString()+ ' - SQL ERROR: ' + error.sqlMessage + '\n');
+                throw exception(error);
             }
   
         });
@@ -112,73 +120,6 @@ async function mul_dbQuery(queries) {
 
 }
 
-// async function getDatabase(){
-//   const Json2csvParser = require('json2csv').Parser;
-//   const fastcsv = require("fast-csv");
-//   const fs = require("fs");
-
-//   let experiments= await dbQuery('select * from EXPERIMMENTS');
-//   let arranged_items= await dbQuery('select * from ARRANGED_ITEMS');
-//   let blacklist= await dbQuery('select * from BLACKLIST');
-//   let exp_items= await dbQuery('select * from EXP_ITEMS');
-//   let items= await dbQuery('select * from ITEMS');
-//   let participants= await dbQuery('select * from PARTICIPANTS');
-//   const experiments_json = JSON.parse(JSON.stringify(experiments));
-//   // const experimentsFields = ['id', 'name', 'address', 'age'];
-//   // experiments_json[0].EXP_ID=0;
-//   // let a=new Date(parseInt(experiments_json[0].CURTIME)).toString();
-//   const arranged_items_json = JSON.parse(JSON.stringify(arranged_items));
-//   const blacklist_json = JSON.parse(JSON.stringify(blacklist));
-//   const exp_items_json = JSON.parse(JSON.stringify(exp_items));
-//   const items_json = JSON.parse(JSON.stringify(items));
-//   const participants_json = JSON.parse(JSON.stringify(participants));
-
-//   experiments_json.forEach(exp => {
-//     exp.CURTIME=new Date(parseInt(exp.CURTIME)).toString();
-//     exp.TUTORIAL_TIME=exp.TUTORIAL_TIME/1000;
-//     exp.QUIZ_TIME=exp.QUIZ_TIME/1000;
-//     exp.RESPONSE_TIME=exp.RESPONSE_TIME/1000;
-//   });
-//   let a=0;
-
-//   fastcsv
-//       .write(experiments_json, { headers: true })
-//       .on("finish", function() {
-//         console.log("Write to experiments.csv successfully!");
-//       })
-//       .pipe(fs.createWriteStream("csv/experiments.csv"));
-//   fastcsv
-//       .write(arranged_items_json, { headers: true })
-//       .on("finish", function() {
-//         console.log("Write to arranged_items.csv successfully!");
-//       })
-//       .pipe(fs.createWriteStream("csv/arranged_items.csv")); 
-//   fastcsv
-//       .write(blacklist_json, { headers: true })
-//       .on("finish", function() {
-//         console.log("Write to blacklist.csv successfully!");
-//       })
-//       .pipe(fs.createWriteStream("csv/blacklist.csv"));
-//   fastcsv
-//       .write(exp_items_json, { headers: true })
-//       .on("finish", function() {
-//         console.log("Write to exp_items.csv successfully!");
-//       })
-//       .pipe(fs.createWriteStream("csv/exp_items.csv"));
-//   fastcsv
-//       .write(items_json, { headers: true })
-//       .on("finish", function() {
-//         console.log("Write to items.csv successfully!");
-//       })
-//       .pipe(fs.createWriteStream("csv/items.csv"));
-//   fastcsv
-//       .write(participants_json, { headers: true })
-//       .on("finish", function() {
-//         console.log("Write to participants.csv successfully!");
-//       })
-//       .pipe(fs.createWriteStream("csv/participants.csv"));
-
-// }
 
 async function getDatabase2(){
   const Json2csvParser = require('json2csv').Parser;
@@ -186,8 +127,12 @@ async function getDatabase2(){
   const fs = require("fs");
   const excel = require('exceljs');
 
+  let ids=[];
+  let null_items=[];
 
-  let experiments= await dbQuery('select * from EXPERIMMENTS');
+
+  let experiments= await dbQuery('select * from EXPERIMMENTS WHERE TOKEN IS NOT NULL');
+  // let experiments= await dbQuery('select * from EXPERIMMENTS');
   let arranged_items= await dbQuery('select * from ARRANGED_ITEMS');
   let blacklist= await dbQuery('select * from BLACKLIST');
   let exp_items= await dbQuery('select * from EXP_ITEMS');
@@ -207,14 +152,21 @@ async function getDatabase2(){
     exp.RESPONSE_TIME=exp.RESPONSE_TIME/1000;
     exp.TOTAL_TIME=exp.TOTAL_TIME/1000;
     exp.CONSISTENCY_TIME=exp.CONSISTENCY_TIME/1000;
+
+    ids.push(exp.EXP_ID);
   });
-  exp_items_json.forEach(exp => {
+  exp_items_json.forEach((exp,i) => {
     if(exp.VALUE.includes("->")){
       let x=exp.VALUE.split("->");
       exp.RANK_BEFORE=exp.VALUE.split("->")[0];
       exp.RANK_AFTER=exp.VALUE.split("->")[1];
     }
   });
+
+  for (var i = 0; i < exp_items_json.length; i++)
+    if(!(ids.includes(exp_items_json[i].EXP_ID))) null_items.push(i);
+  for (var i = null_items.length -1; i >= 0; i--)
+    exp_items_json.splice(null_items[i],1);
 
   let workbook = new excel.Workbook({
     pageSetup: {
@@ -242,6 +194,7 @@ async function getDatabase2(){
     { header: 'FEEDBACK_CAPTURE', key: 'FEEDBACK_CAPTURE', width: 20},
     { header: 'FEEDBACK_MAP', key: 'FEEDBACK_MAP', width: 20},
     { header: 'FEEDBACK_CATEGORIES', key: 'FEEDBACK_CATEGORIES', width: 20},
+    { header: 'FEEDBACK_MAP_ACCESS', key: 'FEEDBACK_MAP_ACCESS', width: 20},
     { header: 'INPUT_FORMAT', key: 'INPUT_FORMAT', width: 20},
     { header: 'ELECTION_NUM', key: 'ELECTION_NUM', width: 15},
     { header: 'CONSISTENCY_TIME', key: 'CONSISTENCY_TIME', width: 18},
